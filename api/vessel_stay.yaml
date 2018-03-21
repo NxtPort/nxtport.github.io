@@ -1,0 +1,128 @@
+swagger: '2.0'
+info:
+  title: Vessel Stay API (sandbox)
+  version: '1.0'
+  description: Stay Numbers Port Of Antwerp API
+host: api-sb.nxtport.eu
+basePath: /sa/v1
+schemes:
+  - https
+securityDefinitions:
+  apiKeyHeader:
+    type: apiKey
+    name: Ocp-Apim-Subscription-Key
+    in: header
+  apiKeyQuery:
+    type: apiKey
+    name: subscription-key
+    in: query
+security:
+  - apiKeyHeader: []
+  - apiKeyQuery: []
+paths:
+  '/stays/{imoNumber}':
+    get:
+      operationId: Stays By ImoNumber
+      parameters:
+        - name: imoNumber
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK - imo number found
+          schema:
+            $ref: '#/definitions/vesselInfoArray'
+        '401':
+          description: Authentication information is missing or invalid
+          schema:
+            $ref: '#/definitions/exceptionArray'
+        '404':
+          description: The given imo number does not exist
+          schema:
+            $ref: '#/definitions/exceptionArray'
+        '500':
+          description: Server error
+          schema:
+            $ref: '#/definitions/exceptionArray'
+      produces:
+        - application/json
+        - text/json
+definitions:
+  exception:
+    type: object
+    properties:
+      type:
+        type: string
+      title:
+        type: string
+      status:
+        type: number
+      identifier:
+        type: string
+  vesselInfo:
+    type: object
+    properties:
+      vesselName:
+        type: string
+      imoNumber:
+        type: number
+      countryNl:
+        type: string
+      countryEn:
+        type: string
+      vesselTypeFull:
+        type: string
+      vesselType:
+        type: string
+      flag:
+        type: string
+      loa:
+        type: number
+      gbr:
+        type: number
+      stays:
+        type: array
+        items:
+          $ref: '#/definitions/stay'
+  stay:
+    type: object
+    properties:
+      stayNumber:
+        type: string
+      agentCode:
+        type: string
+      agentName:
+        type: string
+      eta:
+        type: string
+        format: date-time
+      ata:
+        type: string
+        format: date-time
+      etd:
+        type: string
+        format: date-time
+      atd:
+        type: string
+        format: date-time
+      berthArrival:
+        type: string
+      berthDeparture:
+        type: string
+      origin:
+        type: string
+      originFull:
+        type: string
+      destination:
+        type: string
+      destinationFull:
+        type: string
+  vesselInfoArray:
+    type: object
+    items:
+      $ref: '#/definitions/vesselInfo'
+  exceptionArray:
+    type: object
+    items:
+      $ref: '#/definitions/exception'

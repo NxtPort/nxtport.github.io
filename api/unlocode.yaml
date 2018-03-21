@@ -1,0 +1,780 @@
+host: api.nxtport.eu
+basePath: /unlocodes/v1
+definitions:
+  Country:
+    title: Country
+    example:
+      countryCode: BE
+      countryName: Belgium
+    type: object
+    properties:
+      countryCode:
+        type: string
+        description: The 2-character country code (ISO 3166)
+      countryName:
+        type: string
+        description: The name of the country
+    required:
+      - countryCode
+      - countryName
+  Subdivision:
+    title: Subdivision
+    example:
+      countryCode: BE
+      subdivisionCode: VOV
+      subdivisionName: Oost-Vlaanderen
+      subdivisionType: Province
+    type: object
+    properties:
+      countryCode:
+        type: string
+        description: The 2-character country code (ISO 3166)
+      subdivisionCode:
+        type: string
+        description: The 3-character subdivision code (ISO 3166)
+      subdivisionName:
+        type: string
+        description: The name of the subdivision
+      subdivisionType:
+        type: string
+        description: The type of the subdivision
+    required:
+      - countryCode
+      - subdivisionCode
+      - subdivisionName
+  Geolocation:
+    title: Geolocation
+    example:
+      latitude: 50.883333
+      longitude: 3.416666
+    type: object
+    description: >-
+      The data format of the geolocation has been modified from a
+      degrees/minutes + N/S + E/W formatting (on the UN/LOCODE website) to a
+      decimal degree representation. This is a more useful format for
+      applications
+    properties:
+      latitude:
+        type: number
+        description: The latitude of a location's geolocation
+        format: double
+      longitude:
+        type: number
+        description: The longitude of a location's geolocation
+        format: double
+    required:
+      - latitude
+      - longitude
+  Functionality:
+    title: Functionality
+    example:
+      isUnknown: false
+      isPort: true
+      isRailTerminal: false
+      isRoadTerminal: true
+      isAirport: false
+      isPostalExchangeOffice: false
+      hasMultimodalFunction: false
+      hasFixedTransportFunction: false
+      isBorderCrossing: false
+    description: >-
+      The data representation has been changed from a 8-digit function
+      classifier code to a clearer structure with dedicated fields.
+    type: object
+    properties:
+      isUnknown:
+        type: boolean
+        description: >-
+          The functionality of the corresponding location is unknown, to be
+          specified
+      isPort:
+        type: boolean
+        description: 'Port, as defined in Rec 16'
+      isRailTerminal:
+        type: boolean
+        description: Rail terminal
+      isRoadTerminal:
+        type: boolean
+        description: Road terminal
+      isAirport:
+        type: boolean
+        description: Airport
+      isPostalExchangeOffice:
+        type: boolean
+        description: Postal exchange office
+      hasMultimodalFunction:
+        type: boolean
+        description: 'Reserved for Multimodal functions, ICD''s etc.'
+      hasFixedTransportFunction:
+        type: boolean
+        description: Reserved for fixed transport functions (e.g. Oil platform)
+      isBorderCrossing:
+        type: boolean
+        description: Border crossing
+    required:
+      - isUnknown
+      - isPort
+      - isRailTerminal
+      - isRoadTerminal
+      - isAirport
+      - isPostalExchangeOffice
+      - hasMultimodalFunction
+      - hasFixedTransportFunction
+      - isBorderCrossing
+  Exception:
+    title: Exception
+    type: object
+    properties:
+      error:
+        type: string
+        description: The error message that describes the issue/situation.
+      identifier:
+        type: string
+        description: >-
+          a unique value that identifies the occurence of the issue. This can be
+          used to make communication more efficient.
+    required:
+      - error
+      - identifier
+  Location:
+    title: Location
+    properties:
+      change:
+        type: string
+        description: >-
+          This field indicates the updates that were made since the previous
+          publication, or if the corresponding location is marked for deletion
+          in the next publication
+      country:
+        type: string
+        description: The country where the location is located
+      code:
+        type: string
+        description: >-
+          The 3-character code for the location in the corresponding country.
+          Normally this consists of 3 letters but where all permutations for
+          that country have been used, the numerals 2-9 can also be used. This
+          code is unique per country, but is not necessarily unique worldwide.
+      locode:
+        type: string
+        description: >-
+          The combination of the ISO 3166 alpha-2 country code (country field)
+          with the 3-character code element for the location (code field). The
+          UN/LOCODE website combines these 2 fields with a space for
+          readability. In the API this space is not included
+      name:
+        type: string
+        description: >-
+          The name of the location which has been accepted for inclusion in
+          UN/LOCODE in accordance with the provisions of the recommendation. The
+          names are given (whenever possible) in their national langauge as
+          expressed in the Roman alphabet using the 26 characters with diacritic
+          signs when practicable. Diacritic signs may be ignored, and should not
+          be converted into additional characters (e.g. Göteborg = Goteborg, not
+          Goeteborg). In countries with more than 1 official language names may
+          be different. in these cases a different version of the name may be
+          included within brackets). Names that have been changed or that are
+          represented differently in different languages may be included with an
+          = sign. A place name may be folloced (after a comma) by an indication
+          of geographical or administrative significance.
+      nameWithoutDiacritics:
+        type: string
+        description: The name of the location (name field) without diacritic signs
+      subdiv:
+        type: string
+        description: >-
+          the 3-character subdivision code (ISO 3166 alpha-2) where the location
+          is in
+      functionality:
+        $ref: '#/definitions/Functionality'
+      status:
+        type: string
+        description: >-
+          Describes the status of the entry whether approved by Govermnent,
+          Customs or based on a user requirement not necessarily recognised by
+          an othority ... It is also intended to show the status of checking
+          (functionality not verified). The description is included in this
+          field, not the code.
+      geolocation:
+        $ref: '#/definitions/Geolocation'
+      iata:
+        type: string
+        description: >-
+          The IATA code for the location if different from location code in
+          column LOCODE (second part of the code)
+      remarks:
+        type: string
+        description: Remarks made on the corresponding location
+    required:
+      - country
+      - subdiv
+      - functionality
+      - code
+      - locode
+      - name
+      - nameWithoutDiacritics
+info:
+  description: Available API's for the UN Location Codes
+  title: UN Location Codes API (live)
+  version: v1.0.0
+paths:
+  /countries:
+    get:
+      consumes: []
+      deprecated: false
+      operationId: getCountries
+      parameters: []
+      produces:
+        - application/json
+      summary: Get an overview of all countries.
+      description: >-
+        Get a list of all the countries. The API will return the complete list
+        of the existing countries with their country name and 2-character
+        country code in JSON format. The example output for a HTTP Status code
+        200 contains a subset of the possible outcome.
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Country'
+            type: array
+          examples:
+            application/json:
+              - countryCode: AX
+                countryName: Åland Islands
+              - countryCode: AL
+                countryName: Albania
+              - countryCode: DZ
+                countryName: Algeria
+              - countryCode: AS
+                countryName: American Samoa
+              - countryCode: BY
+                countryName: Belarus
+              - countryCode: BE
+                countryName: Belgium
+              - countryCode: BZ
+                countryName: Belize
+        '404':
+          description: No data found
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 454558da-29e4-40af-9e9b-0a28ceb52ccc
+              error: No countries found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 0407936e-d2ad-41e9-99e2-05a5919c3075
+              error: An unexpected exception occured
+      tags:
+        - Countries
+  '/countries/{countryCode}':
+    get:
+      consumes: []
+      deprecated: false
+      operationId: getCountry
+      parameters:
+        - in: path
+          name: countryCode
+          required: true
+          type: string
+          description: 2-character country code
+      produces:
+        - application/json
+      summary: Get the details of 1 country
+      description: >-
+        Get the details of 1 specific country, specified by the country code in
+        the query parameter. Both the country name and country code are returned
+        in a JSON object. The example response in case of HTTP Status Code 200
+        contains the result when requested for countryCode BE.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Country'
+          examples:
+            application/json:
+              countryCode: BE
+              countryName: Belgium
+        '404':
+          description: No data found
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 4dbebda4-70b3-4f50-aa90-a757f994fe3b
+              error: Country not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 0407936e-d2ad-41e9-99e2-05a5919c3075
+              error: An unexpected exception occured
+      tags:
+        - Countries
+  '/countries/{countryCode}/subdivisions':
+    get:
+      consumes: []
+      deprecated: false
+      operationId: getCountrySubdivisions
+      parameters:
+        - in: path
+          name: countryCode
+          required: true
+          type: string
+          description: 2-character country code
+      produces:
+        - application/json
+      summary: Get an overview of the subdivisions of a certain country
+      description: >-
+        Get a list of all the subdivisions of a certain country, specified by
+        the country code in the query parameter. The example response contains a
+        subset of the output when requested for BE.
+      responses:
+        '200':
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/Subdivision'
+            type: array
+          examples:
+            application/json:
+              - countryCode: BE
+                subdivisionCode: VAN
+                subdivisionName: Antwerpen
+                subdivisionType: Province
+              - countryCode: BE
+                subdivisionCode: VOV
+                subdivisionName: Oost-Vlaanderen
+                subdivisionType: Province
+              - countryCode: BE
+                subdivisionCode: VWV
+                subdivisionName: West-Vlaanderen
+                subdivisionType: Province
+              - countryCode: BE
+                subdivisionCode: WNA
+                subdivisionName: Namur
+                subdivisionType: Province
+        '404':
+          description: No data found
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 4bdbb26a-0ce0-4246-aefe-03e3bdd9d1b7
+              error: Subdivisions not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 0407936e-d2ad-41e9-99e2-05a5919c3075
+              error: An unexpected exception occured
+      tags:
+        - Subdivisions
+  '/countries/{countryCode}/subdivisions/{subdivisionCode}':
+    get:
+      consumes: []
+      deprecated: false
+      operationId: getCountrySubdivision
+      parameters:
+        - in: path
+          name: countryCode
+          required: true
+          type: string
+          description: 2-character country code
+        - in: path
+          name: subdivisionCode
+          required: true
+          type: string
+          description: 3-character subdivision code
+      produces:
+        - application/json
+      summary: Get the details of 1 specific subdivision
+      description: >-
+        Get the details of 1 specific subdivision, based on the countryCode and
+        subdivisionCode in the query parameters.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Subdivision'
+          examples:
+            application/json:
+              countryCode: BE
+              subdivisionCode: VAN
+              subdivisionName: Antwerpen
+              subdivisionType: Province
+        '404':
+          description: No data found
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: cc3d16fa-02b1-4ded-97ba-459dfe7779b5
+              error: Subdivision not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 0407936e-d2ad-41e9-99e2-05a5919c3075
+              error: An unexpected exception occured
+      tags:
+        - Subdivisions
+  /locations:
+    get:
+      consumes: []
+      deprecated: false
+      operationId: searchLocations
+      parameters:
+        - in: query
+          name: code
+          required: false
+          type: string
+          description: 3-character location code
+        - in: query
+          name: country
+          required: false
+          type: string
+          description: 2-character country code
+        - in: query
+          name: subdiv
+          required: false
+          type: string
+          description: 3-character subdivision code
+        - in: query
+          name: searchterm
+          required: false
+          type: string
+          description: Part of the name of the location without diacritics
+        - in: query
+          name: page
+          required: false
+          type: number
+          description: the page number to allow paging (needs to be an integer > 0)
+        - in: query
+          name: size
+          required: false
+          type: number
+          description: >-
+            the page size to allow paging (needs to be an integer 0 < pagesize <
+            1000)
+      summary: Search for locations based on parameters
+      description: >-
+        This api will return a (paged) list of locations that match the search
+        parameters (query parameters) ordered by the name without diacritics.
+      produces:
+        - application/json
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Location'
+          examples:
+            application/json:
+              - country: BE
+                code: BAR
+                locode: BEBAR
+                name: Berlaar
+                nameWODiacritics: Berlaar
+                subdiv: VAN
+                status: >-
+                  Request from credible national sources for locations in their
+                  own country
+                geolocation:
+                  latitude: 51.116666
+                  longitude: 4.65
+                functionality:
+                  isUnknown: false
+                  isPort: false
+                  isRailTerminal: false
+                  isRoadTerminal: true
+                  isAirport: false
+                  isPostalExchangeOffice: false
+                  hasMultimodalFunction: false
+                  hasFixedTransportFunction: false
+                  isBorderCrossing: false
+              - country: BE
+                code: BRL
+                locode: BEBRL
+                name: Berlare
+                nameWODiacritics: Berlare
+                subdiv: VOV
+                status: >-
+                  Request from credible national sources for locations in their
+                  own country
+                geolocation:
+                  latitude: 51.033333
+                  longitude: 4
+                functionality:
+                  isUnknown: false
+                  isPort: false
+                  isRailTerminal: false
+                  isRoadTerminal: true
+                  isAirport: false
+                  isPostalExchangeOffice: false
+                  hasMultimodalFunction: false
+                  hasFixedTransportFunction: false
+                  isBorderCrossing: false
+              - country: BE
+                code: LRZ
+                locode: BELRZ
+                name: Berloz
+                nameWODiacritics: Berloz
+                subdiv: WLG
+                status: >-
+                  Request from credible national sources for locations in their
+                  own country
+                geolocation:
+                  latitude: 50.7
+                  longitude: 5.216666
+                functionality:
+                  isUnknown: false
+                  isPort: false
+                  isRailTerminal: false
+                  isRoadTerminal: true
+                  isAirport: false
+                  isPostalExchangeOffice: false
+                  hasMultimodalFunction: false
+                  hasFixedTransportFunction: false
+                  isBorderCrossing: false
+        '400':
+          description: ' Bad request - Issue with parameter'
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: a710a2af-4f0d-458b-8792-23fe4f736d9d
+              error: pagesize needs to be between 1 and 1000.
+        '404':
+          description: No data found
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: b1f1fef1-59ad-4978-bed8-3ff96d6d3587
+              error: No locations found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 0407936e-d2ad-41e9-99e2-05a5919c3075
+              error: An unexpected exception occured
+      tags:
+        - Locations
+  '/locations/{latitude}/{longitude}/{radius}':
+    get:
+      consumes: []
+      deprecated: false
+      operationId: locations_getinNeighbourhood
+      parameters:
+        - in: path
+          name: latitude
+          required: true
+          type: string
+          description: the latitude of the specified point
+        - in: path
+          name: longitude
+          required: true
+          type: string
+          description: the longitude of the specified point
+        - in: path
+          name: radius
+          required: true
+          type: string
+          description: the radius in km (max 75km)
+        - in: query
+          name: page
+          required: false
+          type: number
+          description: the page number to allow paging (needs to be an integer > 0)
+        - in: query
+          name: size
+          required: false
+          type: number
+          description: >-
+            the page size to allow paging (needs to be an integer 0 < pagesize <
+            1000)
+      produces:
+        - application/json
+      summary: Search for locations in the neighborhood
+      description: >-
+        This api will return locations in a certain radius of a point, ordered
+        by distance , not necessarily in the same country
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Location'
+          examples:
+            application/json:
+              - country: BE
+                code: BEANR
+                locode: BEBEANR
+                name: Antwerpen (= Antwerp)
+                nameWODiacritics: Antwerpen (= Antwerp)
+                subdiv: VAN
+                status: >-
+                  Code adopted by international  organisation (IATA, ECLAC,
+                  EUROSTAT, etc.)
+                geolocation:
+                  latitude: 51.216666
+                  longitude: 4.416666
+                functionality:
+                  isUnknown: false
+                  isPort: true
+                  isRailTerminal: true
+                  isRoadTerminal: true
+                  isAirport: true
+                  isPostalExchangeOffice: true
+                  hasMultimodalFunction: false
+                  hasFixedTransportFunction: false
+                  isBorderCrossing: false
+              - country: BE
+                code: BEBOR
+                locode: BEBEBOR
+                name: Borgerhout
+                nameWODiacritics: Borgerhout
+                subdiv: VAN
+                status: >-
+                  Request from credible national sources for locations in their
+                  own country
+                geolocation:
+                  latitude: 51.216666
+                  longitude: 4.433333
+                functionality:
+                  isUnknown: false
+                  isPort: false
+                  isRailTerminal: false
+                  isRoadTerminal: true
+                  isAirport: false
+                  isPostalExchangeOffice: false
+                  hasMultimodalFunction: false
+                  hasFixedTransportFunction: false
+                  isBorderCrossing: false
+              - country: BE
+                code: BEBPC
+                locode: BEBEBPC
+                name: Berchem
+                nameWODiacritics: Berchem
+                subdiv: VAN
+                status: >-
+                  Request from credible national sources for locations in their
+                  own country
+                geolocation:
+                  latitude: 51.2
+                  longitude: 4.433333
+                functionality:
+                  isUnknown: false
+                  isPort: false
+                  isRailTerminal: false
+                  isRoadTerminal: true
+                  isAirport: false
+                  isPostalExchangeOffice: false
+                  hasMultimodalFunction: false
+                  hasFixedTransportFunction: false
+                  isBorderCrossing: false
+        '400':
+          description: Bad request - Issue with parameter
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: b09ac591-8365-48da-9af8-7b80ca1171fc
+              error: radius needs to be between 1 and 75.
+        '404':
+          description: No data found
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: aa16396d-d01a-4da4-a511-b2bb2b390d4a
+              error: No locations found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 0407936e-d2ad-41e9-99e2-05a5919c3075
+              error: An unexpected exception occured
+      tags:
+        - Locations
+  '/locations/{locode}':
+    get:
+      consumes: []
+      deprecated: false
+      operationId: locations_getByCountryAndLocode
+      parameters:
+        - in: path
+          name: locode
+          required: true
+          type: string
+          description: 5-character location code (country code + location code).
+      produces:
+        - application/json
+      summary: Get the details of 1 specific location
+      description: Get the details of 1 location based on the locode.
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Location'
+          examples:
+            application/json:
+              country: BE
+              code: ANR
+              locode: BEANR
+              name: Antwerpen (= Antwerp)
+              nameWODiacritics: Antwerpen (= Antwerp)
+              subdiv: VAN
+              status: >-
+                Code adopted by international  organisation (IATA, ECLAC,
+                EUROSTAT, etc.)
+              geolocation:
+                latitude: 51.216666
+                longitude: 4.416666
+              functionality:
+                isUnknown: false
+                isPort: true
+                isRailTerminal: true
+                isRoadTerminal: true
+                isAirport: true
+                isPostalExchangeOffice: true
+                hasMultimodalFunction: false
+                hasFixedTransportFunction: false
+                isBorderCrossing: false
+        '404':
+          description: No data found
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 860d457b-d5ad-4f8e-bfa5-606631840a41
+              error: Location not found
+        '500':
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/Exception'
+          examples:
+            application/json:
+              identifier: 0407936e-d2ad-41e9-99e2-05a5919c3075
+              error: An unexpected exception occured
+      tags:
+        - Locations
+schemes:
+  - http
+  - https
+swagger: '2.0'

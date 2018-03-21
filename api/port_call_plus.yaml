@@ -1,0 +1,217 @@
+swagger: '2.0'
+info:
+  title: Portcall+ API (sandbox)
+  version: '1.0'
+  description: PortPlus API
+host: api-sb.nxtport.eu
+basePath: /PortCallPlus/v1
+schemes:
+  - https
+securityDefinitions:
+  apiKeyHeader:
+    type: apiKey
+    name: Ocp-Apim-Subscription-Key
+    in: header
+  apiKeyQuery:
+    type: apiKey
+    name: Subscription-Key
+    in: query
+security:
+  - apiKeyHeader: []
+  - apiKeyQuery: []
+paths:
+  /ping:
+    get:
+      description: Indicates that the api can be reached.
+      operationId: Health_Ping
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/PingGet200ApplicationJsonResponse'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+  /status:
+    get:
+      description: Indicate the health status of the API.
+      operationId: Health_Status
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LastCheckedDto'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+  /vessels/expected:
+    get:
+      description: Get all the expected vessels of BEANR and BEZEE
+      operationId: Vessels_Expected
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VoyageDtoArray'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+  /vessels/in-port:
+    get:
+      description: Get all the in-port vessels of BEANR and BEZEE
+      operationId: Vessels_InPort
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/VoyageDtoArray'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+definitions:
+  AgentDto:
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+    type: object
+  ErrorDto:
+    properties:
+      error:
+        type: string
+      identifier:
+        format: date-time
+        type: string
+    type: object
+  LastCheckedDto:
+    properties:
+      lastChecked:
+        type: string
+    type: object
+  LocationDto:
+    properties:
+      actualTime:
+        type: string
+      anchored:
+        type: boolean
+      code:
+        type: string
+      estimatedTime:
+        type: string
+      locode:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+    type: object
+  PortDto:
+    properties:
+      locode:
+        type: string
+      name:
+        type: string
+    type: object
+  TimeDto:
+    properties:
+      actualTime:
+        type: string
+      estimatedTime:
+        type: string
+    type: object
+  VesselDto:
+    properties:
+      callsign:
+        type: string
+      flag:
+        type: string
+      gbr:
+        format: double
+        type: number
+      imoNumber:
+        type: string
+      loa:
+        format: double
+        type: number
+      mmsiNumber:
+        type: string
+      name:
+        type: string
+      tonnage:
+        format: double
+        type: number
+      type:
+        type: string
+    type: object
+  VoyageDto:
+    properties:
+      agent:
+        $ref: '#/definitions/AgentDto'
+      currentPort:
+        $ref: '#/definitions/PortDto'
+      destinationPort:
+        $ref: '#/definitions/PortDto'
+      fromLocation:
+        $ref: '#/definitions/LocationDto'
+      nextPort:
+        $ref: '#/definitions/PortDto'
+      originPort:
+        $ref: '#/definitions/PortDto'
+      passages:
+        items:
+          $ref: '#/definitions/LocationDto'
+        type: array
+      previousPort:
+        $ref: '#/definitions/PortDto'
+      stayBegin:
+        $ref: '#/definitions/TimeDto'
+      stayEnd:
+        $ref: '#/definitions/TimeDto'
+      stayNumber:
+        type: string
+      toLocation:
+        $ref: '#/definitions/LocationDto'
+      vessel:
+        $ref: '#/definitions/VesselDto'
+      voyageNumber:
+        type: string
+      voyageType:
+        type: string
+    type: object
+  PingGet200ApplicationJsonResponse:
+    type: object
+  PingGet200TextJsonResponse:
+    type: object
+  PingGet200ApplicationXmlResponse:
+    type: object
+  PingGet200TextXmlResponse:
+    type: object
+  VoyageDtoArray:
+    items:
+      $ref: '#/definitions/VoyageDto'
+    type: array

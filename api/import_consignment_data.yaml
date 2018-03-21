@@ -1,0 +1,384 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: NxtPort Consignment API (live)
+  description: >-
+    The ConsignmentInfo API provides access to the customs status of
+    consignments submitted to customs using a CUSCAR message.
+schemes:
+  - https
+host: api.nxtport.eu
+basePath: /Consignment/v1
+paths:
+  '/nxtportdocument/{blnumber}/sn/{stayNumber}':
+    get:
+      tags:
+        - Document
+      summary: Returns the file with corresponding blnumbers and staynumber.
+      operationId: NxtportdocumentByBlnumberSnByStayNumberGet
+      consumes: []
+      produces:
+        - application/json
+        - application/xml
+      parameters:
+        - name: blnumber
+          in: path
+          description: blnumber
+          required: true
+          type: string
+        - name: stayNumber
+          in: path
+          description: staynumber
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ImportConsignmentData'
+        '204':
+          description: Success
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/nxtportdocument/{blnumber}/cn/{containerNumber}':
+    get:
+      tags:
+        - Document
+      summary: Returns the file with corresponding blnumbers and containernumber.
+      operationId: NxtportdocumentByBlnumberCnByContainerNumberGet
+      consumes: []
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: blnumber
+          in: path
+          description: blnumber
+          required: true
+          type: string
+        - name: containerNumber
+          in: path
+          description: containernumber
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ImportConsignmentData'
+        '204':
+          description: Success
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/nxtportdocument/{blnumber}/ag/{agent}':
+    get:
+      tags:
+        - Document
+      summary: Returns the file with corresponding blnumbers and senderID.
+      operationId: NxtportdocumentByBlnumberAgByAgentGet
+      consumes: []
+      produces:
+        - application/xml
+        - application/json
+      parameters:
+        - name: blnumber
+          in: path
+          description: blnumber
+          required: true
+          type: string
+        - name: agent
+          in: path
+          description: agent
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ImportConsignmentData'
+        '204':
+          description: Success
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+definitions:
+  ImportConsignmentData:
+    description: ''
+    type: object
+    properties:
+      disclaimer:
+        description: Gets or Sets Disclaimer
+        type: string
+      references:
+        $ref: '#/definitions/References'
+        description: Gets or Sets References
+      measurements:
+        $ref: '#/definitions/Measurements'
+        description: Gets or Sets Measurements
+      parties:
+        description: Gets or Sets Parties
+        type: array
+        items:
+          $ref: '#/definitions/Party'
+      locations:
+        $ref: '#/definitions/Locations'
+        description: Gets or Sets Locations
+      equipmentInformation:
+        description: Gets or Sets EquipmentInformation
+        type: array
+        items:
+          $ref: '#/definitions/Equipment'
+      goods:
+        description: Gets or Sets Goods
+        type: array
+        items:
+          $ref: '#/definitions/Good'
+      status:
+        $ref: '#/definitions/Status'
+        description: Gets or Sets Status
+  References:
+    description: ''
+    type: object
+    properties:
+      stayNumber:
+        description: Gets or Sets StayNumber
+        type: string
+      billOfLadingId:
+        description: Gets or Sets BillOfLadingId
+        type: string
+      imoNumber:
+        description: Gets or Sets ImoNumber
+        type: string
+      filingAgentCode:
+        description: Gets or Sets FilingAgentCode
+        type: string
+      sequenceNumber:
+        description: Gets or Sets SequenceNumber
+        type: string
+      parentDocument:
+        $ref: '#/definitions/ParentDocument'
+        description: Gets or Sets ParentDocument
+  Measurements:
+    description: ''
+    type: object
+    properties:
+      totalQuantity:
+        description: Gets or Sets TotalQuantity
+        type: string
+      totalQuantityUom:
+        description: Gets or Sets TotalQuantityUom
+        type: string
+      totalWeight:
+        description: Gets or Sets TotalWeight
+        type: string
+      totalWeightUom:
+        description: Gets or Sets TotalWeightUom
+        type: string
+      overshippedQuantity:
+        description: Gets or Sets OvershippedQuantity
+        type: string
+  Party:
+    description: ''
+    type: object
+    properties:
+      partyTypeCode:
+        description: Gets or Sets PartyTypeCode
+        type: string
+      name:
+        description: Gets or Sets Name
+        type: string
+      scac:
+        description: Gets or Sets Scac
+        type: string
+      eori:
+        description: Gets or Sets Eori
+        type: string
+      streetAndNumber:
+        description: Gets or Sets StreetAndNumber
+        type: string
+      postalCode:
+        description: Gets or Sets PostalCode
+        type: string
+      place:
+        description: Gets or Sets Place
+        type: string
+      countryCode:
+        description: Gets or Sets CountryCode
+        type: string
+      unstructuredAddress:
+        description: Gets or Sets UnstructuredAddress
+        type: string
+      contacts:
+        description: Gets or Sets Contacts
+        type: array
+        items:
+          $ref: '#/definitions/Contact'
+  Locations:
+    description: ''
+    type: object
+    properties:
+      placeOfOrigin:
+        description: Gets or Sets PlaceOfOrigin
+        type: string
+      placeOfDestination:
+        description: Gets or Sets PlaceOfDestination
+        type: string
+      placeOfLoading:
+        description: Gets or Sets PlaceOfLoading
+        type: string
+      placeOfDischarge:
+        description: Gets or Sets PlaceOfDischarge
+        type: string
+      warehouse:
+        description: Gets or Sets Warehouse
+        type: string
+  Equipment:
+    description: ''
+    type: object
+    properties:
+      equipmentType:
+        description: Gets or Sets EquipmentType
+        type: string
+      containerNumber:
+        description: Gets or Sets ContainerNumber
+        type: string
+      sizeAndType:
+        description: Gets or Sets SizeAndType
+        type: string
+      emptyFull:
+        description: Gets or Sets EmptyFull
+        type: string
+      serviceCode1:
+        description: Gets or Sets ServiceCode1
+        type: string
+      serviceCode2:
+        description: Gets or Sets ServiceCode2
+        type: string
+      grossWeight:
+        description: Gets or Sets GrossWeight
+        type: string
+      grossWeightUom:
+        description: Gets or Sets GrossWeightUom
+        type: string
+      seals:
+        description: Gets or Sets Seals
+        type: array
+        items:
+          $ref: '#/definitions/Seal'
+  Good:
+    description: ''
+    type: object
+    properties:
+      sequenceNumber:
+        description: Gets or Sets SequenceNumber
+        type: string
+      outerPackageType:
+        description: Gets or Sets OuterPackageType
+        type: string
+      numberOfPackages:
+        description: Gets or Sets NumberOfPackages
+        type: string
+      description:
+        description: Gets or Sets Description
+        type: string
+      goodsGrossWeight:
+        description: Gets or Sets GoodsGrossWeight
+        type: string
+      goodsGrossWeightUom:
+        description: Gets or Sets GoodsGrossWeightUom
+        type: string
+      customsStatus:
+        description: Gets or Sets CustomsStatus
+        type: string
+      relatedEquipmentInfo:
+        description: Gets or Sets RelatedEquipmentInfo
+        type: array
+        items:
+          $ref: '#/definitions/RelatedEquipment'
+  Status:
+    description: ''
+    type: object
+    properties:
+      value:
+        description: Gets or Sets Value
+        type: string
+      date:
+        description: Gets or Sets Date
+        type: string
+      description:
+        description: Gets or Sets Description
+        type: string
+  ParentDocument:
+    description: ''
+    type: object
+    properties:
+      id:
+        description: Gets or Sets Id
+        type: string
+      type:
+        description: Gets or Sets Type
+        type: string
+      senderId:
+        description: Gets or Sets SenderId
+        type: string
+  Contact:
+    description: ''
+    type: object
+    properties:
+      role:
+        description: Gets or Sets Role
+        type: string
+      name:
+        description: Gets or Sets Name
+        type: string
+  Seal:
+    description: ''
+    type: object
+    properties:
+      sealPartyTypeCode:
+        description: Gets or Sets SealPartyTypeCode
+        type: string
+      number:
+        description: Gets or Sets Number
+        type: string
+      conditionCode:
+        description: Gets or Sets ConditionCode
+        type: string
+      sealType:
+        description: Gets or Sets SealType
+        type: string
+  RelatedEquipment:
+    description: ''
+    type: object
+    properties:
+      containerNumber:
+        description: Gets or Sets ContainerNumber
+        type: string
+      equipmentQuantity:
+        description: Gets or Sets EquipmentQuantity
+        type: string
+securityDefinitions:
+  Bearer:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: >-
+      JWT Authorization header using the Bearer scheme. Example: "Authorization:
+      Bearer {token}"
