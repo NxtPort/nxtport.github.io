@@ -1,9 +1,9 @@
 swagger: '2.0'
 info:
-  title: Vessel Stay API (sandbox)
+  title: Vessel Stay API (live)
   version: '1.0'
   description: Stay Numbers Port Of Antwerp API
-host: api-sb.nxtport.eu
+host: api.nxtport.eu
 basePath: /sa/v1
 schemes:
   - https

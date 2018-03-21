@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   version: '1.0'
-  title: T-mining Secure Container Release API (sandbox)
+  title: T-mining Secure Container Release API (live)
   description: >-
     This API allows carriers, forwarders and transport companies to securely
     release full import containers on a terminal and to transfer this release to
@@ -14,7 +14,7 @@ info:
     name: T-Mining API support
     url: 'http://support.t-mining.be/'
     email: support@t-mining.be
-host: api-sb.nxtport.eu
+host: api.nxtport.eu
 basePath: /blockchain
 schemes:
   - https

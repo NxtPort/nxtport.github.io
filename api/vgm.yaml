@@ -1,12 +1,12 @@
 swagger: '2.0'
 info:
   version: v1
-  title: VGM API (sandbox)
+  title: VGM API (live)
   description: >-
     The VGM API provides information about the verified gross mass of a
     container currently used in an export flow, as provided by certified
     weighing stations.
-host: api-sb.nxtport.eu
+host: api.nxtport.eu
 basePath: /VGM/v1
 paths:
   '/nxtportdocument/{bookingnumber}/{containernumber}':
