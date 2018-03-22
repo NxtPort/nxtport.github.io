@@ -1,6 +1,6 @@
 # NxtPort API Definitions
 
-The repository **nxtport.github.io** lets you visualize and interact with the NxtPort API's without having any of the implementation logic in place. Click any of the following links for documentation. Available API's are listed in alphabetical order.
+The repository **nxtport.github.io** lets you visualize and interact with the NxtPort API's without having any of the implementation logic in place. Click any of the following links for documentation in OpenAPI format. Available API's are listed in alphabetical order.
 
 * [Import Consignment Data](https://nxtport.github.io/?api=import_consignment_data)
 * [PortCall+](https://nxtport.github.io/?api=port_call_plus) by Port+ 
