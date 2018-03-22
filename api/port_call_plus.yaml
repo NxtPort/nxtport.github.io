@@ -20,42 +20,6 @@ security:
   - apiKeyHeader: []
   - apiKeyQuery: []
 paths:
-  /ping:
-    get:
-      description: Indicates that the api can be reached.
-      operationId: Health_Ping
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/PingGet200ApplicationJsonResponse'
-        '400':
-          description: BadRequest
-          schema:
-            $ref: '#/definitions/ErrorDto'
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-  /status:
-    get:
-      description: Indicate the health status of the API.
-      operationId: Health_Status
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/LastCheckedDto'
-        '400':
-          description: BadRequest
-          schema:
-            $ref: '#/definitions/ErrorDto'
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
   /vessels/expected:
     get:
       description: Get all the expected vessels of BEANR and BEZEE
@@ -202,14 +166,6 @@ definitions:
         type: string
       voyageType:
         type: string
-    type: object
-  PingGet200ApplicationJsonResponse:
-    type: object
-  PingGet200TextJsonResponse:
-    type: object
-  PingGet200ApplicationXmlResponse:
-    type: object
-  PingGet200TextXmlResponse:
     type: object
   VoyageDtoArray:
     items:

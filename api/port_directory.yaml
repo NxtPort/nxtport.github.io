@@ -140,43 +140,7 @@ paths:
         - text/json
         - application/xml
         - text/xml
-  /ping:
-    get:
-      description: Indicates that the api can be reached.
-      operationId: Health_Ping
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/PingGet200ApplicationJsonResponse'
-        '400':
-          description: BadRequest
-          schema:
-            $ref: '#/definitions/ErrorResult'
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-  /status:
-    get:
-      description: Indicate the health status of the API.
-      operationId: Health_Status
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/LastCheckedResult'
-        '400':
-          description: BadRequest
-          schema:
-            $ref: '#/definitions/ErrorResult'
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-definitions:
+ efinitions:
   ActivityDto:
     properties:
       name:
@@ -393,5 +357,3 @@ definitions:
     items:
       $ref: '#/definitions/CompanyOverviewDto'
     type: array
-  PingGet200ApplicationJsonResponse:
-    type: object

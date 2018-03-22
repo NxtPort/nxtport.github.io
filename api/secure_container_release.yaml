@@ -1564,33 +1564,6 @@ paths:
         AllowDynamicQueryParameters: false
         AllowDynamicFormParameters: false
         IsMultiContentStreaming: false
-  /api/v1/ping:
-    get:
-      description: Ping
-      summary: >-
-        Ping this webservice to check the availability of the API. Will return
-        http-code 200 when available and a time-out if not.
-      tags:
-        - Status
-      operationId: Ping
-      produces:
-        - application/json
-      parameters:
-        - name: api_token
-          in: query
-          required: true
-          type: string
-          description: authentication token of user making the request
-      responses:
-        '200':
-          description: ''
-      security: []
-      x-unitTests: []
-      x-operation-settings:
-        CollectParameters: false
-        AllowDynamicQueryParameters: false
-        AllowDynamicFormParameters: false
-        IsMultiContentStreaming: false
 definitions:
   GetCoordinatesResponse:
     title: Get Coordinates response
