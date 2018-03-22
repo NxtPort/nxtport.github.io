@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: Big Belly API (sandbox on staging environment)
+  title: Big Belly API (staging)
   version: v1
   description: API for ingestion of fill level updates from smart containers. The project is part of the Antwerp City of Things initiative.
   termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'

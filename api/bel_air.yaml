@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: Bel Air API (live data on staging environment)
+  title: Bel Air API (staging)
   version: v1
   description: API for querying air quality data. Different layers of and time slices for each metric can be queried. The project is part of the Antwerp City of Things initiative.
   termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
