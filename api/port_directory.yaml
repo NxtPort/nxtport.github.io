@@ -140,7 +140,7 @@ paths:
         - text/json
         - application/xml
         - text/xml
- efinitions:
+definitions:
   ActivityDto:
     properties:
       name:
