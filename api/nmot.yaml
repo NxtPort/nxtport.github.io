@@ -9,7 +9,7 @@ info:
 schemes:
   - https
 host: api-stg-sb.nxtport.eu
-basePath: preannouncement/v2
+basePath: /preannouncement/v2
 security:
   - Authorization: []
     Subscription: []
