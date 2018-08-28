@@ -8,8 +8,8 @@ info:
     email: support@nxtport.eu
 schemes:
   - https
-host: api-stg.nxtport.eu
-basePath: /sandbox/api/preannouncement/v2
+host: api-stg-sb.nxtport.eu
+basePath: preannouncement/v2
 security:
   - Authorization: []
     Subscription: []
