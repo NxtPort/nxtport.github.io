@@ -1,0 +1,313 @@
+swagger: '2.0'
+info:
+  title: NxtPort Preannouncement
+  version: v2
+  description: 'The NxtPort preannouncement structure can be used informational (to communicate a next mode of transport), or can be used to request a visit on a terminal and preannounce which containers will be exchanged during that visit.'
+  termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
+  contact:
+    email: support@nxtport.eu
+schemes:
+  - https
+host: api-stg.nxtport.eu
+basePath: /sandbox/api/preannouncement/v2
+security:
+  - Authorization: []
+    Subscription: []
+securityDefinitions:
+  Authorization:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: 'JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word "Bearer" and then a space in front of the access token. For example "Bearer f8e6d39a81fc4d31957086fe03630858".'
+  Subscription:
+    type: apiKey
+    in: header
+    name: Ocp-Apim-Subscription-Key
+    description: 'API subscription key. Assigned by NxtPort to your organization.'
+paths:
+  /nmot:
+    post:
+      summary: 'Preannounce the Next Mode of Transport to the port terminals.'
+      consumes:
+        - application/json
+        - application/xml
+      produces:
+        - application/json
+      parameters:
+        - name: message
+          in: body
+          description: 'Next Mode of Transport preannouncement document.'
+          required: true
+          schema:
+            $ref: '#/definitions/preannouncement'
+      responses:
+        '201':
+          description: 'Preannouncement accepted.'
+          schema:
+            $ref: '#/definitions/preannouncement'
+        '400':
+          description: 'Incomplete or invalid preaccouncement.'
+          schema:
+            $ref: '#/definitions/badRequest'
+
+definitions:
+  preannouncement:
+    type: object
+    required:
+      - visit
+      - exchanges
+    properties:
+      visit:
+        $ref: '#/definitions/visit'
+      exchanges:
+        description: 'For every container or other cargo object that needs to be moved (picked up, dropped of) or that needs to be identified (remain on truck, moved on the vessel, ...) an exchange object is added.'
+        type: array
+        xml:
+          wrapped: true
+        items:
+          $ref: '#/definitions/exchange'
+  visit:
+    description: 'Object containing the time and location element of the appointment, and the vehicle that will make the visit.'
+    type: object
+    required:
+      - conveyance
+    properties:
+      location:
+        $ref: '#/definitions/location'
+      time:
+        $ref: '#/definitions/time'
+      conveyance:
+        $ref: '#/definitions/conveyance'
+  location:
+    description: 'Also defined in the HTTP request, but repeated here, because this can be more specific to a certain gate or something like that.'
+    type: object
+    properties:
+      locode:
+        description: 'UN/LOCODE of the port.'
+        example: 'BEANR'
+        type: string
+      terminalCode:
+        description: 'Code of a specific terminal location.'
+        example: '913'
+        type: string
+  time:
+    type: object
+    properties:
+      start:
+        description: 'Start of the time window for the visit.'
+        example: '2017-08-27T15:00:00Z'
+        type: string
+        format: date-time
+      end:
+        description: 'End of the time window for the visit.'
+        example: '2017-08-27T17:00:00Z'
+        type: string
+        format: date-time
+      expectedTime:
+        description: 'Exact time for the visit. When an exact time is given the time window is ignored. When a time window is given, an exact time is not expected.'
+        example: '2017-08-27T16:15:00Z'
+        type: string
+        format: date-time
+      priority:
+        description: 'Priority of the pickup of the container, gives an indication of how quick the container will be picked up. (1 to be picked up earlier than 2, when NMoT is for both is received around the same time).'
+        example: 1
+        type: integer
+  conveyance:
+    description: 'Identification of the thing that will make the visit.'
+    type: object
+    properties:
+      modus:
+        description: 'Vessel would be sea transport (transshipment). Air is not likely to be used.'
+        type: string
+        enum:
+          - barge
+          - truck
+          - rail
+          - vessel
+          - air
+      identifier:
+        description: 'Format depends on modus (license plate for truck, ENI code for barge, train number for rail).'
+        example: '1KPC874'
+        type: string
+      name:
+        description: 'Format depends on the modus, mostly used for the name of a barge.'
+        example: 'Marie Louise'
+        type: string
+      voyage:
+        description: 'Format depends on the operator of the conveyance. Mostly used in case of rail. Could be the ID of the transport instruction of the truck.'
+        example: 'Y12345'
+        type: string
+      call:
+        description: 'In case of barge this is the BTS barge call number. In case of rail this is the rail visit number.'
+        example: 'PE6582'
+        type: string
+      operator:
+        $ref: '#/definitions/operator'
+  operator:
+    description: 'Identification of the trucking company, barge operator, ...'
+    type: object
+    properties:
+      identifier:
+        description: 'Unique identifier of the operator as used in all other messages.'
+        example: 'XYZ245878542534'
+        type: string
+      name:
+        description: 'Name of the operator.'
+        example: 'ACME'
+        type: string
+      vat:
+        description: 'VAT number of the operator.'
+        example: 'BE0429672881'
+        type: string
+      eori:
+        description: 'EORI number of the operator.'
+        example: 'BE0429672881'
+        type: string
+  exchange:
+    type: object
+    xml:
+      name: exchange
+    required:
+      - equipment
+      - consignment
+    properties:
+      equipment:
+        $ref: '#/definitions/equipment'
+      consignment:
+        $ref: '#/definitions/consignment'
+  equipment:
+    description: 'The thing that the action applies on, can be a container, a vehicle, ...'
+    type: object
+    required:
+      - identifier
+    properties:
+      equipmentType:
+        description: 'The type of the equipment.'
+        type: string
+        enum:
+          - container
+          - vehicle
+      identifier:
+        description: 'Container number in case of container, VIN number in case of verhicle, ...'
+        example: 'OOCL1234569'
+        type: string
+  consignment:
+    description: 'Any information concerning the yourney of the container.'
+    type: object
+    properties:
+      seaVoyage:
+        $ref: '#/definitions/seaVoyage'
+      nextDestination:
+        $ref: '#/definitions/nextDestination'
+      finalDelivery:
+        $ref: '#/definitions/finalDelivery'
+  seaVoyage:
+    type: object
+    properties:
+      blNumber:
+        description: 'Number of the BL that the container belongs to.'
+        example: 'MAEU866327092'
+        type: string
+      cargoAgent:
+        $ref: '#/definitions/agent'
+      vessel:
+        $ref: '#/definitions/vessel'
+      vesselStay:
+        $ref: '#/definitions/vesselStay'
+      connectingVessel:
+        $ref: '#/definitions/connectingVessel'
+  agent:
+    type: object
+    properties:
+      agentCode:
+        description: 'Apics agent code.'
+        example: 'BOEBEL'
+        type: string
+      scacCode:
+        example: 'OOCL'
+        type: string
+  vessel:
+    type: object
+    properties:
+      imo:
+        description: 'IMO number of the vessel.'
+        example: '9321483'
+        type: string
+      name:
+        description: 'Official spelling of the name of the vessel.'
+        example: 'EMMA MAERSK'
+        type: string
+  vesselStay:
+    type: object
+    properties:
+      stayNumber:
+        example: 'V185322'
+        type: string
+      eta:
+        description: 'Date and time the vessel will arrive.'
+        example: '2017-08-27T15:00:00Z'
+        type: string
+        format: date-time
+  connectingVessel:
+    type: object
+    properties:
+      imo:
+        description: 'IMO number of the vessel.'
+        example: '9321483'
+        type: string
+      etd:
+        description: 'Date and Time the connecting vessel will depart.'
+        example: '2017-08-28T19:55:00Z'
+        type: string
+        format: date-time
+  nextDestination:
+    type: object
+    properties:
+      locode:
+        description: 'UN/LOCODE of the port of destination.'
+        example: 'BEANR'
+        type: string
+      terminalCode:
+        description: 'Can be based on the BICS.nl codes.'
+        example: '1744'
+        type: string
+  finalDelivery:
+    description: 'The moment the goods will be finally delivered at their end location.'
+    type: object
+    properties:
+      start:
+        description: 'Start of the time window for final delivery.'
+        example: '2017-08-27T15:00:00Z'
+        type: string
+        format: date-time
+      end:
+        description: 'End of the time window for the final delivery.'
+        example: '2017-08-27T17:00:00Z'
+        type: string
+        format: date-time
+      expectedDuration:
+        description: 'Expected duration of the final delivery (expressed in minutes).'
+        example: 30
+        type: integer
+        format: int32
+  badRequest:
+    description: 'This document is returned together with an error response code 400.'
+    type: object
+    properties:
+      technicalInfo:
+        type: object
+        properties:
+          errors:
+            description: List of error messages.
+            type: array
+            items:
+              $ref: '#/definitions/error'
+  error:
+    type: object
+    properties:
+      code:
+        description: 'Code indicating the type of error.'
+        format: string
+      message:
+        description: 'Human readable explenation of the error.'
+  
