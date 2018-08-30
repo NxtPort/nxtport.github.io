@@ -41,7 +41,7 @@ paths:
           schema:
             $ref: '#/definitions/preannouncement'
       responses:
-        '201':
+        '202':
           description: 'Preannouncement accepted.'
           schema:
             $ref: '#/definitions/preannouncement'
@@ -120,11 +120,11 @@ definitions:
         description: 'Vessel would be sea transport (transshipment). Air is not likely to be used.'
         type: string
         enum:
-          - barge
-          - truck
-          - rail
-          - vessel
-          - air
+          - Barge
+          - Truck
+          - Rail
+          - Vessel
+          - Air
       identifier:
         description: 'Format depends on modus (license plate for truck, ENI code for barge, train number for rail).'
         example: '1KPC874'
@@ -185,8 +185,8 @@ definitions:
         description: 'The type of the equipment.'
         type: string
         enum:
-          - container
-          - vehicle
+          - Container
+          - Vehicle
       identifier:
         description: 'Container number in case of container, VIN number in case of verhicle, ...'
         example: 'OOCL1234569'
