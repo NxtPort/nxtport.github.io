@@ -11,7 +11,7 @@ info:
     email: support@nxtport.eu
 schemes:
 - https
-host: api.nxtport.eu
+host: api-sb.nxtport.eu
 basePath: "/preannouncement/v2"
 security:
 - Authorization: []
