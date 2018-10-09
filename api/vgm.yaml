@@ -1,186 +1,223 @@
+---
 swagger: '2.0'
 info:
-  version: v1
-  title: VGM API (live)
-  description: >-
-    The VGM API provides information about the verified gross mass of a
-    container currently used in an export flow, as provided by certified
-    weighing stations.
+  version: v2
+  title: NxtPort VGM API
+  description: The VGM API provides information about the verified gross mass of a
+    container currently used in an export flow, as provided by certified weighing
+    stations.
 host: api.nxtport.eu
-basePath: /VGM/v1
+basePath: "/VGM/live/api/v2"
+schemes:
+  - https
 paths:
-  '/nxtportdocument/{bookingnumber}/{containernumber}':
+  "/nxtportdocument/{bookingnumber}/{containernumber}":
     get:
       tags:
-        - Document
-      summary: >-
-        Returns the VERMAS files with the according bookingnumber and
-        containernumber
+      - Document
+      summary: Returns the VERMAS files with the according bookingnumber and containernumber
       operationId: NxtportdocumentByBookingnumberByContainernumberGet
       consumes: []
       produces:
-        - application/json
-        - application/xml
+      - application/json
+      - application/xml
       parameters:
-        - name: bookingnumber
-          in: path
-          description: bookingnumber
-          required: true
-          type: string
-        - name: containernumber
-          in: path
-          description: containernumber
-          required: true
-          type: string
-        - name: Ocp-Apim-Subscription-Key
-          in: header
-          required: false
-          type: string
+      - name: bookingnumber
+        in: path
+        description: bookingnumber
+        required: true
+        type: string
+      - name: containernumber
+        in: path
+        description: containernumber
+        required: true
+        type: string
+      - name: Ocp-Apim-Subscription-Key
+        in: header
+        required: false
+        type: string
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/ContainerWeightInfo'
+            "$ref": "#/definitions/ContainerWeightInfo"
+  "/ping":
+    get:
+      tags:
+      - Document
+      operationId: PingGet
+      consumes: []
+      produces: []
+      parameters:
+      - name: Ocp-Apim-Subscription-Key
+        in: header
+        required: false
+        type: string
+      responses:
+        '200':
+          description: Success
+  "/nxtportdocument/subscribe":
+    post:
+      tags:
+      - Document
+      summary: Registers an alert for VGM assets.
+      operationId: NxtportdocumentSubscribePost
+      consumes:
+      - application/json
+      produces: []
+      parameters:
+      - name: subscription
+        in: body
+        required: false
+        schema:
+          "$ref": "#/definitions/VgmNotificationSubscription"
+      - name: Ocp-Apim-Subscription-Key
+        in: header
+        required: false
+        type: string
+      responses:
+        '200':
+          description: Success
+        '401':
+          description: Unauthorized
+        '500':
+          description: Server Error
 definitions:
   ContainerWeightInfo:
-    description: ''
     type: object
     properties:
       disclaimer:
-        description: Gets or Sets Disclaimer
         type: string
       references:
-        $ref: '#/definitions/References'
-        description: Gets or Sets References
+        "$ref": "#/definitions/References"
       submitter:
-        $ref: '#/definitions/Submitter'
-        description: Gets or Sets Submitter
+        "$ref": "#/definitions/Submitter"
       verifiedGrossMass:
-        $ref: '#/definitions/VerifiedGrossMass'
-        description: Gets or Sets VerifiedGrossMass
+        "$ref": "#/definitions/VerifiedGrossMass"
       seals:
-        description: Gets or Sets Seals
         type: array
         items:
-          $ref: '#/definitions/Seal'
+          "$ref": "#/definitions/Seal"
       parties:
-        description: Gets or Sets Parties
         type: array
         items:
-          $ref: '#/definitions/Party'
+          "$ref": "#/definitions/Party"
   References:
-    description: ''
     type: object
     properties:
       bookingId:
-        description: Gets or Sets BookingId
         type: string
       containerId:
-        description: Gets or Sets ContainerId
         type: string
       parentDocument:
-        $ref: '#/definitions/ParentDocument'
-        description: Gets or Sets ParentDocument
+        "$ref": "#/definitions/ParentDocument"
   Submitter:
-    description: ''
     type: object
     properties:
       party:
-        $ref: '#/definitions/Party'
-        description: Gets or Sets Party
+        "$ref": "#/definitions/Party"
   VerifiedGrossMass:
-    description: ''
     type: object
     properties:
       value:
-        description: Gets or Sets Value
         type: string
       uom:
-        description: Gets or Sets Uom
         type: string
       weighingDate:
-        description: Gets or Sets WeighingDate
         type: string
       weighingTime:
-        description: Gets or Sets WeighingTime
         type: string
       verificationMethod:
-        description: Gets or Sets VerificationMethod
         type: string
   Seal:
-    description: ''
     type: object
     properties:
       sealPartyTypeCode:
-        description: Gets or Sets SealPartyTypeCode
         type: string
       sealNumber:
-        description: Gets or Sets SealNumber
         type: string
   Party:
-    description: ''
     type: object
     properties:
       partyTypeCode:
-        description: Gets or Sets PartyTypeCode
         type: string
       name:
-        description: Gets or Sets Name
         type: string
       scac:
-        description: Gets or Sets Scac
         type: string
       eori:
-        description: Gets or Sets Eori
         type: string
       streetAndNumber:
-        description: Gets or Sets StreetAndNumber
         type: string
       postalCode:
-        description: Gets or Sets PostalCode
         type: string
       place:
-        description: Gets or Sets Place
         type: string
       countryCode:
-        description: Gets or Sets CountryCode
         type: string
       unstructuredAddress:
-        description: Gets or Sets UnstructuredAddress
         type: string
       contacts:
-        description: Gets or Sets Contacts
         type: array
         items:
-          $ref: '#/definitions/Contact'
+          "$ref": "#/definitions/Contact"
   ParentDocument:
-    description: ''
     type: object
     properties:
       id:
-        description: Gets or Sets Id
         type: string
       type:
-        description: Gets or Sets Type
         type: string
       senderId:
-        description: Gets or Sets SenderId
         type: string
   Contact:
-    description: ''
     type: object
     properties:
       contactTypeCode:
-        description: Gets or Sets ContactTypeCode
         type: string
       name:
-        description: Gets or Sets Name
+        type: string
+  VgmNotificationSubscription:
+    type: object
+    properties:
+      subscriptions:
+        description: The NxtPort.Services.Consumption.API.VGM.Models.BookingNumberSubscription
+          elements that define the VGM assets on which to alert.
+        type: array
+        items:
+          "$ref": "#/definitions/BookingNumberSubscription"
+      channels:
+        type: array
+        items:
+          "$ref": "#/definitions/Channel"
+  BookingNumberSubscription:
+    required:
+    - bookingNumber
+    - containerNumber
+    type: object
+    properties:
+      bookingNumber:
+        type: string
+      containerNumber:
+        type: string
+  Channel:
+    required:
+    - type
+    - address
+    type: object
+    properties:
+      type:
+        enum:
+        - Email
+        - Webhook
+        - AS2
+        type: string
+      address:
         type: string
 securityDefinitions:
   Bearer:
     name: Authorization
     in: header
     type: apiKey
-    description: >-
-      JWT Authorization header using the Bearer scheme. Example: "Authorization:
-      Bearer {token}"
+    description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization:
+      Bearer {token}"'

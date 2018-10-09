@@ -1,0 +1,42 @@
+---
+swagger: '2.0'
+info:
+  version: v1
+  title: NxtPort LocationCode by Tresco API V1
+  description: The NxtPort LocationCode API, powered by Tresco.
+host: UrlOverwritteninAPIMNamedValues.com
+basePath: "/locationcode/v1"
+paths:
+  "/reverse":
+    get:
+      tags:
+      - GeoLookup
+      summary: Reverses the specified geolocation to a description.
+      operationId: ReverseGet
+      consumes: []
+      produces: []
+      parameters:
+      - name: latitude
+        in: query
+        description: The latitude.
+        required: false
+        type: number
+        format: double
+      - name: longitude
+        in: query
+        description: The longitude.
+        required: false
+        type: number
+        format: double
+      - name: Ocp-Apim-Subscription-Key
+        in: header
+        required: false
+        type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+        '429':
+          description: Too many requests
+definitions: {}
