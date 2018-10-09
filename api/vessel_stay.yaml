@@ -1,12 +1,13 @@
+---
 swagger: '2.0'
 info:
-  title: Vessel Stay API (live)
-  version: '1.0'
+  version: v1.1.0
+  title: Stay API
   description: Stay Numbers Port Of Antwerp API
-host: api.nxtport.eu
-basePath: /sa/v1
+host: UrlOverwritteninAPIMNamedValues.com
 schemes:
-  - https
+- https
+basePath: "/sa/v1"
 securityDefinitions:
   apiKeyHeader:
     type: apiKey
@@ -17,37 +18,111 @@ securityDefinitions:
     name: subscription-key
     in: query
 security:
-  - apiKeyHeader: []
-  - apiKeyQuery: []
+- apiKeyHeader: []
+- apiKeyQuery: []
 paths:
-  '/stays/{imoNumber}':
+  "/stays/{imoNumber}":
     get:
       operationId: Stays By ImoNumber
+      tags:
+      - stay
+      produces:
+      - application/json
+      summary: Get basic information of a vessel and its upcoming/recent stays in
+        the Port of Antwerp
+      description: The information of a ship and its stays in the Port of Antwerp
+        is retrieved based on its 7-digit IMO number.
       parameters:
-        - name: imoNumber
-          in: path
-          required: true
-          type: string
+      - name: imoNumber
+        in: path
+        required: true
+        type: string
+        description: The 7-digit IMO number of the ship
       responses:
         '200':
           description: OK - imo number found
           schema:
-            $ref: '#/definitions/vesselInfoArray'
+            type: object
+            items:
+              "$ref": "#/definitions/vesselInfo"
         '401':
           description: Authentication information is missing or invalid
           schema:
-            $ref: '#/definitions/exceptionArray'
+            type: object
+            items:
+              "$ref": "#/definitions/exception"
         '404':
           description: The given imo number does not exist
           schema:
-            $ref: '#/definitions/exceptionArray'
+            type: object
+            items:
+              "$ref": "#/definitions/exception"
         '500':
           description: Server error
           schema:
-            $ref: '#/definitions/exceptionArray'
+            type: object
+            items:
+              "$ref": "#/definitions/exception"
+      deprecated: false
+  "/vessels":
+    get:
+      operationId: Vessels By Name
+      tags:
+      - vessel
       produces:
-        - application/json
-        - text/json
+      - application/json
+      summary: Search for a vessel based on a part of the name
+      description: Search for a vessel based on a part of the name. The results will
+        be paged.
+      parameters:
+      - name: vesselName
+        in: query
+        required: true
+        type: string
+        description: A part of the vessel name (at least 3 characters)
+      - name: page
+        in: query
+        required: true
+        type: integer
+        description: The page number to navigate through the results (starts with
+          0)
+      - name: pageSize
+        in: query
+        required: false
+        type: integer
+        description: The page size to navigate through the results (between 1 - 100)
+      responses:
+        '200':
+          description: OK - vessel(s) found
+          schema:
+            type: array
+            items:
+              "$ref": "#/definitions/vesselSummary"
+        '401':
+          description: Authentication information is missing or invalid
+          schema:
+            type: object
+            items:
+              "$ref": "#/definitions/exception"
+        '404':
+          description: No vessels found
+          schema:
+            type: object
+            items:
+              "$ref": "#/definitions/exception"
+        '412':
+          description: Precondition failed - problem with a query parameter
+          schema:
+            type: object
+            items:
+              "$ref": "#/definitions/exception"
+        '500':
+          description: Server error
+          schema:
+            type: object
+            items:
+              "$ref": "#/definitions/exception"
+      deprecated: false
 definitions:
   exception:
     type: object
@@ -60,6 +135,20 @@ definitions:
         type: number
       identifier:
         type: string
+  vesselSummary:
+    type: object
+    properties:
+      vesselName:
+        type: string
+      imoNumber:
+        type: number
+      vesselTypeFull:
+        type: string
+      vesselType:
+        type: string
+      dateLastStay:
+        type: string
+        format: date
   vesselInfo:
     type: object
     properties:
@@ -84,7 +173,7 @@ definitions:
       stays:
         type: array
         items:
-          $ref: '#/definitions/stay'
+          "$ref": "#/definitions/stay"
   stay:
     type: object
     properties:
@@ -118,11 +207,3 @@ definitions:
         type: string
       destinationFull:
         type: string
-  vesselInfoArray:
-    type: object
-    items:
-      $ref: '#/definitions/vesselInfo'
-  exceptionArray:
-    type: object
-    items:
-      $ref: '#/definitions/exception'
