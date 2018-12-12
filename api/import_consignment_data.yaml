@@ -324,7 +324,7 @@ definitions:
         type: string
       address:
         type: string
-      identifier:
+      as2Identity:
         type: string
   AgentCodeConsignmentNotificationSubscription:
     type: object
