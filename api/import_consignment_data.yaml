@@ -1,12 +1,31 @@
 ---
 swagger: '2.0'
 info:
-  version: v2
+  version: v1
   title: NxtPort Consignment API
   description: The ConsignmentInfo API provides access to the customs status of consignments
     submitted to customs using a CUSCAR message.
+  termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
+  contact:
+    email: support@nxtport.eu
+schemes:
+  - https
 host: api.nxtport.eu
-basePath: "/Consignment/live/api/v2"
+basePath: "/Consignment/v1"
+security:
+  - Authorization: []
+    Subscription: []
+securityDefinitions:
+  Authorization:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: 'JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word "Bearer" and then a space in front of the access token. For example "Bearer f8e6d39a81fc4d31957086fe03630858".'
+  Subscription:
+    type: apiKey
+    in: header
+    name: Ocp-Apim-Subscription-Key
+    description: API subscription key. Assigned by NxtPort to your organization.
 paths:
   "/nxtportdocument/{blnumber}/sn/{stayNumber}":
     get:
@@ -29,21 +48,11 @@ paths:
         description: staynumber
         required: true
         type: string
-      - name: Ocp-Apim-Subscription-Key
-        in: header
-        required: false
-        type: string
       responses:
         '200':
           description: Success
           schema:
             "$ref": "#/definitions/ConsignmentResponse"
-        '204':
-          description: Success
-        '403':
-          description: Forbidden
-        '500':
-          description: Server Error
   "/nxtportdocument/{blnumber}/cn/{containerNumber}":
     get:
       tags:
@@ -65,57 +74,11 @@ paths:
         description: containernumber
         required: true
         type: string
-      - name: Ocp-Apim-Subscription-Key
-        in: header
-        required: false
-        type: string
       responses:
         '200':
           description: Success
           schema:
             "$ref": "#/definitions/ConsignmentResponse"
-        '204':
-          description: Success
-        '403':
-          description: Forbidden
-        '500':
-          description: Server Error
-  "/nxtportdocument/{blnumber}/ag/{agent}":
-    get:
-      tags:
-      - Document
-      summary: Returns the file with corresponding blnumbers and senderID.
-      operationId: NxtportdocumentByBlnumberAgByAgentGet
-      consumes: []
-      produces:
-      - application/xml
-      - application/json
-      parameters:
-      - name: blnumber
-        in: path
-        description: blnumber
-        required: true
-        type: string
-      - name: agent
-        in: path
-        description: agent
-        required: true
-        type: string
-      - name: Ocp-Apim-Subscription-Key
-        in: header
-        required: false
-        type: string
-      responses:
-        '200':
-          description: Success
-          schema:
-            "$ref": "#/definitions/ConsignmentResponse"
-        '204':
-          description: Success
-        '403':
-          description: Forbidden
-        '500':
-          description: Server Error
   "/nxtportdocument/subscribe/cn":
     post:
       tags:
@@ -132,44 +95,9 @@ paths:
         required: false
         schema:
           "$ref": "#/definitions/ContainerNumberConsignmentNotificationSubscription"
-      - name: Ocp-Apim-Subscription-Key
-        in: header
-        required: false
-        type: string
       responses:
         '200':
           description: Success
-        '401':
-          description: Unauthorized
-        '500':
-          description: Server Error
-  "/nxtportdocument/subscribe/ag":
-    post:
-      tags:
-      - Document
-      summary: Registers alerts for Consignment documents based on BlNumber/AgentCode
-      operationId: NxtportdocumentSubscribeAgPost
-      consumes:
-      - application/json
-      produces: []
-      parameters:
-      - name: subscription
-        in: body
-        description: ''
-        required: false
-        schema:
-          "$ref": "#/definitions/AgentCodeConsignmentNotificationSubscription"
-      - name: Ocp-Apim-Subscription-Key
-        in: header
-        required: false
-        type: string
-      responses:
-        '200':
-          description: Success
-        '401':
-          description: Unauthorized
-        '500':
-          description: Server Error
   "/nxtportdocument/subscribe/sn":
     post:
       tags:
@@ -186,29 +114,6 @@ paths:
         required: false
         schema:
           "$ref": "#/definitions/StayNumberConsignmentNotificationSubscription"
-      - name: Ocp-Apim-Subscription-Key
-        in: header
-        required: false
-        type: string
-      responses:
-        '200':
-          description: Success
-        '401':
-          description: Unauthorized
-        '500':
-          description: Server Error
-  "/ping":
-    get:
-      tags:
-      - Document
-      operationId: PingGet
-      consumes: []
-      produces: []
-      parameters:
-      - name: Ocp-Apim-Subscription-Key
-        in: header
-        required: false
-        type: string
       responses:
         '200':
           description: Success
@@ -419,6 +324,8 @@ definitions:
         type: string
       address:
         type: string
+      as2Identity:
+        type: string
   AgentCodeConsignmentNotificationSubscription:
     type: object
     properties:
@@ -455,10 +362,3 @@ definitions:
         type: string
       stayNumber:
         type: string
-securityDefinitions:
-  Bearer:
-    name: Authorization
-    in: header
-    type: apiKey
-    description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization:
-      Bearer {token}"'
