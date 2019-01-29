@@ -1,9 +1,9 @@
 swagger: '2.0'
 info:
-  title: Port+ Portdirectory API (live)
+  title: Port+ Portdirectory API (Sandbox)
   version: '1.0'
   description: Port Directory API
-host: api.nxtport.eu
+host: api-sb.nxtport.eu
 basePath: /portdirectory/v1
 schemes:
   - https
@@ -12,13 +12,8 @@ securityDefinitions:
     type: apiKey
     name: Ocp-Apim-Subscription-Key
     in: header
-  apiKeyQuery:
-    type: apiKey
-    name: subscription-key
-    in: query
 security:
   - apiKeyHeader: []
-  - apiKeyQuery: []
 paths:
   /companies:
     get:
@@ -29,6 +24,10 @@ paths:
           in: query
           description: Name of the company
           required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
           type: string
       responses:
         '200':
@@ -53,6 +52,10 @@ paths:
           in: path
           description: Format - uuid. Id of the company
           required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
           type: string
       responses:
         '200':
@@ -102,6 +105,10 @@ paths:
           description: Pcs code of the company
           required: true
           type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
       responses:
         '200':
           description: OK
@@ -125,6 +132,10 @@ paths:
           in: path
           description: Vat of the company
           required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
           type: string
       responses:
         '200':
