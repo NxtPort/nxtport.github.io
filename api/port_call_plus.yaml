@@ -12,18 +12,18 @@ securityDefinitions:
     type: apiKey
     name: Ocp-Apim-Subscription-Key
     in: header
-  apiKeyQuery:
-    type: apiKey
-    name: Subscription-Key
-    in: query
 security:
   - apiKeyHeader: []
-  - apiKeyQuery: []
 paths:
   /vessels/expected:
     get:
       description: Get all the expected vessels of BEANR and BEZEE
       operationId: Vessels_Expected
+      parameters:
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
       responses:
         '200':
           description: OK
@@ -42,6 +42,11 @@ paths:
     get:
       description: Get all the in-port vessels of BEANR and BEZEE
       operationId: Vessels_InPort
+      parameters:
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
       responses:
         '200':
           description: OK
