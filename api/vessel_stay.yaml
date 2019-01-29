@@ -4,7 +4,7 @@ info:
   version: v1.1.0
   title: Stay API
   description: Stay Numbers Port Of Antwerp API
-host: UrlOverwritteninAPIMNamedValues.com
+host: api-sb.nxtport.eu
 schemes:
 - https
 basePath: "/sa/v1"
