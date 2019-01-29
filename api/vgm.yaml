@@ -1,13 +1,20 @@
 ---
 swagger: '2.0'
 info:
-  version: v2
+  version: v1
   title: NxtPort VGM API
   description: The VGM API provides information about the verified gross mass of a
     container currently used in an export flow, as provided by certified weighing
     stations.
-host: api.nxtport.eu
-basePath: "/VGM/live/api/v2"
+host: api-sb.nxtport.eu
+basePath: "/VGM/v1"
+securityDefinitions:
+  apiKeyHeader:
+    type: apiKey
+    name: Ocp-Apim-Subscription-Key
+    in: header
+security:
+  - apiKeyHeader: []
 schemes:
   - https
 paths:
@@ -214,10 +221,3 @@ definitions:
         type: string
       address:
         type: string
-securityDefinitions:
-  Bearer:
-    name: Authorization
-    in: header
-    type: apiKey
-    description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization:
-      Bearer {token}"'
