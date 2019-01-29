@@ -23,13 +23,8 @@ securityDefinitions:
     type: apiKey
     name: Ocp-Apim-Subscription-Key
     in: header
-  apiKeyQuery:
-    type: apiKey
-    name: subscription-key
-    in: query
 security:
   - apiKeyHeader: []
-  - apiKeyQuery: []
 consumes:
   - application/json
 produces:
@@ -131,10 +126,8 @@ paths:
          The following conditions apply for this to work:
         * the container must have been released, i.e. there must be a vallid
         PickupRight   for the Container
-
         * the PickupRight should not be transferred to another Organization than
         the one that got the relesase initially
-
         * the PickupRight should not yet be assigned (to a driver / skipper)
       summary: Block
       tags:
@@ -230,7 +223,6 @@ paths:
           x-testDescription: >-
             Get all containers currently in the database. Only Containers
             accessible by the
-
             user will be reported.
       x-operation-settings:
         CollectParameters: false
@@ -476,9 +468,7 @@ paths:
       description: >-
         When a driver needs to pickup a container, he should send a request to
         get
-
         authorization for the pickup. This will return a **temporary pincode**.
-
         If no authorization is given, http status 403 is returned
       summary: Request
       tags:
@@ -717,12 +707,9 @@ paths:
           x-testDescription: >-
             When the driver has picked up the container, a request should be
             sent to the
-
             server to record (create) the pickup. The server will record the
             datetime of
-
             the pickup.
-
             Returns 200 on success, 500 on failure.
       x-operation-settings:
         CollectParameters: false
@@ -780,15 +767,11 @@ paths:
           x-testDescription: >-
             When the driver has delivered the container, a request should be
             sent to the
-
             server to record (create) the delivery.
-
             Note that a delivery is associated with a PickupRight, because the
             driver who
-
             gets a PickupRight, will automatically get a right to deliver the
             container.
-
             For that reason, the PickupRight must be reported.
       x-operation-settings:
         CollectParameters: false
@@ -902,7 +885,6 @@ paths:
           x-testName: Get all coordinates1
           x-testDescription: >-
             Get the coordinates of all known locations.
-
             On error, status 500 is returned, with a JSON object with property
             error.
       x-operation-settings:
@@ -1337,7 +1319,6 @@ paths:
       description: >-
         Register information of a user. Note that the "real" (human) user should
         have
-
         an account on the blockchain (upfront). This account is represented by
         an address on the chain, which is based on the public key of the user.
         Registering therefore means defining user **properties** like a
@@ -1392,7 +1373,6 @@ paths:
           x-testDescription: >-
             Register information of a user. Note that the "real" (human) user
             should have
-
             an account on the blockchain (upfront). This account is represented
             by an address on the chain, which is based on the public key of the
             user. Registering therefore means defining user **properties** like
@@ -1422,7 +1402,6 @@ paths:
           x-testDescription: >-
             Register information of a user. Note that the "real" (human) user
             should have
-
             an account on the blockchain (upfront). This account is represented
             by an address on the chain, which is based on the public key of the
             user. Registering therefore means defining user **properties** like
@@ -1442,12 +1421,9 @@ paths:
     post:
       description: >
         Used to create an event for a container at a specific location and time.
-
         Each event is defined by a type.
-
         Currently a limited number of events (pickup and availability) are
         supported, but this may be extended with e.g. passage events.
-
         There are 2 ways to refer to a Container: by means of its id as defined
         in the Blockchain (this requires recording these ids in your app), or by
         means of a combination of the blNumber and isoNumber. Similarly,
@@ -1456,7 +1432,6 @@ paths:
         must be defined in a mapping   file for the Organization you - as a
         user- belong to. Also note that the container may not yet be known in
         the Blockchain at the time
-
         an availability event is created!
       summary: Create an Event
       tags:
@@ -1505,12 +1480,9 @@ paths:
           x-testDescription: >
             Used to create an event for a container at a specific location and
             time.
-
             Each event is defined by a type.
-
             Currently a limited number of events (pickup and availability) are
             supported, but this may be extended with e.g. passage events.
-
             There are 2 ways to refer to a Container: by means of its id as
             defined in the Blockchain (this requires recording these ids in your
             app), or by means of a combination of the blNumber and isoNumber.
@@ -1519,7 +1491,6 @@ paths:
             latter case the name must be defined in a mapping   file for the
             Organization you - as a user- belong to. Also note that the
             container may not yet be known in the Blockchain at the time
-
             an availability event is created!
         - request:
             method: POST
@@ -1543,12 +1514,9 @@ paths:
           x-testDescription: >
             Used to create an event for a container at a specific location and
             time.
-
             Each event is defined by a type.
-
             Currently a limited number of events (pickup and availability) are
             supported, but this may be extended with e.g. passage events.
-
             There are 2 ways to refer to a Container: by means of its id as
             defined in the Blockchain (this requires recording these ids in your
             app), or by means of a combination of the blNumber and isoNumber.
@@ -1557,7 +1525,6 @@ paths:
             latter case the name must be defined in a mapping   file for the
             Organization you - as a user- belong to. Also note that the
             container may not yet be known in the Blockchain at the time
-
             an availability event is created!
       x-operation-settings:
         CollectParameters: false
