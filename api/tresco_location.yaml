@@ -4,8 +4,15 @@ info:
   version: v1
   title: NxtPort LocationCode by Tresco API V1
   description: The NxtPort LocationCode API, powered by Tresco.
-host: UrlOverwritteninAPIMNamedValues.com
+host: api.nxtport.eu
 basePath: "/locationcode/v1"
+securityDefinitions:
+  apiKeyHeader:
+    type: apiKey
+    name: Ocp-Apim-Subscription-Key
+    in: header
+security:
+  - apiKeyHeader: []
 paths:
   "/reverse":
     get:
