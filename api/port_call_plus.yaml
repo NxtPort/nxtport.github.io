@@ -12,13 +12,8 @@ securityDefinitions:
     type: apiKey
     name: Ocp-Apim-Subscription-Key
     in: header
-  apiKeyQuery:
-    type: apiKey
-    name: Subscription-Key
-    in: query
 security:
   - apiKeyHeader: []
-  - apiKeyQuery: []
 paths:
   /ping:
     get:

@@ -10,5 +10,7 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [Vessel Stay](https://nxtport.github.io/?api=vessel_stay)
 * [VGM](https://nxtport.github.io/?api=vgm)
 * [Next Mode of Transport](https://nxtport.github.io/?api=nmot) 
+* [Ocean Schedules](https://nxtport.github.io/?api=ocean_schedules) 
+
 
 More information about NxtPort at [nxtport.eu](https://www.nxtport.eu/en/apis) or the OpenAPI specification at [openapis.org](https://www.openapis.org/).

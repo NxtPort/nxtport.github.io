@@ -1,10 +1,10 @@
 ---
 swagger: '2.0'
 info:
-  version: v1.1.0
+  version: v1.2
   title: Stay API
   description: Stay Numbers Port Of Antwerp API
-host: UrlOverwritteninAPIMNamedValues.com
+host: api-sb.nxtport.eu
 schemes:
 - https
 basePath: "/sa/v1"
@@ -13,13 +13,8 @@ securityDefinitions:
     type: apiKey
     name: Ocp-Apim-Subscription-Key
     in: header
-  apiKeyQuery:
-    type: apiKey
-    name: subscription-key
-    in: query
 security:
 - apiKeyHeader: []
-- apiKeyQuery: []
 paths:
   "/stays/{imoNumber}":
     get:
@@ -38,6 +33,10 @@ paths:
         required: true
         type: string
         description: The 7-digit IMO number of the ship
+      - name: Ocp-Apim-Subscription-Key
+        in: header
+        required: false
+        type: string
       responses:
         '200':
           description: OK - imo number found
@@ -91,6 +90,10 @@ paths:
         required: false
         type: integer
         description: The page size to navigate through the results (between 1 - 100)
+      - name: Ocp-Apim-Subscription-Key
+        in: header
+        required: false
+        type: string
       responses:
         '200':
           description: OK - vessel(s) found
