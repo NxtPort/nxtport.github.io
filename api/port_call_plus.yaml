@@ -15,164 +15,331 @@ securityDefinitions:
 security:
   - apiKeyHeader: []
 paths:
+  /ping:
+    get:
+      tags:
+        - Health
+      summary: Indicates that the api can be reached.
+      operationId: Health_Ping
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+	  parameters:
+		- name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: object
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
+  /status:
+    get:
+      tags:
+        - Health
+      summary: Indicate the health status of the API.
+      operationId: Health_Status
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+	  parameters:
+		- name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/LastCheckedDto'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
   /vessels/expected:
     get:
-      description: Get all the expected vessels of BEANR and BEZEE
+      tags:
+        - Vessels
+      summary: Get all the expected vessels of BEANR and BEZEE
       operationId: Vessels_Expected
-      parameters:
-        - name: Ocp-Apim-Subscription-Key
-          in: header
-          required: false
-          type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/VoyageDtoArray'
-        '400':
-          description: BadRequest
-          schema:
-            $ref: '#/definitions/ErrorDto'
+      consumes: []
       produces:
         - application/json
         - text/json
         - application/xml
         - text/xml
+      parameters:
+		- name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/VoyageDto'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
   /vessels/in-port:
     get:
-      description: Get all the in-port vessels of BEANR and BEZEE
+      tags:
+        - Vessels
+      summary: Get all the in-port vessels of BEANR and BEZEE
       operationId: Vessels_InPort
-      parameters:
-        - name: Ocp-Apim-Subscription-Key
-          in: header
-          required: false
-          type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/VoyageDtoArray'
-        '400':
-          description: BadRequest
-          schema:
-            $ref: '#/definitions/ErrorDto'
+      consumes: []
       produces:
         - application/json
         - text/json
         - application/xml
         - text/xml
+	  parameters:
+		- name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/VoyageDto'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
+  /vessels/overview:
+    get:
+      tags:
+        - Vessels
+      operationId: Vessels_Overview
+      consumes: []
+      produces:
+        - application/json
+        - text/json
+        - application/xml
+        - text/xml
+      parameters:
+	    - name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
+        - name: request
+          in: query
+          required: true
+          type: string
+        - name: locode
+          in: query
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OverviewStayDto'
+        '400':
+          description: BadRequest
+          schema:
+            $ref: '#/definitions/ErrorDto'
 definitions:
-  AgentDto:
-    properties:
-      code:
-        type: string
-      name:
-        type: string
-    type: object
   ErrorDto:
+    type: object
     properties:
       error:
         type: string
       identifier:
         format: date-time
         type: string
-    type: object
   LastCheckedDto:
+    type: object
     properties:
       lastChecked:
         type: string
-    type: object
-  LocationDto:
-    properties:
-      actualTime:
-        type: string
-      anchored:
-        type: boolean
-      code:
-        type: string
-      estimatedTime:
-        type: string
-      locode:
-        type: string
-      name:
-        type: string
-      type:
-        type: string
-    type: object
-  PortDto:
-    properties:
-      locode:
-        type: string
-      name:
-        type: string
-    type: object
-  TimeDto:
-    properties:
-      actualTime:
-        type: string
-      estimatedTime:
-        type: string
-    type: object
-  VesselDto:
-    properties:
-      callsign:
-        type: string
-      flag:
-        type: string
-      gbr:
-        format: double
-        type: number
-      imoNumber:
-        type: string
-      loa:
-        format: double
-        type: number
-      mmsiNumber:
-        type: string
-      name:
-        type: string
-      tonnage:
-        format: double
-        type: number
-      type:
-        type: string
-    type: object
   VoyageDto:
+    type: object
     properties:
-      agent:
-        $ref: '#/definitions/AgentDto'
-      currentPort:
-        $ref: '#/definitions/PortDto'
-      destinationPort:
-        $ref: '#/definitions/PortDto'
-      fromLocation:
-        $ref: '#/definitions/LocationDto'
-      nextPort:
-        $ref: '#/definitions/PortDto'
-      originPort:
-        $ref: '#/definitions/PortDto'
-      passages:
-        items:
-          $ref: '#/definitions/LocationDto'
-        type: array
-      previousPort:
-        $ref: '#/definitions/PortDto'
-      stayBegin:
-        $ref: '#/definitions/TimeDto'
-      stayEnd:
-        $ref: '#/definitions/TimeDto'
       stayNumber:
         type: string
-      toLocation:
-        $ref: '#/definitions/LocationDto'
-      vessel:
-        $ref: '#/definitions/VesselDto'
       voyageNumber:
         type: string
       voyageType:
         type: string
+      vessel:
+        $ref: '#/definitions/VesselDto'
+      agent:
+        $ref: '#/definitions/AgentDto'
+      stayBegin:
+        $ref: '#/definitions/TimeDto'
+      stayEnd:
+        $ref: '#/definitions/TimeDto'
+      fromLocation:
+        $ref: '#/definitions/LocationDto'
+      toLocation:
+        $ref: '#/definitions/LocationDto'
+      currentPort:
+        $ref: '#/definitions/PortDto'
+      previousPort:
+        $ref: '#/definitions/PortDto'
+      nextPort:
+        $ref: '#/definitions/PortDto'
+      originPort:
+        $ref: '#/definitions/PortDto'
+      destinationPort:
+        $ref: '#/definitions/PortDto'
+      passages:
+        type: array
+        items:
+          $ref: '#/definitions/LocationDto'
+  VesselDto:
     type: object
-  VoyageDtoArray:
-    items:
-      $ref: '#/definitions/VoyageDto'
-    type: array
+    properties:
+      name:
+        type: string
+      imoNumber:
+        type: string
+      mmsiNumber:
+        type: string
+      callsign:
+        type: string
+      flag:
+        type: string
+      type:
+        type: string
+      loa:
+        format: double
+        type: number
+      gbr:
+        format: double
+        type: number
+      tonnage:
+        format: double
+        type: number
+  AgentDto:
+    type: object
+    properties:
+      code:
+        type: string
+      name:
+        type: string
+  TimeDto:
+    type: object
+    properties:
+      estimatedTime:
+        type: string
+      actualTime:
+        type: string
+  LocationDto:
+    type: object
+    properties:
+      locode:
+        type: string
+      code:
+        type: string
+      name:
+        type: string
+      type:
+        type: string
+      estimatedTime:
+        type: string
+      actualTime:
+        type: string
+      anchored:
+        type: boolean
+  PortDto:
+    type: object
+    properties:
+      name:
+        type: string
+      locode:
+        type: string
+  OverviewStayDto:
+    type: object
+    properties:
+      stayNumber:
+        type: string
+      cancelledOn:
+        type: string
+      cancellationReason:
+        type: string
+      vessel:
+        $ref: '#/definitions/OverviewVesselDto'
+      stayBegin:
+        $ref: '#/definitions/TimeDto'
+      stayEnd:
+        $ref: '#/definitions/TimeDto'
+      voyages:
+        type: array
+        items:
+          $ref: '#/definitions/OverviewVoyageDto'
+      currentPort:
+        $ref: '#/definitions/PortDto'
+      previousPort:
+        $ref: '#/definitions/PortDto'
+      nextPort:
+        $ref: '#/definitions/PortDto'
+      originPort:
+        $ref: '#/definitions/PortDto'
+      destinationPort:
+        $ref: '#/definitions/PortDto'
+  OverviewVesselDto:
+    type: object
+    properties:
+      name:
+        type: string
+      imoNumber:
+        type: string
+      mmsiNumber:
+        type: string
+      callsign:
+        type: string
+      flag:
+        type: string
+      type:
+        type: string
+      length:
+        format: double
+        type: number
+      breadth:
+        format: double
+        type: number
+  OverviewVoyageDto:
+    type: object
+    properties:
+      voyageNumber:
+        type: string
+      sequenceNumber:
+        format: int32
+        type: integer
+      type:
+        type: string
+      agent:
+        $ref: '#/definitions/AgentDto'
+      cancelledOn:
+        type: string
+      cancellationReason:
+        type: string
+      fromLocation:
+        $ref: '#/definitions/LocationDto'
+      toLocation:
+        $ref: '#/definitions/LocationDto'
+      passages:
+        type: array
+        items:
+          $ref: '#/definitions/LocationDto'
