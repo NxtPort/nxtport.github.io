@@ -15,58 +15,6 @@ securityDefinitions:
 security:
   - apiKeyHeader: []
 paths:
-  /ping:
-    get:
-      tags:
-        - Health
-      summary: Indicates that the api can be reached.
-      operationId: Health_Ping
-      consumes: []
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-	  parameters:
-		- name: Ocp-Apim-Subscription-Key
-		  in: header
-		  required: false
-		  type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            type: object
-        '400':
-          description: BadRequest
-          schema:
-            $ref: '#/definitions/ErrorDto'
-  /status:
-    get:
-      tags:
-        - Health
-      summary: Indicate the health status of the API.
-      operationId: Health_Status
-      consumes: []
-      produces:
-        - application/json
-        - text/json
-        - application/xml
-        - text/xml
-	  parameters:
-		- name: Ocp-Apim-Subscription-Key
-		  in: header
-		  required: false
-		  type: string
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/LastCheckedDto'
-        '400':
-          description: BadRequest
-          schema:
-            $ref: '#/definitions/ErrorDto'
   /vessels/expected:
     get:
       tags:
@@ -80,10 +28,10 @@ paths:
         - application/xml
         - text/xml
       parameters:
-		- name: Ocp-Apim-Subscription-Key
-		  in: header
-		  required: false
-		  type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
       responses:
         '200':
           description: OK
@@ -107,11 +55,11 @@ paths:
         - text/json
         - application/xml
         - text/xml
-	  parameters:
-		- name: Ocp-Apim-Subscription-Key
-		  in: header
-		  required: false
-		  type: string
+      parameters:
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
       responses:
         '200':
           description: OK
@@ -135,10 +83,10 @@ paths:
         - application/xml
         - text/xml
       parameters:
-	    - name: Ocp-Apim-Subscription-Key
-		  in: header
-		  required: false
-		  type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
         - name: request
           in: query
           required: true
@@ -166,11 +114,6 @@ definitions:
         type: string
       identifier:
         format: date-time
-        type: string
-  LastCheckedDto:
-    type: object
-    properties:
-      lastChecked:
         type: string
   VoyageDto:
     type: object
