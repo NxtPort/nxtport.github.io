@@ -32,6 +32,11 @@ paths:
         - text/json
         - application/xml
         - text/xml
+	  parameters:
+		- name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
       responses:
         '200':
           description: OK
@@ -53,6 +58,11 @@ paths:
         - text/json
         - application/xml
         - text/xml
+	  parameters:
+		- name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
       responses:
         '200':
           description: OK
@@ -74,6 +84,11 @@ paths:
         - text/json
         - application/xml
         - text/xml
+      parameters:
+		- name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
       responses:
         '200':
           description: OK
@@ -97,6 +112,11 @@ paths:
         - text/json
         - application/xml
         - text/xml
+	  parameters:
+		- name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
       responses:
         '200':
           description: OK
@@ -120,6 +140,10 @@ paths:
         - application/xml
         - text/xml
       parameters:
+	    - name: Ocp-Apim-Subscription-Key
+		  in: header
+		  required: false
+		  type: string
         - name: request
           in: query
           required: true
