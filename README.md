@@ -5,7 +5,6 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [Import Consignment Data](https://nxtport.github.io/?api=import_consignment_data)
 * [PortCall+](https://nxtport.github.io/?api=port_call_plus) by Port+ 
 * [PortDirectory](https://nxtport.github.io/?api=port_directory) by Port+
-* [Secure Container Release](https://nxtport.github.io/?api=secure_container_release) by T-Mining
 * [UN Location Codes](https://nxtport.github.io/?api=unlocode)
 * [Vessel Stay](https://nxtport.github.io/?api=vessel_stay)
 * [VGM](https://nxtport.github.io/?api=vgm)
