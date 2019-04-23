@@ -1,4 +1,3 @@
----
 swagger: '2.0'
 info:
   title: NxtPort Preannouncement API V2
@@ -19,14 +18,14 @@ securityDefinitions:
     name: Authorization
     in: header
     type: apiKey
-    description: 'JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word "Bearer" and then a space in front of the access token. For example "Bearer f8e6d39a81fc4d31957086fe03630858".'
+    description: JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word "Bearer" and then a space in front of the access token. For example "Bearer f8e6d39a81fc4d31957086fe03630858".
   Subscription:
     type: apiKey
     in: header
     name: Ocp-Apim-Subscription-Key
     description: API subscription key. Assigned by NxtPort to your organization.
 paths:
-  '/nmot':
+  /nmot:
     get:
       summary: 'Retrieve NMoT''s, using possible filter options.'
       operationId: NmotGet
@@ -156,8 +155,6 @@ definitions:
         $ref: '#/definitions/visit'
       exchanges:
         description: 'For every container or other cargo object that needs to be moved (picked up, dropped of) or that needs to be identified (remain on truck, moved on the vessel, ...) an exchange object is added.'
-
-
         type: array
         xml:
           wrapped: true
@@ -165,7 +162,6 @@ definitions:
           $ref: '#/definitions/exchange'
   visit:
     description: 'Object containing the time and location element of the appointment, and the vehicle that will make the visit.'
-
     type: object
     required:
       - conveyance
@@ -178,7 +174,6 @@ definitions:
         $ref: '#/definitions/conveyance'
   location:
     description: 'Also defined in the HTTP request, but repeated here, because this can be more specific to a certain gate or something like that.'
-
     type: object
     properties:
       locode:
@@ -186,14 +181,17 @@ definitions:
         example: BEANR
         type: string
       terminalCode:
-        description: Code of a specific terminal location.
-        example: '913'
+        description: 'Can be based on the BICS codes: https://www.binnenvaart.org/terminal-codes/'
+        example: 0S913
         type: string
       terminalOperator:
-        description: 'Identifies the operator of this terminal location'
-        example: 'PSA'
+        description: Identifies the operator of this terminal location
+        example: PSA
         type: string
-        readOnly: true
+      gateCode:
+        description: 'Code to identify different locations within the terminal (different parkings, different gates, ...)'
+        example: PARK1
+        type: string
   time:
     type: object
     properties:
@@ -208,15 +206,12 @@ definitions:
         type: string
         format: date-time
       expectedTime:
-
         description: 'Exact time for the visit. When an exact time is given the time window is ignored. When a time window is given, an exact time is not expected.'
         example: '2017-08-27T16:15:00Z'
         type: string
         format: date-time
       priority:
         description: 'Priority of the pickup of the container, gives an indication of how quick the container will be picked up. (1 to be picked up earlier than 2, when NMoT is for both is received around the same time).'
-
-
         example: 1
         type: integer
   conveyance:
@@ -225,7 +220,6 @@ definitions:
     properties:
       modus:
         description: Vessel would be sea transport (transshipment). Air is not likely to be used.
-
         type: string
         enum:
           - barge
@@ -235,7 +229,6 @@ definitions:
           - air
       identifier:
         description: 'Format depends on modus (license plate for truck, ENI code for barge, train number for rail).'
-
         example: 1KPC874
         type: string
       name:
@@ -244,12 +237,10 @@ definitions:
         type: string
       voyage:
         description: Format depends on the operator of the conveyance. Mostly used in case of rail. Could be the ID of the transport instruction of the truck.
-
         example: Y12345
         type: string
       call:
         description: In case of barge this is the BTS barge call number. In case of rail this is the rail visit number.
-
         example: PE6582
         type: string
       operator:
@@ -293,13 +284,12 @@ definitions:
         items:
           $ref: '#/definitions/greenLightCheck'
       lastUpdatedOn:
-        description: 'The timestamp of the latest update regarding this exchange.'
+        description: The timestamp of the latest update regarding this exchange.
         type: string
         format: date-time
         readOnly: true
   equipment:
     description: 'The thing that the action applies on, can be a container, a vehicle, ...'
-
     type: object
     required:
       - identifier
@@ -312,7 +302,6 @@ definitions:
           - vehicle
       identifier:
         description: 'Container number in case of container, VIN number in case of verhicle, ...'
-
         example: OOCL1234569
         type: string
   consignment:
@@ -392,7 +381,7 @@ definitions:
         example: BEANR
         type: string
       terminalCode:
-        description: Can be based on the BICS.nl codes.
+        description: 'Can be based on the BICS codes: https://www.binnenvaart.org/terminal-codes/'
         example: '1744'
         type: string
   finalDelivery:
@@ -427,7 +416,7 @@ definitions:
         example: Invalid NxtPort Identifier of the Sender.
         type: string
       extraInfo:
-        description: 'A possible list of details about this error.'
+        description: A possible list of details about this error.
         type: array
         items:
           type: string
