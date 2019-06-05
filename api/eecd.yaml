@@ -8,7 +8,7 @@ info:
     email: support@nxtport.eu
 schemes:
   - https
-host: api-stg.nxtport.eu
+host: api.nxtport.eu
 basePath: /eecd
 security:
   - Authorization: []
