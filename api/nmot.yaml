@@ -171,6 +171,7 @@ definitions:
     description: 'Object containing the time and location element of the appointment, and the vehicle that will make the visit.'
     type: object
     required:
+      - location
       - conveyance
     properties:
       location:
@@ -182,6 +183,9 @@ definitions:
   location:
     description: 'Also defined in the HTTP request, but repeated here, because this can be more specific to a certain gate or something like that.'
     type: object
+    required:
+      - locode
+      - terminalCode
     properties:
       locode:
         description: 'UN/LOCODE of the port.'
@@ -216,6 +220,8 @@ definitions:
   conveyance:
     description: 'Identification of the thing that will make the visit.'
     type: object
+    required:
+      - modus
     properties:
       modus:
         description: 'Vessel would be sea transport (transshipment). Air is not likely to be used.'
@@ -308,6 +314,8 @@ definitions:
   consignment:
     description: 'Any information concerning the yourney of the container.'
     type: object
+    required:
+      - seaVoyage
     properties:
       seaVoyage:
         $ref: '#/definitions/seaVoyage'
@@ -317,6 +325,9 @@ definitions:
         $ref: '#/definitions/finalDelivery'
   seaVoyage:
     type: object
+    required:
+      - vessel
+      - vesselStay
     properties:
       blNumber:
         description: 'Number of the BL that the container belongs to.'
@@ -359,10 +370,13 @@ definitions:
         example: 'BOEBEL'
         type: string
       scacCode:
+        description: 'International SCAC code of the shipping line. Mandatory when no blNumber is given.'
         example: 'OOCL'
         type: string
   vessel:
     type: object
+    required:
+      - imo
     properties:
       imo:
         description: 'IMO number of the vessel.'
@@ -374,6 +388,8 @@ definitions:
         type: string
   vesselStay:
     type: object
+    required:
+      - eta
     properties:
       stayNumber:
         example: 'V185322'
