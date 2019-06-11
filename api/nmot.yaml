@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: NxtPort Preannouncement API V2
+  title: NxtPort Preannouncement (Sandbox)
   version: v2
   description: 'The NxtPort preannouncement structure can be used informational (to communicate a next mode of transport), or can be used to request a visit on a terminal and preannounce which containers will be exchanged during that visit.'
   termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
@@ -18,15 +18,17 @@ securityDefinitions:
     name: Authorization
     in: header
     type: apiKey
-    description: JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word "Bearer" and then a space in front of the access token. For example "Bearer f8e6d39a81fc4d31957086fe03630858".
+    description: 'JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word "Bearer" and then a space in front of the access token. For example "Bearer f8e6d39a81fc4d31957086fe03630858".'
   Subscription:
     type: apiKey
     in: header
     name: Ocp-Apim-Subscription-Key
-    description: API subscription key. Assigned by NxtPort to your organization.
+    description: 'API subscription key. Assigned by NxtPort to your organization.'
 paths:
   /nmot:
     get:
+      tags:
+        - Nmot
       summary: 'Retrieve NMoT''s, using possible filter options.'
       operationId: NmotGet
       consumes: []
@@ -84,15 +86,16 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/preannouncementMessagePagedListDto'
+            $ref: '#/definitions/pagedResult'
         '400':
           description: Bad Request
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/errorResponse'
+            $ref: '#/definitions/errorResponse'
     post:
-      summary: Preannounce on or more Next Mode of Transports to the port terminals.
+      tags:
+        - Nmot
+      summary: 'Preannounce one or more Next Mode of Transports to the port terminals.'
+      operationId: NmotPost
       consumes:
         - application/json
         - application/xml
@@ -100,24 +103,25 @@ paths:
         - application/json
         - application/xml
       parameters:
-        - name: message
+        - name: preannouncements
           in: body
           description: A list of Next Mode of Transport preannouncement documents.
           required: true
           schema:
-            $ref: '#/definitions/preannouncementList'
+              $ref: '#/definitions/preannouncementList'
       responses:
         '202':
-          description: Preannouncement accepted.
+          description: 'Preannouncements accepted.'
         '400':
-          description: Incomplete or invalid preannouncement.
+          description: 'Incomplete or invalid preannouncements.'
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/errorResponse'
+            $ref: '#/definitions/errorResponse'
   /nmot-csv:
     post:
-      summary: Preannounce the Next Mode of Transport to the port terminals in CSV format.
+      tags:
+        - Nmot
+      summary: 'Preannounce the Next Mode of Transport to the port terminals in CSV format.'
+      operationId: Nmot-csvPost
       consumes:
         - text/csv
       produces:
@@ -132,17 +136,18 @@ paths:
             $ref: '#/definitions/nmotCsvInput'
       responses:
         '202':
-          description: All preannouncements in file accepted.
+          description: 'All preannouncements in file accepted.'
         '400':
-          description: Incomplete or invalid file.
+          description: 'Incomplete or invalid file.'
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/errorResponse'
+            $ref: '#/definitions/errorResponse'
 definitions:
   preannouncementList:
     description: A list of preannouncement objects
     type: array
+    xml:
+      name: 'preannouncements'
+      wrapped: true
     items:
       $ref: '#/definitions/preannouncement'
   preannouncement:
@@ -150,6 +155,8 @@ definitions:
     required:
       - visit
       - exchanges
+    xml:
+      name: 'preannouncement'
     properties:
       visit:
         $ref: '#/definitions/visit'
@@ -164,6 +171,7 @@ definitions:
     description: 'Object containing the time and location element of the appointment, and the vehicle that will make the visit.'
     type: object
     required:
+      - location
       - conveyance
     properties:
       location:
@@ -175,33 +183,28 @@ definitions:
   location:
     description: 'Also defined in the HTTP request, but repeated here, because this can be more specific to a certain gate or something like that.'
     type: object
+    required:
+      - locode
+      - terminalCode
     properties:
       locode:
-        description: UN/LOCODE of the port.
-        example: BEANR
+        description: 'UN/LOCODE of the port.'
+        example: 'BEANR'
         type: string
       terminalCode:
         description: 'Can be based on the BICS codes: https://www.binnenvaart.org/terminal-codes/'
-        example: 0S913
-        type: string
-      terminalOperator:
-        description: Identifies the operator of this terminal location
-        example: PSA
-        type: string
-      gateCode:
-        description: 'Code to identify different locations within the terminal (different parkings, different gates, ...)'
-        example: PARK1
+        example: '0S913'
         type: string
   time:
     type: object
     properties:
       start:
-        description: Start of the time window for the visit.
+        description: 'Start of the time window for the visit.'
         example: '2017-08-27T15:00:00Z'
         type: string
         format: date-time
       end:
-        description: End of the time window for the visit.
+        description: 'End of the time window for the visit.'
         example: '2017-08-27T17:00:00Z'
         type: string
         format: date-time
@@ -215,33 +218,35 @@ definitions:
         example: 1
         type: integer
   conveyance:
-    description: Identification of the thing that will make the visit.
+    description: 'Identification of the thing that will make the visit.'
     type: object
+    required:
+      - modus
     properties:
       modus:
-        description: Vessel would be sea transport (transshipment). Air is not likely to be used.
+        description: 'Vessel would be sea transport (transshipment). Air is not likely to be used.'
         type: string
         enum:
-          - barge
-          - truck
-          - rail
-          - vessel
-          - air
+          - Barge
+          - Truck
+          - Rail
+          - Vessel
+          - Air
       identifier:
         description: 'Format depends on modus (license plate for truck, ENI code for barge, train number for rail).'
-        example: 1KPC874
+        example: '1KPC874'
         type: string
       name:
         description: 'Format depends on the modus, mostly used for the name of a barge.'
-        example: Marie Louise
+        example: 'Marie Louise'
         type: string
       voyage:
-        description: Format depends on the operator of the conveyance. Mostly used in case of rail. Could be the ID of the transport instruction of the truck.
-        example: Y12345
+        description: 'Format depends on the operator of the conveyance. Mostly used in case of rail. Could be the ID of the transport instruction of the truck.'
+        example: 'Y12345'
         type: string
       call:
-        description: In case of barge this is the BTS barge call number. In case of rail this is the rail visit number.
-        example: PE6582
+        description: 'In case of barge this is the BTS barge call number. In case of rail this is the rail visit number.'
+        example: 'PE6582'
         type: string
       operator:
         $ref: '#/definitions/operator'
@@ -250,25 +255,25 @@ definitions:
     type: object
     properties:
       identifier:
-        description: Unique identifier of the operator as used in all other messages.
-        example: XYZ245878542534
+        description: 'Unique identifier of the operator as used in all other messages.'
+        example: 'XYZ245878542534'
         type: string
       name:
-        description: Name of the operator.
-        example: ACME
+        description: 'Name of the operator.'
+        example: 'ACME'
         type: string
       vat:
-        description: VAT number of the operator.
-        example: BE0429672881
+        description: 'VAT number of the operator.'
+        example: 'BE0429672881'
         type: string
       eori:
-        description: EORI number of the operator.
-        example: BE0429672881
+        description: 'EORI number of the operator.'
+        example: 'BE0429672881'
         type: string
   exchange:
     type: object
     xml:
-      name: exchange
+      name: 'exchange'
     required:
       - equipment
       - consignment
@@ -278,15 +283,17 @@ definitions:
       consignment:
         $ref: '#/definitions/consignment'
       greenLights:
-        description: The actual greenlights for this exchange. This property is only included when requesting the summary version of the results.
+        description: 'The actual greenlights for this exchange. This property is only included when requesting the summary version of the results.'
         type: array
+        xml:
+          wrapped: true
         readOnly: true
         items:
-          $ref: '#/definitions/greenLightCheck'
+          $ref: '#/definitions/greenLight'
       lastUpdatedOn:
-        description: The timestamp of the latest update regarding this exchange.
-        type: string
         format: date-time
+        description: 'The timestamp of the latest update regarding this exchange.'
+        type: string
         readOnly: true
   equipment:
     description: 'The thing that the action applies on, can be a container, a vehicle, ...'
@@ -295,18 +302,20 @@ definitions:
       - identifier
     properties:
       equipmentType:
-        description: The type of the equipment.
+        description: 'The type of the equipment.'
         type: string
         enum:
-          - container
-          - vehicle
+          - Container
+          - Vehicle
       identifier:
         description: 'Container number in case of container, VIN number in case of verhicle, ...'
-        example: OOCL1234569
+        example: 'OOCL1234569'
         type: string
   consignment:
-    description: Any information concerning the yourney of the container.
+    description: 'Any information concerning the yourney of the container.'
     type: object
+    required:
+      - seaVoyage
     properties:
       seaVoyage:
         $ref: '#/definitions/seaVoyage'
@@ -316,10 +325,13 @@ definitions:
         $ref: '#/definitions/finalDelivery'
   seaVoyage:
     type: object
+    required:
+      - vessel
+      - vesselStay
     properties:
       blNumber:
-        description: Number of the BL that the container belongs to.
-        example: MAEU866327092
+        description: 'Number of the BL that the container belongs to.'
+        example: 'MAEU866327092'
         type: string
       cargoAgent:
         $ref: '#/definitions/agent'
@@ -329,35 +341,61 @@ definitions:
         $ref: '#/definitions/vesselStay'
       connectingVessel:
         $ref: '#/definitions/connectingVessel'
+  greenLight:
+    description: 'The greenlights related to this equipment.'
+    type: object
+    xml:
+      name: 'greenLight'
+    properties:
+      type:
+        description: 'The type of greenlight.'
+        example: 'OnTerminal'
+        type: string
+      status:
+        description: 'The actual status of the greenlight.'
+        example: 'Green'
+        type: string
+      remarks:
+        description: 'Any remarks concerning the current status of the greenlight.'
+        type: string
+      timestamp:
+        format: date-time
+        description: 'The timestamp of the greenlight.'
+        type: string
   agent:
     type: object
     properties:
       agentCode:
-        description: Apics agent code.
-        example: BOEBEL
+        description: 'Apics agent code.'
+        example: 'BOEBEL'
         type: string
       scacCode:
-        example: OOCL
+        description: 'International SCAC code of the shipping line. Mandatory when no blNumber is given.'
+        example: 'OOCL'
         type: string
   vessel:
     type: object
+    required:
+      - imo
     properties:
       imo:
-        description: IMO number of the vessel.
+        description: 'IMO number of the vessel.'
         example: '9321483'
         type: string
       name:
-        description: Official spelling of the name of the vessel.
-        example: EMMA MAERSK
+        description: 'Official spelling of the name of the vessel.'
+        example: 'EMMA MAERSK'
         type: string
   vesselStay:
     type: object
+    required:
+      - eta
     properties:
       stayNumber:
-        example: V185322
+        example: 'V185322'
         type: string
       eta:
-        description: Date and time the vessel will arrive.
+        description: 'Date and time the vessel will arrive.'
         example: '2017-08-27T15:00:00Z'
         type: string
         format: date-time
@@ -365,11 +403,11 @@ definitions:
     type: object
     properties:
       imo:
-        description: IMO number of the vessel.
+        description: 'IMO number of the vessel.'
         example: '9321483'
         type: string
       etd:
-        description: Date and Time the connecting vessel will depart.
+        description: 'Date and Time the connecting vessel will depart.'
         example: '2017-08-28T19:55:00Z'
         type: string
         format: date-time
@@ -377,29 +415,29 @@ definitions:
     type: object
     properties:
       locode:
-        description: UN/LOCODE of the port of destination.
-        example: BEANR
+        description: 'UN/LOCODE of the port of destination.'
+        example: 'BEANR'
         type: string
       terminalCode:
         description: 'Can be based on the BICS codes: https://www.binnenvaart.org/terminal-codes/'
         example: '1744'
         type: string
   finalDelivery:
-    description: The moment the goods will be finally delivered at their end location.
+    description: 'The moment the goods will be finally delivered at their end location.'
     type: object
     properties:
       start:
-        description: Start of the time window for final delivery.
+        description: 'Start of the time window for final delivery.'
         example: '2017-08-27T15:00:00Z'
         type: string
         format: date-time
       end:
-        description: End of the time window for the final delivery.
+        description: 'End of the time window for the final delivery.'
         example: '2017-08-27T17:00:00Z'
         type: string
         format: date-time
       expectedDuration:
-        description: Expected duration of the final delivery (expressed in minutes).
+        description: 'Expected duration of the final delivery (expressed in minutes).'
         example: 30
         type: integer
         format: int32
@@ -407,69 +445,75 @@ definitions:
     type: object
     properties:
       identifier:
-        description: Unique identifier for the error.
+        format: uuid
+        description: 'Unique identifier for the error.'
         example: aae1cd63-285b-49f0-8603-fcf5c69077ed
         type: string
-        format: uuid
       error:
-        description: Human readable explanation of the error.
+        description: 'Human readable explanation of the error.'
         example: Invalid NxtPort Identifier of the Sender.
         type: string
       extraInfo:
-        description: A possible list of details about this error.
+        description: 'A possible list of details about this error.'
         type: array
+        xml:
+          wrapped: true
         items:
           type: string
-  preannouncementMessagePagedListDto:
-    description: Paged results of preannouncement messages
+          xml:
+            name: 'info'
+  pagedResult:
+    description: 'Paged results of preannouncement messages.'
     type: object
     properties:
       items:
-        description: The paged results.
+        description: 'The paged results.'
         uniqueItems: false
         type: array
+        xml:
+          wrapped: true
         items:
-          $ref: '#/definitions/preannouncementMessageReadDto'
+          $ref: '#/definitions/preannouncementMessage'
       _page:
-        $ref: '#/definitions/paginationDto'
-  paginationDto:
-    description: The details of the pagination.
+        $ref: '#/definitions/pagination'
+  preannouncementMessage:
+    type: object
+    xml:
+      name: 'preannouncementMessage'
+    properties:
+      header:
+        $ref: '#/definitions/header'
+      body:
+        $ref: '#/definitions/body'
+  pagination:
+    description: 'The details of the pagination.'
     type: object
     properties:
       size:
-        description: The requested number of results on each page
+        description: 'The requested number of results on each page.'
         format: int32
-        type: integer
         example: 10
+        type: integer
       totalElements:
-        description: Total number of results for this search query
+        description: 'Total number of results for this search query.'
         format: int32
-        type: integer
         example: 15
-      totalPages:
-        description: Total number of pages available for this search query and page size
-        format: int32
         type: integer
+      totalPages:
+        description: 'Total number of pages available for this search query and page size.'
+        format: int32
         example: 2
+        type: integer
       number:
         description: The current page number
         format: int32
-        type: integer
         example: 1
-  preannouncementMessageReadDto:
-    description: Preannouncement message
-    type: object
-    properties:
-      header:
-        $ref: '#/definitions/headerReadDto'
-      body:
-        $ref: '#/definitions/body'
-  headerReadDto:
-    description: ''
+        type: integer
+  header:
     type: object
     properties:
       sender:
-        $ref: '#/definitions/senderReadDto'
+        $ref: '#/definitions/sender'
       receiver:
         $ref: '#/definitions/receiver'
       contentType:
@@ -495,18 +539,19 @@ definitions:
         description: Date and time the message was send out by the sender.
         type: string
       errors:
-        description: Errors that were found in the preannouncement object.
+        description: 'Errors that were found in the preannouncement object.'
+        uniqueItems: false
         type: array
+        xml:
+          wrapped: true
         items:
-          $ref: '#/definitions/errorResponse'
+          $ref: '#/definitions/error'
   body:
-    description: ''
     type: object
     properties:
       preannouncement:
         $ref: '#/definitions/preannouncement'
-  senderReadDto:
-    description: ''
+  sender:
     type: object
     properties:
       vatNumber:
@@ -519,36 +564,27 @@ definitions:
         description: Gets or sets the NXT entity identifier.
         type: string
   receiver:
-    description: ''
     type: object
     properties:
       nxtEntityId:
         description: Gets or sets the NXT entity identifier.
         type: string
-  greenLightCheck:
-    description: ''
+  error:
     type: object
+    xml:
+      name: 'error'
     properties:
-      type:
-        description: The type of greenlight
+      errorCode:
+        description: 'Code indicating the type of error.'
         type: string
-        example: OnTerminal
-      status:
-        description: The actual status of the greenlight
+      errorDescription:
+        description: 'Human readable explanation of the error.'
         type: string
-        example: Green
-      remarks:
-        description: Any remarks concerning the current status of the greenlight
-        type: string
-      timestamp:
-        description: The timestamp of the greenlight
-        type: string
-        format: date-time
   nmotCsvInput:
-    description: The csv file used for importing NMoT messages
+    description: 'The csv file used for importing NMoT messages.'
     type: object
     example: 'Containernumber;Bill of lading;IMO;ETA ocean vessel;Shipping Line;Terminal;Nmot;Transport operator name;Transport operator vat;Transport operator NxtPort ID;Conveyance ID;Voyage;ET pickup;ET final delivery;Destination Locode;Destination terminalcode;Connecting vessel MAEU7192891;BA634249;9241061;2018-08-26T08:00:00Z;MSCU;1740;barge;VANUDEN;BE0893.405.632;NXT17000000132;6912345;HT62811;2018-01-09T09:00:00Z;2018-01-09T09:00:00Z;BEMEH;2450;9480215'
     properties:
       content:
-        description: The content of the csv file
+        description: 'The content of the csv file.'
         type: string
