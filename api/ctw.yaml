@@ -1,12 +1,12 @@
 swagger: '2.0'
 info:
   version: v1
-  title: Container Tare Weight API
+  title: Container Tare Weight API (Sandbox)
   description: 'Request the tare weight of any container to meet the SOLAS VGM (method 2) requirements.'
   termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
   contact:
     email: support@nxtport.eu
-host: api.nxtport.eu
+host: api-sb.nxtport.eu
 basePath: /ctw/v1
 schemes:
   - https
