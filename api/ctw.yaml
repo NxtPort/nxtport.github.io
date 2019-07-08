@@ -1,0 +1,150 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: Container Tare Weight API (Sandbox)
+  description: 'Request the tare weight of any container to meet the SOLAS VGM (method 2) requirements.'
+  termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
+  contact:
+    email: support@nxtport.eu
+host: api-sb.nxtport.eu
+basePath: /ctw/v1
+schemes:
+  - https
+security:
+  - Authorization: []
+    Subscription: []
+securityDefinitions:
+  Authorization:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: 'JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word "Bearer" and then a space in front of the access token. For example "Bearer f8e6d39a81fc4d31957086fe03630858".'
+  Subscription:
+    type: apiKey
+    in: header
+    name: Ocp-Apim-Subscription-Key
+    description: 'API subscription key. Assigned by NxtPort to your organization.'
+paths:
+  '/container/{containerNumber}':
+    get:
+      tags:
+        - CTW
+      summary: 'Access the tare weight and/or sizeType of a container. For testing purposes, you can use dummyprefix TESU in the containerNumber parameter.'
+      operationId: CtwLookup
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: containerNumber
+          description: 'The container number. Use dummyprefix TESU for testing purposes.'
+          type: string
+          required: true
+          default: 'TESU1234567'
+        - in: query
+          name: sizeOrWeight
+          description: 'Which container details would you like in the response.'
+          required: true
+          default: 'weight'
+          type: string
+          enum:
+            - size
+            - weight
+            - both
+      responses:
+        '200':
+          description: 'Success | Container number not found | Container prefix not found. Response object describes if call succeeded or not.'
+          schema:
+            $ref: '#/definitions/lookupResponse'
+          examples:
+            application/json: 
+              success: true
+              containerNumber: TESU1234567
+              tareWeight: 2200
+              metricType: Kg
+              isoType: null
+              warningMessage: ISO size-type service is not activated
+              errorMessage: null
+              suggestedContainerNumber: null
+        '400':
+          description: 'Container number is required | Container number is invalid'
+          schema:
+            $ref: '#/definitions/lookupResponse'
+          examples:
+            application/json:
+              success: false
+              containerNumber: null
+              tareWeight: null
+              metricType: null
+              isoType: null
+              warningMessage: null
+              errorMessage: Container number is invalid
+              suggestedContainerNumber: null
+        '401':
+          description: 'Authorization header required | Invalid token | Access is denied'
+          schema:
+            $ref: '#/definitions/lookupResponse'
+          examples:
+            application/json: 
+              success: false
+              containerNumber: null
+              tareWeight: null
+              metricType: null
+              isoType: null
+              warningMessage: null
+              errorMessage: Invalid token
+              suggestedContainerNumber: null
+        '402':
+          description: 'Insufficient balance'
+          schema:
+            $ref: '#/definitions/lookupResponse'
+          examples:
+            application/json: 
+              success: false
+              containerNumber: null
+              tareWeight: null
+              metricType: null
+              isoType: null
+              warningMessage: null
+              errorMessage: Insufficient balance
+              suggestedContainerNumber: null
+        '500':
+          description: 'Unexpected error'
+          schema:
+            $ref: '#/definitions/lookupResponse'
+          examples:
+            application/json: 
+              success: false
+              containerNumber: null
+              tareWeight: null
+              metricType: null
+              isoType: null
+              warningMessage: null
+              errorMessage: An unexpected error occured
+              suggestedContainerNumber: null
+definitions:
+  lookupResponse:
+    description: 'Response for the lookup.'
+    type: object
+    properties:
+      success:
+        type: boolean
+      containerNumber:
+        type: string
+        example: 'TESU1234567'
+      tareWeight:
+        type: integer
+      metricType:
+        type: string
+        example: 'Kg'
+      isoType:
+        type: string
+        example: '22G1'
+      warningMessage:
+        type: string
+      errorMessage:
+        type: string
+      suggestedContainerNumber:
+        type: string
+        example: 'TESU1234567'
