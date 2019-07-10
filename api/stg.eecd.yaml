@@ -528,7 +528,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/complete':
     put:
       tags:
@@ -822,8 +822,7 @@ paths:
     get:
       tags:
         - Cleanings
-      summary: "Get a paged overview of cleaning actions that are active, or have been in the last 72 hours.\r\nNB: Scheduled for removal in v2; should be replaced by v1/cleaningactions."
-      description: "<p>\r\n                    Gets a paged overview of cleaning actions for an organisation. Include cleaning actions\r\n                    that are currently active (being Planned or Completed), or have been in the last 72 hours\r\n                    (being Cancelled and SignedOff).\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
+      summary: 'OBSOLETE: Scheduled for removal in v2; should be replaced by v1/cleaningactions.'
       operationId: V1CleaningactionsSummaryGet
       consumes: []
       produces:
@@ -849,7 +848,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
       deprecated: true
   '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/invalidate':
     put:
@@ -1058,7 +1057,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/eecds/logs:
     get:
       tags:
@@ -1088,7 +1087,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/eftcocleaningcodes:
     get:
       tags:
@@ -1487,7 +1486,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{id}':
     get:
       tags:
@@ -1610,7 +1609,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
   /v1/equipment/bulk:
@@ -1646,7 +1645,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
   '/v1/equipment/{equipmentId}/cleanliness':
@@ -1673,6 +1672,177 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/quipment.EquipmentCleanliness'
+  /v1/organisations/identification-codes:
+    get:
+      tags:
+        - IdentificationCode
+      summary: Attempt to translate a duns/vat/eori of an organisation to the duns/vat/eori they registered with.
+      operationId: V1OrganisationsIdentification-codesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: type
+          in: query
+          required: false
+          type: string
+          enum:
+            - Duns
+            - Vat
+            - Eori
+        - name: code
+          in: query
+          required: false
+          type: string
+        - name: target
+          in: query
+          required: false
+          type: string
+          enum:
+            - Duns
+            - Vat
+            - Eori
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: string
+    post:
+      tags:
+        - IdentificationCode
+      summary: Create a duns/vat/eori alias for a given organisation.
+      operationId: V1OrganisationsIdentification-codesPost
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: dto
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeCreate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+  '/v1/organisations/identification-codes/{id}':
+    get:
+      tags:
+        - IdentificationCode
+      summary: Read a duns/vat/eori alias.
+      operationId: V1OrganisationsIdentification-codesByIdGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+    put:
+      tags:
+        - IdentificationCode
+      summary: Update a duns/vat/eori alias.
+      operationId: V1OrganisationsIdentification-codesByIdPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeCreate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+    delete:
+      tags:
+        - IdentificationCode
+      summary: Delete a duns/vat/eori alias.
+      operationId: V1OrganisationsIdentification-codesByIdDelete
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+  '/v1/organisations/{organisationId}/identification-codes':
+    get:
+      tags:
+        - IdentificationCode
+      summary: get all duns/vat/eori aliasses for a given organisation.
+      operationId: V1OrganisationsByOrganisationIdIdentification-codesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: organisationId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/products/locations/integrated:
     get:
       tags:
@@ -1700,7 +1870,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
     post:
       tags:
         - IntegratedLoadingLocations
@@ -1894,7 +2064,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
     delete:
       tags:
         - IntegratedLoadingLocations
@@ -1927,7 +2097,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
   /v1/logs/integration/latest:
     get:
       tags:
@@ -1944,7 +2114,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/organisations/{organisationId}/logs/integration/search':
     get:
       tags:
@@ -1987,14 +2157,25 @@ paths:
             - Accepted
         - name: reference
           in: query
-          description: The full transport reference. Partial searches are not supported.
+          description: The full transport reference. Optional. Partial searches are not supported.
           required: false
           type: string
         - name: documentIdentifier
           in: query
-          description: The full document identifier. Partial searches are not supported.
+          description: The full document identifier. Optional. Partial searches are not supported.
           required: false
           type: string
+        - name: status
+          in: query
+          description: 'The status of the original transport order. Optional. Either of the following: Original, Updated, Cancelled or Other.'
+          required: false
+          type: string
+          enum:
+            - ORIGINAL
+            - UPDATED
+            - CANCELLED
+            - CANCELED
+            - OTHER
         - name: page
           in: query
           description: The index of the page. Optional; defaults to 1.
@@ -2011,7 +2192,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/logs/integration/search:
     get:
       tags:
@@ -2056,6 +2237,17 @@ paths:
           description: The full document identifier. Partial searches are not supported.
           required: false
           type: string
+        - name: status
+          in: query
+          description: 'The status of the original transport order. Optional. Either of the following: Original, Updated, Cancelled or Other.'
+          required: false
+          type: string
+          enum:
+            - ORIGINAL
+            - UPDATED
+            - CANCELLED
+            - CANCELED
+            - OTHER
         - name: page
           in: query
           description: The index of the page. Optional; defaults to 1.
@@ -2072,7 +2264,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/licensee:
     get:
       tags:
@@ -2256,7 +2448,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/organisations/{organisationId}/licenses':
     get:
       tags:
@@ -2428,7 +2620,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
   '/v1/products/{productId}/loaders/{loaderId}/locations':
     get:
       tags:
@@ -2469,7 +2661,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/products/locations/search:
     get:
       tags:
@@ -2517,7 +2709,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{equipmentId}/loads/assign':
     post:
       tags:
@@ -2985,7 +3177,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+              $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
         '204':
           description: Success
   '/v1/equipment/{equipmentId}/loads/{loadId}/unofficialproof':
@@ -3110,8 +3302,8 @@ paths:
     get:
       tags:
         - Loads
-      summary: Download a document from an non-registeredproof load.
-      description: "<p>\r\n            Offers a document attached to an non-registeredproof load as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      summary: Download a document from an non-registered load.
+      description: "<p>\r\n            Offers a document attached to an non-registered load as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdUnofficialproofByAttachmentIdGet
       consumes: []
       produces:
@@ -3151,8 +3343,8 @@ paths:
     get:
       tags:
         - Loads
-      summary: Download a document from an non-registeredproof load.
-      description: "<p>\r\n            Offers a document attached to an non-registeredproof load as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      summary: Download a document from an non-registered load.
+      description: "<p>\r\n            Offers a document attached to an non-registered load as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdAttachmentsByAttachmentIdGet
       consumes: []
       produces:
@@ -3192,6 +3384,8 @@ paths:
     put:
       tags:
         - Loads
+      summary: "Allows to accept a load in case there is no digital eecd. A comment will be added to the accepted load\r\nindicating that it was accepted based on a paper eecd, including an optional comment."
+      description: "<p>\r\n            Allows to accept a load in case there is no digital eecd. A comment will be added to the accepted load\r\n            indicating that it was accepted based on a paper eecd, including an optional comment.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdAcceptpaperPut
       consumes:
         - application/xml
@@ -3207,16 +3401,19 @@ paths:
       parameters:
         - name: equipmentId
           in: path
+          description: The ID of the equipment.
           required: true
           type: string
           format: uuid
         - name: loadId
           in: path
+          description: The ID of the load.
           required: true
           type: string
           format: uuid
         - name: dto
           in: body
+          description: 'Contains all required info, such as the productId if it was not yet known, and'
           required: false
           schema:
             $ref: '#/definitions/BookletData.LoadAcceptationForPaperEecd'
@@ -3438,7 +3635,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
     post:
       tags:
         - Organisations
@@ -3816,7 +4013,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
   /v1/products/bulk:
@@ -3852,7 +4049,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
   '/v1/products/{productId}/sds':
@@ -3990,7 +4187,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
   '/v1/products/{productId}/sds/{language}/blob':
     put:
       tags:
@@ -4252,7 +4449,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/users:
     get:
       tags:
@@ -4686,6 +4883,9 @@ definitions:
         type: string
       loadingLocation:
         type: string
+      transportOrderId:
+        format: uuid
+        type: string
   BookletData.LoadProcessState:
     type: object
     properties:
@@ -4998,7 +5198,7 @@ definitions:
         $ref: '#/definitions/BookletData.CleaningProcess'
       cleanerComments:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5275,7 +5475,7 @@ definitions:
       version:
         format: uuid
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5332,7 +5532,7 @@ definitions:
         items:
           format: uuid
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5518,6 +5718,7 @@ definitions:
           - CompletelyClean
           - PartiallyDirty
           - CompletelyDirty
+          - Unknown
         type: string
       compartments:
         type: object
@@ -5541,13 +5742,14 @@ definitions:
         enum:
           - Clean
           - Dirty
+          - Unknown
         type: string
       polymerCompleteness:
         enum:
           - PolymerComplete
           - PolymerIncomplete
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5649,7 +5851,7 @@ definitions:
         type: string
       isIso6346Compliant:
         type: boolean
-  MasterData.BulkResult:
+  Common.BulkResult:
     type: object
     properties:
       ref:
@@ -5698,6 +5900,82 @@ definitions:
         type: string
       containerId:
         type: string
+  IdentificationCode.IdentificationCodeCreate:
+    required:
+      - organisationId
+      - type
+      - code
+      - name
+    type: object
+    properties:
+      organisationId:
+        format: uuid
+        type: string
+      type:
+        enum:
+          - Duns
+          - Vat
+          - Eori
+        type: string
+      code:
+        type: string
+      name:
+        type: string
+      isVerified:
+        type: boolean
+  IdentificationCode.IdentificationCodeDetail:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      organisationId:
+        format: uuid
+        type: string
+      type:
+        enum:
+          - Duns
+          - Vat
+          - Eori
+        type: string
+      code:
+        type: string
+      name:
+        type: string
+      isVerified:
+        type: boolean
+      createdOn:
+        format: date-time
+        type: string
+      lastUpdatedOn:
+        format: date-time
+        type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
+    type: object
+    properties:
+      hitCountTotal:
+        format: int64
+        type: integer
+      hitCountPage:
+        format: int64
+        type: integer
+      pageCurrent:
+        format: int32
+        type: integer
+      pageSize:
+        format: int32
+        type: integer
+      pageTotal:
+        format: int32
+        type: integer
+      hasMorePages:
+        type: boolean
+      comment:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
   IntegratedLoadingLocation.Input.IntegratedLoadingLocationCreate:
     required:
       - description
@@ -5760,7 +6038,7 @@ definitions:
       version:
         format: uuid
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5904,7 +6182,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5951,6 +6229,7 @@ definitions:
         enum:
           - ORIGINAL
           - UPDATED
+          - CANCELLED
           - CANCELED
           - OTHER
         type: string
@@ -6074,7 +6353,7 @@ definitions:
         items:
           format: uuid
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6204,7 +6483,7 @@ definitions:
         type: string
       description:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6256,6 +6535,8 @@ definitions:
       lastStatusDate:
         format: date-time
         type: string
+      isAcceptedByPaper:
+        type: boolean
       status:
         enum:
           - PLANNED
@@ -6325,7 +6606,9 @@ definitions:
           type: string
       comment:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+      unNumber:
+        type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6422,7 +6705,7 @@ definitions:
         type: string
       description:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.0.19149.12, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
