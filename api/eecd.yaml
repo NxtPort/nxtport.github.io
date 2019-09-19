@@ -53,9 +53,11 @@ paths:
       tags:
         - CleaningLocations
       summary: Create a new cleaning location.
-      description: "<p>\r\n            Each cleaning organisation should have at least one clenaing location, which is used to indicate\r\n            where cleanings were performed. A cleaning action cannot be started without also specifying the\r\n            location. Organisations that have access to the cleaning, will also be able to see the details\r\n            of the location, including address and phone number.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Each cleaning organisation should have at least one clenaing location, which is used to indicate\r\n            where cleanings were performed. A cleaning action cannot be started without also specifying the\r\n            location. Organisations that have access to the cleaning, will also be able to see the details\r\n            of the location, including address and phone number.\r\n                </p>\r\n<p>\r\n            The following address lines are permitted:\r\n                    <ul><li>Street and number</li><li>City</li><li>PostalCode</li><li>Country</li></ul></p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningsLocationsPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -107,6 +109,8 @@ paths:
       description: "<p>\r\n            Updates a specific cleaning location.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningsLocationsByIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -190,6 +194,8 @@ paths:
       description: "<p>\r\n            Assigns a user to a cleaning locations. This effectively adds the cleaning location to the list of\r\n            available locations for this user. If the user was already added to this location before, nothing happen\r\n            .\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningsLocationsByLocationIdUsersPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -210,8 +216,7 @@ paths:
           description: The body containing the ID of the user.
           required: false
           schema:
-            $ref: >-
-              #/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser
+            $ref: '#/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser'
       responses:
         '200':
           description: Success
@@ -224,6 +229,8 @@ paths:
       description: "<p>\r\n            Removes a user form a cleaning location, keeping them from selecting the location when starting a\r\n            cleaning action.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningsLocationsByLocationIdUsersDelete
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -244,8 +251,7 @@ paths:
           description: The body containing the user ID.
           required: false
           schema:
-            $ref: >-
-              #/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser
+            $ref: '#/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser'
       responses:
         '200':
           description: Success
@@ -259,6 +265,8 @@ paths:
       description: "<p>\r\n            Assigns several users at once to a cleaning location. If one or more users were already added,\r\n            they are skipped; no error will be raised.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningsLocationsByLocationIdUsersBulkPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -281,8 +289,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: >-
-                #/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser
+              $ref: '#/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser'
       responses:
         '200':
           description: Success
@@ -295,6 +302,8 @@ paths:
       description: "<p>\r\n            Removes several users form a cleaning location, keeping them from selecting the location when starting\r\n            a cleaning action.\r\n                 </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningsLocationsByLocationIdUsersBulkDelete
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -317,8 +326,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: >-
-                #/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser
+              $ref: '#/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser'
       responses:
         '200':
           description: Success
@@ -329,7 +337,7 @@ paths:
       tags:
         - CleaningLocations
       summary: Get all cleaning locations for a user.
-      description: "<p>\r\n            Gets a list of all cleaning locations to which a user has access.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Gets a list of all cleaning locations to which a user has access.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningsLocationsUsersGet
       consumes: []
       produces:
@@ -339,9 +347,7 @@ paths:
       parameters:
         - name: userId
           in: query
-          description: >-
-            The ID of the user. Optional. Takes the currently logged in user if
-            no ID is given.
+          description: The ID of the user. Optional. Takes the currently logged in user if no ID is given.
           required: false
           type: string
           format: uuid
@@ -360,6 +366,8 @@ paths:
       description: "<p>\r\n            Starts a new cleaning action. This is required to view the booklet containing the equipment history.\r\n            Only one active cleaning action is permitted per equipment.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdCleaningactionsPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -423,6 +431,8 @@ paths:
       description: "<p>\r\n            Updates a cleaning action. This can be done to any cleaning action that has not yet been signed off by\r\n            the driver.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -459,8 +469,8 @@ paths:
     get:
       tags:
         - Cleanings
-      summary: Get all active cleaning actions.
-      description: "<p>\r\n            Gets a list of all cleaning actions for the logged in organisation that are still planned or\r\n            have been completed. Cleanings that have been signed off by the driver will not appear in this\r\n            list. It is possible to view the cleanings of a specific equipmentID.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
+      summary: Search through the cleanings of an organisation.
+      description: "<p>\r\n            Get all cleanings for the logged in organisation. Optionally filter by equipment, date or status.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningactionsGet
       consumes: []
       produces:
@@ -468,9 +478,49 @@ paths:
         - application/json
         - text/json
       parameters:
-        - name: equipmentId
+        - name: search
           in: query
-          description: "Optional. When provided, only the active cleanings of the specified \r\n            equipment will be returned."
+          description: "A search string to find specific equipment, by either license plate or container\r\n            ID. Optional. If given, it needs to be at least 2 characters long. Spaces and special characters are filtered\r\n            from the search string."
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: The index of the page. Optional; defaults to 1.
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: The size of each page. Optiona; defaults to 20.
+          required: false
+          type: integer
+          format: int32
+        - name: dateStart
+          in: query
+          description: The first date that is taken into account when searching. Optional.
+          required: false
+          type: string
+          format: date-time
+        - name: dateEnd
+          in: query
+          description: The latest date that is taken into account when searching. Optional.
+          required: false
+          type: string
+          format: date-time
+        - name: status
+          in: query
+          description: "The status of cleanings that may appear in the list. Optional. If not given, all\r\n            cleanings will appear in the list."
+          required: false
+          type: string
+          enum:
+            - PLANNED
+            - COMPLETED
+            - SIGNEDOFF
+            - CANCELLED
+            - INVALID
+        - name: organisationId
+          in: query
+          description: The ID of the organisation that owns the cleanings. Only available to super admins.
           required: false
           type: string
           format: uuid
@@ -478,10 +528,8 @@ paths:
         '200':
           description: Success
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/complete':
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/complete':
     put:
       tags:
         - Cleanings
@@ -489,6 +537,8 @@ paths:
       description: "<p>\r\n            Completes a cleaning action. Similar to Update, with the main difference that this method alters the\r\n            state of the cleaning action. Only planned cleaning actions can be completed.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdCompletePut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -529,6 +579,8 @@ paths:
       description: "<p>\r\n            Sign off a cleaning action, typically done by the driver of the equipment. After the cleaning action\r\n            has been signed, it can no longer be modified. When calling this method, a credit will be spent from\r\n            the equipment operator's account.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n            {\r\n                \"DriverName\": \"John Doe\",\r\n                \"DriverComments\" : \"Cleaning performed okay, but...\",\r\n                \"Signature\": \"data:image/gif;base64,...\"\r\n            }\r\n                    </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdSignoffPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -567,9 +619,10 @@ paths:
         - Cleanings
       summary: Add a comment to the cleaning action.
       description: "<p>\r\n            Adds a comment to the cleaning action. This may be done after the driver has signed off the cleaning\r\n            action, and may be done more than once.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: >-
-        V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdPostsignoffcommentPost
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdPostsignoffcommentPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -693,8 +746,7 @@ paths:
         - Cleanings
       summary: Download a document attached to a cleaning action..
       description: "<p>\r\n            Returns the attached document as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: >-
-        V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdAttachmentByAttachmentIdGet
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdAttachmentByAttachmentIdGet
       consumes: []
       produces:
         - text/plain
@@ -732,6 +784,8 @@ paths:
       description: "<p>\r\n            Cancels a cleaning that has been started. Note that the cancelled cleaning still appears in logs\r\n            and the booklet containing the equipment history.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>EquipmentOperator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningIdCancelPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -764,12 +818,86 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.CleaningAction'
+  /v1/cleaningactions/summary:
+    get:
+      tags:
+        - Cleanings
+      summary: 'OBSOLETE: Scheduled for removal in v2; should be replaced by v1/cleaningactions.'
+      operationId: V1CleaningactionsSummaryGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: search
+          in: query
+          required: false
+          type: string
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
+      deprecated: true
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/invalidate':
+    put:
+      tags:
+        - Cleanings
+      summary: Invalidate a cleaning.
+      description: "<p>\r\n            Revokes a cleaning action, to be replaced by a paper version. Only completed cleaning actions can be invalidated.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdInvalidatePut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: equipmentId
+          in: path
+          description: The ID of the equipment.
+          required: true
+          type: string
+          format: uuid
+        - name: cleaningActionId
+          in: path
+          description: The ID of the cleaning action.
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          description: The body containing the information about the cleaning action.
+          required: false
+          schema:
+            $ref: '#/definitions/BookletData.CleaningInvalidation'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BookletData.CleaningAction'
   '/v1/credits/add/{amount}':
     post:
       tags:
         - Credits
       summary: Add credits to a wallet.
-      description: "<p>\r\n            Adds credits to the wallet in the form of a credit pack. A credit pack contains credits, as well as a\r\n            full history of all transactions made for these credits. As long as there is at least one active credit\r\n            pack containing a credit, \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>CommunityAdmin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Adds credits to the wallet in the form of a credit pack. A credit pack contains credits, as well as a\r\n            full history of all transactions made for these credits. As long as there is at least one active credit\r\n            pack containing a credit, the organisation is allowed to perform actions requiring credits.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1CreditsAddByAmountPost
       consumes: []
       produces:
@@ -779,13 +907,13 @@ paths:
       parameters:
         - name: amount
           in: path
-          description: The amount of credits that need to be added to the wallet.
+          description: The amount of credits that need to be added to the wallet. No more than 5000 credits are allowed per credit pack.
           required: true
           type: integer
           format: int32
         - name: organisationId
           in: query
-          description: "The ID of the organisation that receives the credits. Optional.\r\n            When omitted, the logged in user's organisation is used."
+          description: 'The ID of the organisation that receives the credits. Optional. When omitted, the logged in user''s organisation is used.'
           required: false
           type: string
           format: uuid
@@ -929,10 +1057,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: >-
-              #/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary,
-              Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral,
-              PublicKeyToken=null]]
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/eecds/logs:
     get:
       tags:
@@ -962,10 +1087,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: >-
-              #/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog,
-              Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral,
-              PublicKeyToken=null]]
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/eftcocleaningcodes:
     get:
       tags:
@@ -981,9 +1103,7 @@ paths:
       parameters:
         - name: lang
           in: query
-          description: >-
-            The language in which the descriptions need to be returned. Either
-            NL, EN, FR or DE.
+          description: 'The language in which the descriptions need to be returned. Either NL, EN, FR or DE.'
           required: false
           type: string
           enum:
@@ -1010,6 +1130,8 @@ paths:
       description: "<p>\r\n            Creates an EFTCO cleaning code, including descriptions in all supported languages. The name of the\r\n            updated code may not already exist, and all descriptions must be filled in. We currently support\r\n            the following languages: NL, EN, FR and DE. At least all of these languages must be present in the\r\n            DTO, but additional ones may be given if desired.\r\n                </p>\r\n<code><pre>\r\n            POST v1/eftcocleaningcodes\r\n            {\r\n                \"code\" : \"Hello World\",\r\n                \"descriptions\" : {\r\n                    \"EN\" : \"Hello world!\",\r\n                    \"NL\" : \"Hallo wereld!\",\r\n                    \"FR\" : \"Bonjour monde!\",\r\n                    \"DE\" : \"Gutentag Welt!\"\r\n                }\r\n            }\r\n            </pre></code>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1EftcocleaningcodesPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1021,9 +1143,7 @@ paths:
       parameters:
         - name: dto
           in: body
-          description: >-
-            The code, as well as descriptions in (at least) all supported
-            languages.
+          description: 'The code, as well as descriptions in (at least) all supported languages.'
           required: false
           schema:
             $ref: '#/definitions/ftcoCleaningCodes.EftcoCleaningCodeCreate'
@@ -1039,7 +1159,7 @@ paths:
       tags:
         - EftcoCleaningCodes
       summary: Check whether the cleaning would pass validation.
-      description: "<p>\r\n            Checks whether the set of used EFTCO cleaning codes is considered valid for the specified type of\r\n            cleaning. Standard cleanings have no demands other than that the passed Eftco cleaning codes need\r\n            to be known by the application, but polymer cleanings need to adhere to a specific set of required\r\n            and optional codes. If a code is optional, it needs to be accompanied by a comment explaining its\r\n            absense.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n            /equipment/cleaningactions/validate?type=polymer&amp;codes=E58,T01,E63,P10,E61,E62,E64,E77,E78,E72&amp;commented=E57,E56\r\n            \r\n            Result:\r\n            {\r\n                \"isValid\": false,\r\n                \"errors\": [\r\n                    \"Code E79 is required, but was not found.\",\r\n                    \"Code E90 is optional, but was not found, and was not yet commented.\",\r\n                    \"At least 1 of the following codes need(s) to be present: E35, P30.\"\r\n                ],\r\n                \"missingOptionalCodesCodes\": [\r\n                    \"E90\"\r\n                ]\r\n            }\r\n                </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n    <li>Seller</li>\r\n    <li>CommunityAdmin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Checks whether the set of used EFTCO cleaning codes is considered valid for the specified type of\r\n            cleaning. Standard cleanings have no demands other than that the passed Eftco cleaning codes need\r\n            to be known by the application, but polymer cleanings need to adhere to a specific set of required\r\n            and optional codes. If a code is optional, it needs to be accompanied by a comment explaining its\r\n            absense.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n            /equipment/cleaningactions/validate?type=polymer&amp;codes=E58,T01,E63,P10,E61,E62,E64,E77,E78,E72&amp;commented=E57,E56\r\n            \r\n            Result:\r\n            {\r\n                \"isValid\": false,\r\n                \"errors\": [\r\n                    \"Code E79 is required, but was not found.\",\r\n                    \"Code E90 is optional, but was not found, and was not yet commented.\",\r\n                    \"At least 1 of the following codes need(s) to be present: E35, P30.\"\r\n                ],\r\n                \"missingOptionalCodesCodes\": [\r\n                    \"E90\"\r\n                ]\r\n            }\r\n                </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EftcocleaningcodesValidateGet
       consumes: []
       produces:
@@ -1081,7 +1201,7 @@ paths:
       tags:
         - EftcoCleaningCodes
       summary: Check whether the cleaning would pass validation.
-      description: "<p>\r\n            Checks whether the set of used EFTCO cleaning codes is considered valid for the specified type of\r\n            cleaning. Standard cleanings have no demands other than that the passed Eftco cleaning codes need\r\n            to be known by the application, but polymer cleanings need to adhere to a specific set of required\r\n            and optional codes. If a code is optional, it needs to be accompanied by a comment explaining its\r\n            absense.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n            /equipment/cleaningactions/validate?type=polymer&amp;codes=E58,T01,E63,P10,E61,E62,E64,E77,E78,E72&amp;commented=E57,E56\r\n            \r\n            Result:\r\n            {\r\n                \"isValid\": false,\r\n                \"errors\": [\r\n                    \"Code E79 is required, but was not found.\",\r\n                    \"Code E90 is optional, but was not found, and was not yet commented.\",\r\n                    \"At least 1 of the following codes need(s) to be present: E35, P30.\"\r\n                ],\r\n                \"missingOptionalCodesCodes\": [\r\n                    \"E90\"\r\n                ]\r\n            }\r\n                </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n    <li>Seller</li>\r\n    <li>CommunityAdmin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Checks whether the set of used EFTCO cleaning codes is considered valid for the specified type of\r\n            cleaning. Standard cleanings have no demands other than that the passed Eftco cleaning codes need\r\n            to be known by the application, but polymer cleanings need to adhere to a specific set of required\r\n            and optional codes. If a code is optional, it needs to be accompanied by a comment explaining its\r\n            absense.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n            /equipment/cleaningactions/validate?type=polymer&amp;codes=E58,T01,E63,P10,E61,E62,E64,E77,E78,E72&amp;commented=E57,E56\r\n            \r\n            Result:\r\n            {\r\n                \"isValid\": false,\r\n                \"errors\": [\r\n                    \"Code E79 is required, but was not found.\",\r\n                    \"Code E90 is optional, but was not found, and was not yet commented.\",\r\n                    \"At least 1 of the following codes need(s) to be present: E35, P30.\"\r\n                ],\r\n                \"missingOptionalCodesCodes\": [\r\n                    \"E90\"\r\n                ]\r\n            }\r\n                </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentCleaningactionsValidateGet
       consumes: []
       produces:
@@ -1153,6 +1273,8 @@ paths:
       description: "<p>\r\n            Updates an EFTCo cleaning code. The same rules apply as for creating the EFTCO cleaning code.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1EftcocleaningcodesByIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1225,9 +1347,7 @@ paths:
       parameters:
         - name: code
           in: query
-          description: >-
-            Part of the cleaning code you're looking for. Optional; defaults to
-            all codes.
+          description: Part of the cleaning code you're looking for. Optional; defaults to all codes.
           required: false
           type: string
         - name: page
@@ -1302,6 +1422,8 @@ paths:
       description: "<p>\r\n            Creates a new equipment. No equipment with the same license plate or container ID may exist for the\r\n            same equipment owner.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1364,10 +1486,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: >-
-              #/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment,
-              Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral,
-              PublicKeyToken=null]]
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{id}':
     get:
       tags:
@@ -1404,6 +1523,8 @@ paths:
       description: "<p>\r\n            Updates an equipment. As with creating an equipment, the updated equipment has to have a unique license\r\n            plate or container ID within the organisation.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1463,6 +1584,8 @@ paths:
       description: "<p>\r\n            Import a list of pieces of equipment. The list has to adhere to a few rules:\r\n                    <ul><li>It may not be longer than 200 records;</li><li>Every record must have a unique reference greater than 0;</li></ul>\r\n            Equipment that is already known gets updated, whereas new equipment gets created. An overview of\r\n            all modifications is returned per reference.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n             [\r\n                     {\r\n                         \"ref\": 1,\r\n                         \"id\": \"08d5cc76-7dd3-d1ca-4f4b-e1aa5afb5a4e\",\r\n                         \"success\": true,\r\n                         \"validationErrors\": [],\r\n                         \"errorMessage\": \"\"\r\n                    },\r\n                    {\r\n                        \"ref\": 2,\r\n                        \"success\": false,\r\n                        \"validationErrors\": [\r\n                        {\r\n                            \"key\": \"LicensePlate\",\r\n                            \"errors\": [\r\n                                \"The LicensePlate field is required for type TANKTRAILER\"\r\n                            ]\r\n                        },\r\n                        {\r\n                            \"key\": \"NumberOfCompartments\",\r\n                            \"errors\": [\r\n                                \"The NumberOfCompartments field does not match the Compartments.\"\r\n                            ]\r\n                        }\r\n                    ],\r\n                    \"errorMessage\": \"The LicensePlate field is required for type TANKTRAILER\\nThe NumberOfCompartments field does not match the Compartments.\"\r\n                }\r\n            ]\r\n                    </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentImportPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1486,7 +1609,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
   /v1/equipment/bulk:
@@ -1497,6 +1620,8 @@ paths:
       description: "<p>\r\n            Deleted multiple pieces of equipment in bulk. Refer to Import equipment for a more detailed\r\n            explanation.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentBulkDelete
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1520,7 +1645,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
   '/v1/equipment/{equipmentId}/cleanliness':
@@ -1547,6 +1672,599 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/quipment.EquipmentCleanliness'
+  /v1/organisations/identification-codes:
+    get:
+      tags:
+        - IdentificationCode
+      summary: Attempt to translate a duns/vat/eori of an organisation to the duns/vat/eori they registered with.
+      operationId: V1OrganisationsIdentification-codesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: type
+          in: query
+          required: false
+          type: string
+          enum:
+            - Duns
+            - Vat
+            - Eori
+        - name: code
+          in: query
+          required: false
+          type: string
+        - name: target
+          in: query
+          required: false
+          type: string
+          enum:
+            - Duns
+            - Vat
+            - Eori
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: string
+    post:
+      tags:
+        - IdentificationCode
+      summary: Create a duns/vat/eori alias for a given organisation.
+      operationId: V1OrganisationsIdentification-codesPost
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: dto
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeCreate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+  '/v1/organisations/identification-codes/{id}':
+    get:
+      tags:
+        - IdentificationCode
+      summary: Read a duns/vat/eori alias.
+      operationId: V1OrganisationsIdentification-codesByIdGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+    put:
+      tags:
+        - IdentificationCode
+      summary: Update a duns/vat/eori alias.
+      operationId: V1OrganisationsIdentification-codesByIdPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeCreate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+    delete:
+      tags:
+        - IdentificationCode
+      summary: Delete a duns/vat/eori alias.
+      operationId: V1OrganisationsIdentification-codesByIdDelete
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+  '/v1/organisations/{organisationId}/identification-codes':
+    get:
+      tags:
+        - IdentificationCode
+      summary: get all duns/vat/eori aliasses for a given organisation.
+      operationId: V1OrganisationsByOrganisationIdIdentification-codesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: organisationId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
+  /v1/products/locations/integrated:
+    get:
+      tags:
+        - IntegratedLoadingLocations
+      summary: Get a paged list of all integrated loading locations.
+      description: "<p>\r\n                    Get a paged list of all integrated loading locations belonging to the logged in organisation.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsLocationsIntegratedGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
+    post:
+      tags:
+        - IntegratedLoadingLocations
+      summary: Create an integrated loading location.
+      description: "<p>\r\n                    Creates an integrated loading location, effectively connecting a product and loader with the location specifiers\r\n                    found in transport orders.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsLocationsIntegratedPost
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: dto
+          in: body
+          description: All info needed to create an integrated loading location.
+          required: false
+          schema:
+            $ref: '#/definitions/IntegratedLoadingLocation.Input.IntegratedLoadingLocationCreate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Entities.LoadingLocationData.IntegratedLoadingLocation'
+        '409':
+          description: Conflict
+          schema:
+            $ref: '#/definitions/Core.Entities.LoadingLocationData.IntegratedLoadingLocation'
+  '/v1/products/locations/integrated/{id}':
+    get:
+      tags:
+        - IntegratedLoadingLocations
+      summary: Get an integrated loading location by its ID.
+      description: "<p>\r\n                    Gets an integrated loading location by its ID.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsLocationsIntegratedByIdGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the integrated loading location.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IntegratedLoadingLocation.Output.IntegratedLoadingLocation'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/IntegratedLoadingLocation.Output.IntegratedLoadingLocation'
+    put:
+      tags:
+        - IntegratedLoadingLocations
+      summary: Update an integrated loading location by its ID.
+      description: "<p>\r\n                    Updates an integrated loading location by its ID.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsLocationsIntegratedByIdPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the integrated loading location.
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          description: 'All information needed to update the integrated loading location. Currently, only the description can be modified.'
+          required: false
+          schema:
+            $ref: '#/definitions/IntegratedLoadingLocation.Input.IntegratedLoadingLocationUpdate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IntegratedLoadingLocation.Output.IntegratedLoadingLocation'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/IntegratedLoadingLocation.Output.IntegratedLoadingLocation'
+    delete:
+      tags:
+        - IntegratedLoadingLocations
+      summary: Delete an integrated loading location by its ID.
+      description: "<p>\r\n                    Deletes an integrated loading location by its ID.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsLocationsIntegratedByIdDelete
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the integrated loading location.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: boolean
+        '404':
+          description: Not Found
+          schema:
+            type: boolean
+  '/v1/products/{productId}/locations/integrated/{uniqueReference}':
+    get:
+      tags:
+        - IntegratedLoadingLocations
+      summary: Get an integrated loading location for a given product by its unique reference.
+      description: "<p>\r\n                    Gets an integrated loading location for a given product by its unique reference.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsByProductIdLocationsIntegratedByUniqueReferenceGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: productId
+          in: path
+          description: The ID of the product.
+          required: true
+          type: string
+          format: uuid
+        - name: uniqueReference
+          in: path
+          description: 'The complete unique reference for the integrated loading location, based on the location specifiers.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IntegratedLoadingLocation.Output.IntegratedLoadingLocation'
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/IntegratedLoadingLocation.Output.IntegratedLoadingLocation'
+  /v1/products/locations/integrated/bulk:
+    post:
+      tags:
+        - IntegratedLoadingLocations
+      summary: Create or update a list of integrated loading locations.
+      description: "<p>\r\n                    Creates or updates a list of integrated loading locations.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsLocationsIntegratedBulkPost
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: locations
+          in: body
+          description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport'
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Common.BulkResult'
+    delete:
+      tags:
+        - IntegratedLoadingLocations
+      summary: Delete a list of integrated loading locations.
+      description: "<p>\r\n                    Deletes a list of integrated loading locations.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsLocationsIntegratedBulkDelete
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: locations
+          in: body
+          description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/IntegratedLoadingLocation.Input.IntegratedLoadingLocationDelete'
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Common.BulkResult'
+  /v1/logs/integration/latest:
+    get:
+      tags:
+        - IntegrationLog
+      summary: Get the most recent integration log entry for the logged in seller.
+      description: "<p>\r\n                    Gets the most recent integration log for the logged in seller. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1LogsIntegrationLatestGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
+  '/v1/organisations/{organisationId}/logs/integration/search':
+    get:
+      tags:
+        - IntegrationLog
+      summary: Search through all integrated log entries for a seller.
+      description: "<p>\r\n                    Gets a paged result containing all log entries that satisfy the given search parameters. Results are\r\n                    sorted in reverse chronological order. Organisations can only search through their own log entries.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsByOrganisationIdLogsIntegrationSearchGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: organisationId
+          in: path
+          description: The organisation ID of the seller.
+          required: true
+          type: string
+          format: uuid
+        - name: dateStart
+          in: query
+          description: An optional date from which the search should run.
+          required: false
+          type: string
+          format: date-time
+        - name: dateEnd
+          in: query
+          description: An optional date until which the search should run.
+          required: false
+          type: string
+          format: date-time
+        - name: type
+          in: query
+          description: 'An optional type. Either of the following: Rejected, AcceptedWithErrors, Accepted'
+          required: false
+          type: string
+          enum:
+            - Rejected
+            - AcceptedWithErrors
+            - Accepted
+        - name: reference
+          in: query
+          description: The full transport reference. Optional. Partial searches are not supported.
+          required: false
+          type: string
+        - name: documentIdentifier
+          in: query
+          description: The full document identifier. Optional. Partial searches are not supported.
+          required: false
+          type: string
+        - name: status
+          in: query
+          description: 'The status of the original transport order. Optional. Either of the following: Original, Updated, Cancelled or Other.'
+          required: false
+          type: string
+          enum:
+            - ORIGINAL
+            - UPDATED
+            - CANCELLED
+            - CANCELED
+            - OTHER
+        - name: page
+          in: query
+          description: The index of the page. Optional; defaults to 1.
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: The size of the page. Optional; defaults to 20.
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
+  /v1/logs/integration/search:
+    get:
+      tags:
+        - IntegrationLog
+      summary: Search through all integrated log entries.
+      description: "<p>\r\n                    Gets a paged result containing all log entries that satisfy the given search parameters. Results are\r\n                    sorted in reverse chronological order.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1LogsIntegrationSearchGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: dateStart
+          in: query
+          description: An optional date from which the search should run.
+          required: false
+          type: string
+          format: date-time
+        - name: dateEnd
+          in: query
+          description: An optional date until which the search should run.
+          required: false
+          type: string
+          format: date-time
+        - name: type
+          in: query
+          description: 'An optional type. Either of the following: Rejected, AcceptedWithErrors, Accepted'
+          required: false
+          type: string
+          enum:
+            - Rejected
+            - AcceptedWithErrors
+            - Accepted
+        - name: reference
+          in: query
+          description: The full transport reference. Partial searches are not supported.
+          required: false
+          type: string
+        - name: documentIdentifier
+          in: query
+          description: The full document identifier. Partial searches are not supported.
+          required: false
+          type: string
+        - name: status
+          in: query
+          description: 'The status of the original transport order. Optional. Either of the following: Original, Updated, Cancelled or Other.'
+          required: false
+          type: string
+          enum:
+            - ORIGINAL
+            - UPDATED
+            - CANCELLED
+            - CANCELED
+            - OTHER
+        - name: page
+          in: query
+          description: The index of the page. Optional; defaults to 1.
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: The size of the page. Optional; defaults to 20.
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/licensee:
     get:
       tags:
@@ -1614,6 +2332,8 @@ paths:
       description: "<p>\r\n            Creates a new license for an organisation. The license may not overlap with any existing active\r\n            licenses for the organisation.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1LicensesPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1642,6 +2362,8 @@ paths:
       description: "<p>\r\n            Updates a license. the updated license may not overlap with existing licenses.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1LicensesByIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1726,18 +2448,43 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: >-
-              #/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary,
-              Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral,
-              PublicKeyToken=null]]
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
+  '/v1/organisations/{organisationId}/licenses':
+    get:
+      tags:
+        - Licenses
+      summary: Get all licenses for a given organisation.
+      description: "<p>\r\n            Gets all licenses of an organisation. Organisations may only ask for their own license; only community\r\n            admins may view the license for other organisations.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Community Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n    <li>Location Manager</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsByOrganisationIdLicensesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: organisationId
+          in: path
+          description: The ID of the organisation.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/MasterData.License'
   /v1/products/locations:
     post:
       tags:
         - LoadingLocations
-      summary: Create a loading location.
+      summary: "Create a loading location.\r\n<b>NB: This is to be used for non-integrated sellers.</b>"
       description: "<p>\r\n            Creates a new loading location. Sellers are responsible for maintaining a list of locations where\r\n            their product may be loaded.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsLocationsPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1757,13 +2504,13 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Entities.LoadingLocationData.LoadingLocation'
+            $ref: '#/definitions/LoadingLocation.LoadingLocation'
   '/v1/products/locations/{id}':
     get:
       tags:
         - LoadingLocations
       summary: Get a specific loading location.
-      description: "<p>\r\n            Gets a specific loading location.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n    <li>Location Manager</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Gets a specific loading location.\r\n            <b>NB: This is to be used for non-integrated sellers.</b></p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n    <li>Location Manager</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsLocationsByIdGet
       consumes: []
       produces:
@@ -1781,14 +2528,16 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Entities.LoadingLocationData.LoadingLocation'
+            $ref: '#/definitions/LoadingLocation.LoadingLocation'
     put:
       tags:
         - LoadingLocations
-      summary: Update a loading location.
+      summary: "Update a loading location.\r\n<b>NB: This is to be used for non-integrated sellers.</b>"
       description: "<p>\r\n            Updates a loading location.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsLocationsByIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1814,11 +2563,11 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Entities.LoadingLocationData.LoadingLocation'
+            $ref: '#/definitions/LoadingLocation.LoadingLocation'
     delete:
       tags:
         - LoadingLocations
-      summary: Delete a loading location.
+      summary: "Delete a loading location.\r\n<b>NB: This is to be used for non-integrated sellers.</b>"
       description: "<p>\r\n            Deletes a loading location.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsLocationsByIdDelete
       consumes: []
@@ -1842,10 +2591,12 @@ paths:
     post:
       tags:
         - LoadingLocations
-      summary: Create mutliple loading locations.
+      summary: "Create multiple loading locations.\r\n<b>NB: This is to be used for non-integrated sellers.</b>"
       description: "<p>\r\n            Creates multiple loading locations. Loading locations that already exist are simply skipped, as very\r\n            little can be configured. Provide a list of loading locations, including a unique reference other than\r\n            0 for each of them.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsLocationsImportPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -1869,12 +2620,12 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
   '/v1/products/{productId}/loaders/{loaderId}/locations':
     get:
       tags:
         - LoadingLocations
-      summary: Get all loading locations for a specific product/loader combination.
+      summary: "Get all loading locations for a specific product/loader combination.\r\n<b>NB: This is to be used for non-integrated sellers.</b>"
       operationId: V1ProductsByProductIdLoadersByLoaderIdLocationsGet
       consumes: []
       produces:
@@ -1910,15 +2661,12 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: >-
-              #/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocationDto,
-              Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral,
-              PublicKeyToken=null]]
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/products/locations/search:
     get:
       tags:
         - LoadingLocations
-      summary: Search for loading locations.
+      summary: "Search for loading locations.\r\n<b>NB: This is to be used for non-integrated sellers.</b>"
       description: "<p>\r\n            Get all non-softdeleted permitted loading locations for a seller. Superadmins may provide an ID of\r\n            another seller, else the logged in organisation will be used. Optionally filter by product, loader,\r\n            or a combination of the two.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n    <li>Location Manager</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsLocationsSearchGet
       consumes: []
@@ -1929,9 +2677,7 @@ paths:
       parameters:
         - name: sellerId
           in: query
-          description: >-
-            The ID of the seller. Optional; defaults to the logged in
-            organisation.
+          description: The ID of the seller. Optional; defaults to the logged in organisation.
           required: false
           type: string
           format: uuid
@@ -1963,10 +2709,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: >-
-              #/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocationDto,
-              Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral,
-              PublicKeyToken=null]]
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{equipmentId}/loads/assign':
     post:
       tags:
@@ -1975,6 +2718,8 @@ paths:
       description: "<p>\r\n            Assigns a load to a piece of equipment. A load must be planned for one or more compartments, and must\r\n            be planned in the future. An existing product must be given, as well as an existing licensed loader.\r\n            none of the selected compartments may already have a planned load. The load will contain a log entry to\r\n            indicate it being created.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsAssignPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2040,6 +2785,8 @@ paths:
       description: "<p>\r\n            Updates a load, if the loader hasn't already accepted or rejected it. The same rules apply as if it\r\n            would be created; no compartments may have assigned loads already, and the product, seller and loader\r\n            must be licensed. The load will contain a log entry to indicate it being updated.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2116,6 +2863,8 @@ paths:
       description: "<p>\r\n            Accepts a planned load. If the load was planned without a specific product, it has to be given by the\r\n            loader. The load will contain a log entry to indicate it being accepted.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdAcceptPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2160,6 +2909,8 @@ paths:
       description: "<p>\r\n            Moves a load from one equipment to another. Both equipments must be owned by the operator, and the\r\n            receiving equipment may not yet have any planned loads for any of the compartments of the moved load.\r\n            The load will contain a log entry to indicate it being moved.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdMovePut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2202,6 +2953,8 @@ paths:
       description: "<p>\r\n            Rejects a planned load, if for whatever reason the loader decides not to continue performing the load.\r\n            The load will contain a log entry to indicate it being rejected, as well as a reason for the rejection.\r\n            A notification will be sent to the despatcher that requested the load.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdRejectPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2246,6 +2999,8 @@ paths:
       description: "<p>\r\n            Completes a load. When completing a load, the compartments that were actually loaded need to be \r\n            specified. These compartments need to be a subset of the compartments designated by the despatcher.\r\n            Upon completing a load, an EEcd credit will be spent from the loader's wallet. If no credits remain,\r\n            the load cannot be completed.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdCompletePut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2283,9 +3038,11 @@ paths:
       tags:
         - Loads
       summary: Add an non-registered load to an equipment.
-      description: "<p>\r\n            If the previous load found in the booklet does not match with the load found in the equipment,\r\n            an non-registered load may be added. This non-registered load is far less detailed than normal loads,\r\n            and needs to be accompanied by proof justifying the need for an non-registered load. Please refer\r\n            to <b>/equipment/{equipmentId}/loads/{loadId}/attachments</b> to upload documents to the \r\n            non-registered load.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            If the previous load found in the booklet does not match with the load found in the equipment,\r\n            an non-registered load may be added. This non-registered load is far less detailed than normal loads,\r\n            and needs to be accompanied by proof justifying the need for an non-registered load. Please refer\r\n            to <b>/equipment/{equipmentId}/loads/{loadId}/attachments</b> to upload documents to the \r\n            non-registered load.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsAssignunofficialPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2317,9 +3074,11 @@ paths:
       tags:
         - Loads
       summary: Add an non-registered load to an equipment.
-      description: "<p>\r\n            If the previous load found in the booklet does not match with the load found in the equipment,\r\n            an non-registered load may be added. This non-registered load is far less detailed than normal loads,\r\n            and needs to be accompanied by proof justifying the need for an non-registered load. Please refer\r\n            to <b>/equipment/{equipmentId}/loads/{loadId}/attachments</b> to upload documents to the \r\n            non-registered load.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            If the previous load found in the booklet does not match with the load found in the equipment,\r\n            an non-registered load may be added. This non-registered load is far less detailed than normal loads,\r\n            and needs to be accompanied by proof justifying the need for an non-registered load. Please refer\r\n            to <b>/equipment/{equipmentId}/loads/{loadId}/attachments</b> to upload documents to the \r\n            non-registered load.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsAddnonregisteredPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2350,8 +3109,8 @@ paths:
     get:
       tags:
         - Loads
-      summary: Search active loads.
-      description: "<p>\r\n            Get all loads for the logged in user. Optionally filter by transport reference\r\n            (customerReference) or equipment. Transport reference needs to exactly match, whereas the\r\n            equipmentsearch may be partial. Loads may be filtered by state as well. Completed loads will\r\n            never appear in this list.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      summary: Search through the loads of an organisation.
+      description: "<p>\r\n            Get all loads for the logged in user. Optionally filter by transport reference\r\n            (customerReference) or equipment. Transport reference needs to exactly match, whereas the\r\n            equipmentsearch may be partial. Loads may be filtered by state as well.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1LoadsGet
       consumes: []
       produces:
@@ -2383,23 +3142,19 @@ paths:
           format: int32
         - name: dateStart
           in: query
-          description: >-
-            The first date that is taken into account when searching. Optional;
-            defaults to 7 days ago.
+          description: The first date that is taken into account when searching. Optional.
           required: false
           type: string
           format: date-time
         - name: dateEnd
           in: query
-          description: >-
-            The latest date that is taken into account when searching. Optional;
-            defaults to now.
+          description: The latest date that is taken into account when searching. Optional.
           required: false
           type: string
           format: date-time
         - name: status
           in: query
-          description: "The status of loads that may appear in the list. Optional. If not given, all\r\n            loads other than completed loads will appear in the list."
+          description: "The status of loads that may appear in the list. Optional. If not given, all states\r\n            will appear in the list."
           required: false
           type: string
           enum:
@@ -2408,19 +3163,21 @@ paths:
             - COMPLETED
             - REJECTED
             - CANCELLED
-            - NONREGISTERED
             - MOVED
             - UPDATED
+            - NONREGISTERED
+        - name: location
+          in: query
+          description: "A search string to find only those loads with loading locations containing this string. Optional;\r\n            when omitted, any loading location will do. As the loading location is a free text field entered by the despatcher, results may vary."
+          required: false
+          type: string
       responses:
         '200':
           description: Success
           schema:
             type: array
             items:
-              $ref: >-
-                #/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary,
-                Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral,
-                PublicKeyToken=null]]
+              $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
         '204':
           description: Success
   '/v1/equipment/{equipmentId}/loads/{loadId}/unofficialproof':
@@ -2545,8 +3302,8 @@ paths:
     get:
       tags:
         - Loads
-      summary: Download a document from an non-registeredproof load.
-      description: "<p>\r\n            Offers a document attached to an non-registeredproof load as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      summary: Download a document from an non-registered load.
+      description: "<p>\r\n            Offers a document attached to an non-registered load as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdUnofficialproofByAttachmentIdGet
       consumes: []
       produces:
@@ -2572,6 +3329,11 @@ paths:
           required: true
           type: string
           format: uuid
+        - name: downloadToDisk
+          in: query
+          description: 'Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.'
+          required: false
+          type: boolean
       responses:
         '200':
           description: Success
@@ -2581,8 +3343,8 @@ paths:
     get:
       tags:
         - Loads
-      summary: Download a document from an non-registeredproof load.
-      description: "<p>\r\n            Offers a document attached to an non-registeredproof load as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      summary: Download a document from an non-registered load.
+      description: "<p>\r\n            Offers a document attached to an non-registered load as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdLoadsByLoadIdAttachmentsByAttachmentIdGet
       consumes: []
       produces:
@@ -2608,11 +3370,58 @@ paths:
           required: true
           type: string
           format: uuid
+        - name: downloadToDisk
+          in: query
+          description: 'Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.'
+          required: false
+          type: boolean
       responses:
         '200':
           description: Success
           schema:
             $ref: '#/definitions/Models.FileResponse'
+  '/v1/equipment/{equipmentId}/loads/{loadId}/acceptpaper':
+    put:
+      tags:
+        - Loads
+      summary: "Allows to accept a load in case there is no digital eecd. A comment will be added to the accepted load\r\nindicating that it was accepted based on a paper eecd, including an optional comment."
+      description: "<p>\r\n            Allows to accept a load in case there is no digital eecd. A comment will be added to the accepted load\r\n            indicating that it was accepted based on a paper eecd, including an optional comment.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdLoadsByLoadIdAcceptpaperPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: equipmentId
+          in: path
+          description: The ID of the equipment.
+          required: true
+          type: string
+          format: uuid
+        - name: loadId
+          in: path
+          description: The ID of the load.
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          description: 'Contains all required info, such as the productId if it was not yet known, and'
+          required: false
+          schema:
+            $ref: '#/definitions/BookletData.LoadAcceptationForPaperEecd'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BookletData.Load'
   /v1/lookups/languages:
     get:
       tags:
@@ -2629,7 +3438,9 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Users.Output.User'
+            type: array
+            items:
+              $ref: '#/definitions/OrganisationData.Api.Abstractions.Models.Lookups.Language'
   /v1/lookups/timezones:
     get:
       tags:
@@ -2651,7 +3462,145 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Users.Output.User'
+            type: array
+            items:
+              $ref: '#/definitions/OrganisationData.Api.Abstractions.Models.Lookups.TimeZone'
+  /v1/lookups/types/addresses:
+    get:
+      tags:
+        - Lookups
+      operationId: V1LookupsTypesAddressesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+  /v1/lookups/states/cleaningactions:
+    get:
+      tags:
+        - Lookups
+      operationId: V1LookupsStatesCleaningactionsGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+  /v1/lookups/types/cleaningactions:
+    get:
+      tags:
+        - Lookups
+      operationId: V1LookupsTypesCleaningactionsGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+  /v1/lookups/types/documents:
+    get:
+      tags:
+        - Lookups
+      operationId: V1LookupsTypesDocumentsGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+  /v1/lookups/types/equipment:
+    get:
+      tags:
+        - Lookups
+      operationId: V1LookupsTypesEquipmentGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+  /v1/lookups/types/loads:
+    get:
+      tags:
+        - Lookups
+      operationId: V1LookupsTypesLoadsGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+  /v1/lookups/types/products:
+    get:
+      tags:
+        - Lookups
+      operationId: V1LookupsTypesProductsGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
+  /v1/lookups/types/transportorders:
+    get:
+      tags:
+        - Lookups
+      operationId: V1LookupsTypesTransportordersGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              type: string
   /v1/organisations:
     get:
       tags:
@@ -2686,10 +3635,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: >-
-              #/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation,
-              Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral,
-              PublicKeyToken=null]]
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
     post:
       tags:
         - Organisations
@@ -2697,6 +3643,8 @@ paths:
       description: "<p>\r\n            Creates an organisation on the Nallian platform. Choose country code 52 for Belgium.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Eecd Provisioning Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1OrganisationsPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2748,6 +3696,8 @@ paths:
       description: "<p>\r\n            Update details such as contact information and VAT/DUNS/EORI codes.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Eecd Provisioning Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1OrganisationsByOrganisationIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2910,7 +3860,7 @@ paths:
       tags:
         - Products
       summary: Search for one or more products.
-      description: "<p>\r\n            Gets a list of all products that satisfy the search conditions. You'll need to know the\r\n            seller, and at least part of the name of the product in order to search. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Gets a list of all products that satisfy the search conditions. You'll need to know the\r\n            seller, and at least part of the name or article number of the product in order to search.\r\n            Searching is case-insensitive, but special characters such as spaces and dashes are\r\n            <b>not</b> filtered out.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsGet
       consumes: []
       produces:
@@ -2920,13 +3870,13 @@ paths:
       parameters:
         - name: sellerId
           in: query
-          description: the ID of the seller.
+          description: The ID of the seller.
           required: false
           type: string
           format: uuid
         - name: search
           in: query
-          description: "(Part of) the name of the product. Needs to be at least 2 characters\r\n            long."
+          description: "(Part of) the name or article number of the product. Needs to be at least 2 characters\r\n            long."
           required: false
           type: string
       responses:
@@ -2945,6 +3895,8 @@ paths:
       description: "<p>\r\n            Creates a new product. Its article number and UN number must be unique in the database. \r\n            If the article number or UN number already exist, it assumed that the product needs to\r\n            be updated.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -2975,6 +3927,8 @@ paths:
       description: "<p>\r\n            Updates a product.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsByIdPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -3034,6 +3988,8 @@ paths:
       description: "<p>\r\n            Create or update a list of products. The list has to adhere to a few rules:\r\n                    <ul><li>It may not be longer than 200 records;</li><li>Every record must have a unique reference greater than 0;</li></ul>\r\n            Products that are already known get updated, whereas new products gets created. An overview\r\n            of all modifications is returned per reference.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n             [\r\n                     {\r\n                         \"ref\": 1,\r\n                         \"id\": \"08d5cc76-7dd3-d1ca-4f4b-e1aa5afb5a4e\",\r\n                         \"success\": true,\r\n                         \"validationErrors\": [],\r\n                         \"errorMessage\": \"\"\r\n                    },\r\n                    {\r\n                        \"ref\": 2,\r\n                        \"success\": false,\r\n                        \"validationErrors\": [\r\n                        {\r\n                            \"key\": \"ArticleName\",\r\n                            \"errors\": [\r\n                                \"The article name may not be empty.\"\r\n                            ]\r\n                        }\r\n                    ],\r\n                    \"errorMessage\": \"The article name may not be empty.\"\r\n                }\r\n            ]\r\n                    </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsImportPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -3057,7 +4013,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
   /v1/products/bulk:
@@ -3068,6 +4024,8 @@ paths:
       description: "<p>\r\n            Deletes multiple products. Very similar to import, with the difference that any product that\r\n            is found, gets deleted.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsBulkDelete
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -3091,7 +4049,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
   '/v1/products/{productId}/sds':
@@ -3135,6 +4093,8 @@ paths:
       description: "<p>\r\n            Update the SDS information of a product.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsByProductIdSdsPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -3202,6 +4162,8 @@ paths:
       description: "<p>\r\n            Import one or more SDS definitions. Refer to import products for more information on the\r\n            bulk import process.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1ProductsSdsImportPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -3225,7 +4187,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/MasterData.BulkResult'
+              $ref: '#/definitions/Common.BulkResult'
   '/v1/products/{productId}/sds/{language}/blob':
     put:
       tags:
@@ -3393,7 +4355,133 @@ paths:
             type: array
             items:
               $ref: '#/definitions/MasterData.SdsInfo'
+  /v1/transportorders:
+    post:
+      tags:
+        - TransportOrder
+      summary: Import a transport order.
+      description: "<p>\r\n                    Create, update or cancel a transport order, depending on its state. The XML is parsed, and stored\r\n                    if we could determine both the Seller and the EquipmentOperator based on its contents. Even if it is\r\n                    stored, it might be that one or more delivery note lines contain errors (product not found, no loading\r\n                    location, etc).\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Eecd Transport Order Provider</li>\r\n  </ul>\r\n</p>"
+      operationId: V1TransportordersPost
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: input
+          in: body
+          description: The full transport order as XML.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/TransportOrders.Output.TransportOrder'
+        '400':
+          description: Bad Request
+        '406':
+          description: Not Acceptable
+        '409':
+          description: Conflict
+  '/v1/organisations/{sellerId}/transportorders/{transportReference}':
+    get:
+      tags:
+        - TransportOrder
+      summary: Get a transport order by its transport reference.
+      description: "<p>\r\n                    Gets the transport order with the specified transport reference. In the case of Elemica, this would\r\n                    be the shipment number. As this shipment number is only guaranteed to be unique within an organisation,\r\n                    the seller ID needs to be provided.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsBySellerIdTransportordersByTransportReferenceGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: sellerId
+          in: path
+          description: The organisation ID of the seller.
+          required: true
+          type: string
+          format: uuid
+        - name: transportReference
+          in: path
+          description: 'The reference that uniquely defines the transport order. In the case of Elemica, this would be the shipment number.'
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/TransportOrders.Output.TransportOrder'
+  /v1/organisations/transportorders:
+    get:
+      tags:
+        - TransportOrder
+      summary: Get all transport orders for the logged in organisation.
+      description: "<p>\r\n                    Get a paged list of all transport orders where the logged in organisation is either the seller or\r\n                    the equipment operator.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsTransportordersGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: page
+          in: query
+          description: The index of the page. Optional; defaults to 1.
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: The maximum amount of results per page. Optional; defaults to 20.
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/users:
+    get:
+      tags:
+        - Users
+      summary: Get all users within the logged in users' organisation.
+      description: "<p>\r\n            Gets a paged list of all users within the logged in user's organisation. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Community Admin</li>\r\n    <li>Location Manager</li>\r\n    <li>Viewer</li>\r\n  </ul>\r\n</p>"
+      operationId: V1UsersGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: page
+          in: query
+          description: The index of the page. Optional; defaults to 1.
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: The size of the page; defaults to 20.
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Users.Output.User'
     post:
       tags:
         - Users
@@ -3401,6 +4489,8 @@ paths:
       description: "<p>\r\n            Provide a more detailed description of the method.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Eecd Provisioning Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1UsersPost
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -3452,6 +4542,8 @@ paths:
       description: "<p>\r\n            Updates a specific user, if it is part of an organisation within the EEcd community.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Eecd Provisioning Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1UsersByUseridPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -3553,6 +4645,8 @@ paths:
       description: "<p>\r\n            Update the list of authorization roles to which a user has access.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Eecd Provisioning Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1UsersByUserIdRolesPut
       consumes:
+        - application/xml
+        - text/xml
         - application/json-patch+json
         - application/json
         - text/json
@@ -3652,14 +4746,52 @@ definitions:
     properties:
       key:
         type: string
-      cleanings:
-        type: array
-        items:
-          $ref: '#/definitions/BookletData.HistoricalCleaning'
       loads:
         type: array
         items:
           $ref: '#/definitions/BookletData.HistoricalLoad'
+      cleanings:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.HistoricalCleaning'
+  BookletData.HistoricalLoad:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      lastStatusDate:
+        format: date-time
+        type: string
+      status:
+        enum:
+          - PLANNED
+          - ACCEPTED
+          - COMPLETED
+          - REJECTED
+          - CANCELLED
+          - MOVED
+          - UPDATED
+          - NONREGISTERED
+        type: string
+      product:
+        $ref: '#/definitions/BookletData.Product'
+      loadDetails:
+        $ref: '#/definitions/BookletData.LoadDetail'
+      loadProcessStates:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.LoadProcessState'
+      customerReference:
+        type: string
+      attachments:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.Attachment'
+      referenceDate:
+        format: date-time
+        type: string
+        readOnly: true
   BookletData.HistoricalCleaning:
     type: object
     properties:
@@ -3673,6 +4805,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/BookletData.PostSignoffComment'
+      referenceDate:
+        format: date-time
+        type: string
+        readOnly: true
       id:
         format: uuid
         type: string
@@ -3685,6 +4821,7 @@ definitions:
           - COMPLETED
           - SIGNEDOFF
           - CANCELLED
+          - INVALID
         type: string
       cleanedBy:
         $ref: '#/definitions/BookletData.LocationData'
@@ -3709,53 +4846,6 @@ definitions:
         type: string
       isUnaccompanied:
         type: boolean
-  BookletData.HistoricalLoad:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      lastStatusDate:
-        format: date-time
-        type: string
-      status:
-        enum:
-          - PLANNED
-          - ACCEPTED
-          - COMPLETED
-          - REJECTED
-          - CANCELLED
-          - NONREGISTERED
-          - MOVED
-          - UPDATED
-        type: string
-      product:
-        $ref: '#/definitions/BookletData.Product'
-      loadDetails:
-        $ref: '#/definitions/BookletData.LoadDetail'
-      loadProcessStates:
-        type: array
-        items:
-          $ref: '#/definitions/BookletData.LoadProcessState'
-      customerReference:
-        type: string
-      attachments:
-        type: array
-        items:
-          $ref: '#/definitions/BookletData.Attachment'
-  BookletData.CleaningInfo:
-    type: object
-    properties:
-      codes:
-        type: array
-        items:
-          type: string
-      additional:
-        type: string
-      commentsPerCode:
-        type: object
-        additionalProperties:
-          type: string
   BookletData.Product:
     type: object
     properties:
@@ -3780,6 +4870,67 @@ definitions:
         type: string
       unNr:
         type: string
+  BookletData.LoadDetail:
+    type: object
+    properties:
+      loadPlannedAt:
+        format: date-time
+        type: string
+      loaderId:
+        format: uuid
+        type: string
+      loaderName:
+        type: string
+      loadingLocation:
+        type: string
+      transportOrderId:
+        format: uuid
+        type: string
+  BookletData.LoadProcessState:
+    type: object
+    properties:
+      status:
+        enum:
+          - PLANNED
+          - ACCEPTED
+          - COMPLETED
+          - REJECTED
+          - CANCELLED
+          - MOVED
+          - UPDATED
+          - NONREGISTERED
+        type: string
+      fullName:
+        type: string
+      userId:
+        format: uuid
+        type: string
+      timeStamp:
+        format: date-time
+        type: string
+      comment:
+        type: string
+  BookletData.Attachment:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      originalFilename:
+        type: string
+  BookletData.CleaningInfo:
+    type: object
+    properties:
+      codes:
+        type: array
+        items:
+          type: string
+      additional:
+        type: string
+      commentsPerCode:
+        type: object
+        additionalProperties:
+          type: string
   BookletData.PostSignoffComment:
     type: object
     properties:
@@ -3865,56 +5016,9 @@ definitions:
         type: boolean
       expired:
         type: boolean
-  BookletData.Attachment:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      originalFilename:
-        type: string
-  BookletData.LoadDetail:
-    type: object
-    properties:
-      loadPlannedAt:
-        format: date-time
-        type: string
-      loaderId:
-        format: uuid
-        type: string
-      loaderName:
-        type: string
-      loadingLocation:
-        type: string
-  BookletData.LoadProcessState:
-    type: object
-    properties:
-      status:
-        enum:
-          - PLANNED
-          - ACCEPTED
-          - COMPLETED
-          - REJECTED
-          - CANCELLED
-          - NONREGISTERED
-          - MOVED
-          - UPDATED
-        type: string
-      fullName:
-        type: string
-      userId:
-        format: uuid
-        type: string
-      timeStamp:
-        format: date-time
-        type: string
-      comment:
-        type: string
   CleaningLocation.CleaningLocationCreate:
     type: object
     properties:
-      dunsCode:
-        type: string
       name:
         type: string
       description:
@@ -3935,8 +5039,6 @@ definitions:
       organisationId:
         format: uuid
         type: string
-      dunsCode:
-        type: string
       name:
         type: string
       description:
@@ -3954,8 +5056,9 @@ definitions:
       people:
         type: array
         items:
-          $ref: >-
-            #/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser
+          $ref: '#/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser'
+      dunsCode:
+        type: string
       id:
         format: uuid
         type: string
@@ -3987,8 +5090,6 @@ definitions:
   CleaningLocation.CleaningLocationUpdate:
     type: object
     properties:
-      dunsCode:
-        type: string
       name:
         type: string
       description:
@@ -4042,6 +5143,7 @@ definitions:
           - COMPLETED
           - SIGNEDOFF
           - CANCELLED
+          - INVALID
         type: string
       cleanedBy:
         $ref: '#/definitions/BookletData.LocationData'
@@ -4096,6 +5198,79 @@ definitions:
         $ref: '#/definitions/BookletData.CleaningProcess'
       cleanerComments:
         type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
+    type: object
+    properties:
+      hitCountTotal:
+        format: int64
+        type: integer
+      hitCountPage:
+        format: int64
+        type: integer
+      pageCurrent:
+        format: int32
+        type: integer
+      pageSize:
+        format: int32
+        type: integer
+      pageTotal:
+        format: int32
+        type: integer
+      hasMorePages:
+        type: boolean
+      comment:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.CleaningSummary'
+  BookletData.CleaningSummary:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      equipment:
+        $ref: '#/definitions/BookletData.BasicEquipment'
+      compartments:
+        type: array
+        items:
+          type: string
+      status:
+        enum:
+          - PLANNED
+          - COMPLETED
+          - SIGNEDOFF
+          - CANCELLED
+          - INVALID
+        type: string
+      displayDate:
+        format: date-time
+        type: string
+      references:
+        $ref: '#/definitions/BookletData.Reference'
+  BookletData.BasicEquipment:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      uniqueEquipmentId:
+        type: string
+      internalEquipmentCode:
+        type: string
+      licensePlate:
+        type: string
+      operatorId:
+        format: uuid
+        type: string
+      equipmentType:
+        enum:
+          - TANKCONTAINER
+          - TANKTRAILER
+          - IBC
+          - RAILTANK
+        type: string
   BookletData.SignOffCleaning:
     required:
       - driverName
@@ -4117,6 +5292,15 @@ definitions:
         format: byte
         type: string
       contentType:
+        type: string
+      downloadToDisk:
+        type: boolean
+  BookletData.CleaningInvalidation:
+    required:
+      - comment
+    type: object
+    properties:
+      comment:
         type: string
   Core.Entities.CreditData.CreditPack:
     type: object
@@ -4183,6 +5367,8 @@ definitions:
           - CompleteLoad
           - CreateEecd
           - SignOffCleaning
+          - CompleteLoadForPaperEecd
+          - InvalidateCleaningAction
         type: string
       bookletId:
         format: uuid
@@ -4289,7 +5475,7 @@ definitions:
       version:
         format: uuid
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -4346,7 +5532,7 @@ definitions:
         items:
           format: uuid
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -4532,6 +5718,7 @@ definitions:
           - CompletelyClean
           - PartiallyDirty
           - CompletelyDirty
+          - Unknown
         type: string
       compartments:
         type: object
@@ -4555,13 +5742,14 @@ definitions:
         enum:
           - Clean
           - Dirty
+          - Unknown
         type: string
       polymerCompleteness:
         enum:
           - PolymerComplete
           - PolymerIncomplete
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -4663,7 +5851,7 @@ definitions:
         type: string
       isIso6346Compliant:
         type: boolean
-  MasterData.BulkResult:
+  Common.BulkResult:
     type: object
     properties:
       ref:
@@ -4712,6 +5900,412 @@ definitions:
         type: string
       containerId:
         type: string
+  IdentificationCode.IdentificationCodeCreate:
+    required:
+      - organisationId
+      - type
+      - code
+      - name
+    type: object
+    properties:
+      organisationId:
+        format: uuid
+        type: string
+      type:
+        enum:
+          - Duns
+          - Vat
+          - Eori
+        type: string
+      code:
+        type: string
+      name:
+        type: string
+      isVerified:
+        type: boolean
+  IdentificationCode.IdentificationCodeDetail:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      organisationId:
+        format: uuid
+        type: string
+      type:
+        enum:
+          - Duns
+          - Vat
+          - Eori
+        type: string
+      code:
+        type: string
+      name:
+        type: string
+      isVerified:
+        type: boolean
+      createdOn:
+        format: date-time
+        type: string
+      lastUpdatedOn:
+        format: date-time
+        type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
+    type: object
+    properties:
+      hitCountTotal:
+        format: int64
+        type: integer
+      hitCountPage:
+        format: int64
+        type: integer
+      pageCurrent:
+        format: int32
+        type: integer
+      pageSize:
+        format: int32
+        type: integer
+      pageTotal:
+        format: int32
+        type: integer
+      hasMorePages:
+        type: boolean
+      comment:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/IdentificationCode.IdentificationCodeDetail'
+  IntegratedLoadingLocation.Input.IntegratedLoadingLocationCreate:
+    required:
+      - description
+      - specifiers
+    type: object
+    properties:
+      productId:
+        format: uuid
+        type: string
+      loaderId:
+        format: uuid
+        type: string
+      description:
+        type: string
+      subgroup:
+        type: string
+      specifiers:
+        type: object
+        additionalProperties:
+          type: string
+  Core.Entities.LoadingLocationData.IntegratedLoadingLocation:
+    type: object
+    properties:
+      sellerId:
+        format: uuid
+        type: string
+      subgroup:
+        type: string
+      productId:
+        format: uuid
+        type: string
+      loaderId:
+        format: uuid
+        type: string
+      specifiers:
+        type: object
+        additionalProperties:
+          type: string
+      description:
+        type: string
+      uniqueReference:
+        type: string
+      id:
+        format: uuid
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      createdByUser:
+        format: uuid
+        type: string
+      lastUpdatedOn:
+        format: date-time
+        type: string
+      lastUpdatedByUser:
+        format: uuid
+        type: string
+      isDeleted:
+        type: boolean
+      version:
+        format: uuid
+        type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
+    type: object
+    properties:
+      hitCountTotal:
+        format: int64
+        type: integer
+      hitCountPage:
+        format: int64
+        type: integer
+      pageCurrent:
+        format: int32
+        type: integer
+      pageSize:
+        format: int32
+        type: integer
+      pageTotal:
+        format: int32
+        type: integer
+      hasMorePages:
+        type: boolean
+      comment:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/IntegratedLoadingLocation.Output.IntegratedLoadingLocation'
+  IntegratedLoadingLocation.Output.IntegratedLoadingLocation:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      version:
+        format: uuid
+        type: string
+      sellerId:
+        format: uuid
+        type: string
+      sellerName:
+        type: string
+      subgroup:
+        type: string
+      productId:
+        format: uuid
+        type: string
+      productName:
+        type: string
+      loaderId:
+        format: uuid
+        type: string
+      loaderName:
+        type: string
+      description:
+        type: string
+      uniqueReference:
+        type: string
+      specifiers:
+        type: object
+        additionalProperties:
+          type: string
+  IntegratedLoadingLocation.Input.IntegratedLoadingLocationUpdate:
+    required:
+      - description
+    type: object
+    properties:
+      description:
+        type: string
+  IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport:
+    required:
+      - loaderCode
+      - productUniqueReference
+      - description
+      - specifiers
+    type: object
+    properties:
+      ref:
+        format: int32
+        type: integer
+      loaderCodeType:
+        enum:
+          - Nallian
+          - Ean
+          - Duns
+          - Vat
+          - Scac
+          - Seagha
+          - Alias
+          - AS2
+          - SenderIdentifier
+          - IATA
+          - GoodsAccountabilityPartyCode
+          - BIC
+          - Eori
+          - NxtPortEntityId
+        type: string
+      loaderCode:
+        type: string
+      productUniqueReference:
+        type: string
+      description:
+        type: string
+      subgroup:
+        type: string
+      specifiers:
+        type: object
+        additionalProperties:
+          type: string
+  IntegratedLoadingLocation.Input.IntegratedLoadingLocationDelete:
+    required:
+      - loaderCode
+      - productUniqueReference
+      - specifiers
+    type: object
+    properties:
+      ref:
+        format: int32
+        type: integer
+      loaderCodeType:
+        enum:
+          - Nallian
+          - Ean
+          - Duns
+          - Vat
+          - Scac
+          - Seagha
+          - Alias
+          - AS2
+          - SenderIdentifier
+          - IATA
+          - GoodsAccountabilityPartyCode
+          - BIC
+          - Eori
+          - NxtPortEntityId
+        type: string
+      loaderCode:
+        type: string
+      productUniqueReference:
+        type: string
+      subgroup:
+        type: string
+      specifiers:
+        type: object
+        additionalProperties:
+          type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
+    type: object
+    properties:
+      hitCountTotal:
+        format: int64
+        type: integer
+      hitCountPage:
+        format: int64
+        type: integer
+      pageCurrent:
+        format: int32
+        type: integer
+      pageSize:
+        format: int32
+        type: integer
+      pageTotal:
+        format: int32
+        type: integer
+      hasMorePages:
+        type: boolean
+      comment:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/TransportOrders.Output.TransportOrder'
+  TransportOrders.Output.TransportOrder:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      lastUpdatedOn:
+        format: date-time
+        type: string
+      version:
+        format: uuid
+        type: string
+      documentIdentifier:
+        type: string
+      status:
+        enum:
+          - ORIGINAL
+          - UPDATED
+          - CANCELLED
+          - CANCELED
+          - OTHER
+        type: string
+      sentOn:
+        format: date-time
+        type: string
+      transportReference:
+        type: string
+      seller:
+        $ref: '#/definitions/IntegratedLoadingLocation.Output.Organisation'
+      equipmentOperator:
+        $ref: '#/definitions/IntegratedLoadingLocation.Output.Organisation'
+      deliveryNotes:
+        type: array
+        items:
+          $ref: '#/definitions/TransportOrders.Output.DeliveryNote'
+  IntegratedLoadingLocation.Output.Organisation:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      name:
+        type: string
+      subgroup:
+        type: string
+  TransportOrders.Output.DeliveryNote:
+    type: object
+    properties:
+      identifier:
+        type: string
+      lines:
+        type: array
+        items:
+          $ref: '#/definitions/TransportOrders.Output.DeliveryNoteLine'
+  TransportOrders.Output.DeliveryNoteLine:
+    type: object
+    properties:
+      identifier:
+        type: string
+      isValid:
+        type: boolean
+      quantity:
+        format: double
+        type: number
+      unitOfMeasure:
+        type: string
+      customerName:
+        type: string
+      customerIdentifier:
+        type: string
+      reference:
+        type: string
+      loadingDate:
+        format: date-time
+        type: string
+      product:
+        $ref: '#/definitions/BookletData.Product'
+      loadingLocation:
+        $ref: '#/definitions/IntegratedLoadingLocation.Output.IntegratedLoadingLocationMinimal'
+  IntegratedLoadingLocation.Output.IntegratedLoadingLocationMinimal:
+    type: object
+    properties:
+      loaderId:
+        format: uuid
+        type: string
+      loaderName:
+        type: string
+      specifiers:
+        type: object
+        additionalProperties:
+          type: string
+      description:
+        type: string
+      uniqueReference:
+        type: string
   Organisations.Output.OrganisationMinimal:
     type: object
     properties:
@@ -4752,7 +6346,14 @@ definitions:
       licenseValidUntil:
         format: date-time
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]':
+      isIntegratedSeller:
+        type: boolean
+      allowedOrganisations:
+        type: array
+        items:
+          format: uuid
+          type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -4802,6 +6403,8 @@ definitions:
       licenseValidUntil:
         format: date-time
         type: string
+      isIntegratedSeller:
+        type: boolean
   LoadingLocation.LoadingLocationCreate:
     type: object
     properties:
@@ -4813,51 +6416,28 @@ definitions:
         type: string
       description:
         type: string
-  Core.Entities.LoadingLocationData.LoadingLocation:
+  LoadingLocation.LoadingLocation:
     type: object
     properties:
+      id:
+        format: uuid
+        type: string
       sellerId:
         format: uuid
+        type: string
+      sellerName:
         type: string
       productId:
         format: uuid
         type: string
-      loaderId:
+      productName:
+        type: string
+      loaderid:
         format: uuid
+        type: string
+      loaderName:
         type: string
       description:
-        type: string
-      people:
-        type: array
-        items:
-          $ref: '#/definitions/Core.Entities.LoadingLocationData.LoadingLocationUser'
-      id:
-        format: uuid
-        type: string
-      createdOn:
-        format: date-time
-        type: string
-      createdByUser:
-        format: uuid
-        type: string
-      lastUpdatedOn:
-        format: date-time
-        type: string
-      lastUpdatedByUser:
-        format: uuid
-        type: string
-      isDeleted:
-        type: boolean
-      version:
-        format: uuid
-        type: string
-  Core.Entities.LoadingLocationData.LoadingLocationUser:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      fullName:
         type: string
   LoadingLocation.LoadingLocationUpdate:
     type: object
@@ -4872,7 +6452,7 @@ definitions:
         type: string
   LoadingLocation.LoadingLocationImport:
     required:
-      - uniqueRefererence
+      - uniqueReference
       - codeType
       - code
     type: object
@@ -4880,7 +6460,7 @@ definitions:
       ref:
         format: int32
         type: integer
-      uniqueRefererence:
+      uniqueReference:
         type: string
       codeType:
         enum:
@@ -4903,7 +6483,7 @@ definitions:
         type: string
       description:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocationDto, Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -4928,24 +6508,7 @@ definitions:
       results:
         type: array
         items:
-          $ref: '#/definitions/LoadingLocation.LoadingLocationDto'
-  LoadingLocation.LoadingLocationDto:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      sellerId:
-        format: uuid
-        type: string
-      productId:
-        format: uuid
-        type: string
-      loaderid:
-        format: uuid
-        type: string
-      description:
-        type: string
+          $ref: '#/definitions/LoadingLocation.LoadingLocation'
   BookletData.LoadAssignment:
     type: object
     properties:
@@ -4972,6 +6535,8 @@ definitions:
       lastStatusDate:
         format: date-time
         type: string
+      isAcceptedByPaper:
+        type: boolean
       status:
         enum:
           - PLANNED
@@ -4979,9 +6544,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -5041,7 +6606,9 @@ definitions:
           type: string
       comment:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]':
+      unNumber:
+        type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5092,34 +6659,12 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       displayDate:
         format: date-time
-        type: string
-  BookletData.BasicEquipment:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      uniqueEquipmentId:
-        type: string
-      internalEquipmentCode:
-        type: string
-      licensePlate:
-        type: string
-      operatorId:
-        format: uuid
-        type: string
-      equipmentType:
-        enum:
-          - TANKCONTAINER
-          - TANKTRAILER
-          - IBC
-          - RAILTANK
         type: string
   BookletData.PlannedLoadDetails:
     type: object
@@ -5131,60 +6676,36 @@ definitions:
         type: string
       location:
         type: string
-  Users.Output.User:
+  BookletData.LoadAcceptationForPaperEecd:
     type: object
     properties:
-      id:
+      productId:
         format: uuid
         type: string
-      email:
-        type: string
-      fullName:
-        type: string
-      userState:
-        type: string
-      organisationId:
-        format: uuid
-        type: string
-      organisationName:
-        type: string
-      createdOn:
-        format: date-time
-        type: string
-      modifiedOn:
-        format: date-time
-        type: string
-      license:
-        $ref: '#/definitions/MasterData.LicenseSummary'
-      roles:
+      compartments:
         type: array
         items:
-          $ref: '#/definitions/Users.Output.UserRole'
-  MasterData.LicenseSummary:
-    type: object
-    properties:
-      isSeller:
-        type: boolean
-      isLoader:
-        type: boolean
-      isEquipmentOperator:
-        type: boolean
-      isCleaner:
-        type: boolean
-      isCommunityAdmin:
-        type: boolean
-      licenseValidUntil:
-        format: date-time
+          type: string
+      comment:
         type: string
-  Users.Output.UserRole:
+  OrganisationData.Api.Abstractions.Models.Lookups.Language:
     type: object
     properties:
       id:
-        format: uuid
         type: string
       name:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]':
+  OrganisationData.Api.Abstractions.Models.Lookups.TimeZone:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      name:
+        type: string
+      description:
+        type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.0.19190.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5273,6 +6794,33 @@ definitions:
         type: string
       eori:
         type: string
+      addressLines:
+        type: object
+        properties:
+          StreetAndNumber:
+            type: string
+          PoBox:
+            type: string
+          City:
+            type: string
+          PostalCode:
+            type: string
+          State:
+            type: string
+          StateCode:
+            type: string
+          Country:
+            type: string
+          CountryCode:
+            type: string
+          Phone:
+            type: string
+          Fax:
+            type: string
+          Building:
+            type: string
+          Floor:
+            type: string
   Organisations.Input.OrganisationUpdate:
     type: object
     properties:
@@ -5299,6 +6847,41 @@ definitions:
       duns:
         type: string
       eori:
+        type: string
+      addressLines:
+        type: object
+        properties:
+          StreetAndNumber:
+            type: string
+          PoBox:
+            type: string
+          City:
+            type: string
+          PostalCode:
+            type: string
+          State:
+            type: string
+          StateCode:
+            type: string
+          Country:
+            type: string
+          CountryCode:
+            type: string
+          Phone:
+            type: string
+          Fax:
+            type: string
+          Building:
+            type: string
+          Floor:
+            type: string
+  Users.Output.UserRole:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      name:
         type: string
   MasterData.Product:
     required:
@@ -5548,6 +7131,53 @@ definitions:
       timezone:
         format: int32
         type: integer
+  Users.Output.User:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      email:
+        type: string
+      fullName:
+        type: string
+      userState:
+        type: string
+      organisationId:
+        format: uuid
+        type: string
+      organisationName:
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      modifiedOn:
+        format: date-time
+        type: string
+      license:
+        $ref: '#/definitions/MasterData.LicenseSummary'
+      roles:
+        type: array
+        items:
+          $ref: '#/definitions/Users.Output.UserRole'
+  MasterData.LicenseSummary:
+    type: object
+    properties:
+      isSeller:
+        type: boolean
+      isLoader:
+        type: boolean
+      isEquipmentOperator:
+        type: boolean
+      isCleaner:
+        type: boolean
+      isCommunityAdmin:
+        type: boolean
+      licenseValidUntil:
+        format: date-time
+        type: string
+      isIntegratedSeller:
+        type: boolean
   Users.Input.UserUpdate:
     type: object
     properties:
