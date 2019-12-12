@@ -543,14 +543,14 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/complete':
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/complete':
     put:
       tags:
         - Cleanings
       summary: Complete a cleaning.
       description: "<p>\r\n            Completes a cleaning action. Similar to Update, with the main difference that this method alters the\r\n            state of the cleaning action. Only planned cleaning actions can be completed.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdCompletePut
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdCompletePut
       consumes:
         - application/xml
         - text/xml
@@ -587,13 +587,13 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/signoff':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/signoff':
     put:
       tags:
         - Cleanings
       summary: Sign off a cleaning action.
       description: "<p>\r\n            Sign off a cleaning action, typically done by the driver of the equipment. After the cleaning action\r\n            has been signed, it can no longer be modified. When calling this method, a credit will be spent from\r\n            the equipment operator's account.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n            {\r\n                \"DriverName\": \"John Doe\",\r\n                \"DriverComments\" : \"Cleaning performed okay, but...\",\r\n                \"Signature\": \"data:image/gif;base64,...\"\r\n            }\r\n                    </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdSignoffPut
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdSignoffPut
       consumes:
         - application/xml
         - text/xml
@@ -630,13 +630,13 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.CleaningSignoff'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/postsignoffcomment':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/postsignoffcomment':
     post:
       tags:
         - Cleanings
       summary: Add a comment to the cleaning action.
       description: "<p>\r\n            Adds a comment to the cleaning action. This may be done after the driver has signed off the cleaning\r\n            action, and may be done more than once.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdPostsignoffcommentPost
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdPostsignoffcommentPost
       consumes:
         - application/xml
         - text/xml
@@ -673,13 +673,13 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/signature':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/signature':
     get:
       tags:
         - Cleanings
       summary: Get the signature of a signed off cleaning.
       description: "<p>\r\n            Gets the signature of a signed off cleaning as a base-64 encoded data url.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdSignatureGet
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdSignatureGet
       consumes: []
       produces:
         - text/plain
@@ -704,13 +704,13 @@ paths:
           description: Success
           schema:
             type: string
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/attachment':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/attachment':
     post:
       tags:
         - Cleanings
       summary: Upload a document to a cleaning.
       description: "<p>\r\n            Attaches a file to the cleaning, to be stored on the server for the duration of the life time\r\n            of the cleaning. Once the cleaning is purged from the booklet, so will its attached documents.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdAttachmentPost
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdAttachmentPost
       consumes: []
       produces:
         - text/plain
@@ -760,13 +760,13 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.Attachment'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/attachment/{attachmentId}':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/attachment/{attachmentId}':
     get:
       tags:
         - Cleanings
       summary: Download a document attached to a cleaning action..
       description: "<p>\r\n            Returns the attached document as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdAttachmentByAttachmentIdGet
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdAttachmentByAttachmentIdGet
       consumes: []
       produces:
         - text/plain
@@ -871,15 +871,15 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
       deprecated: true
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/invalidate':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/invalidate':
     put:
       tags:
         - Cleanings
       summary: Invalidate a cleaning.
       description: "<p>\r\n            Revokes a cleaning action, to be replaced by a paper version. Only completed cleaning actions can be invalidated.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdInvalidatePut
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdInvalidatePut
       consumes:
         - application/xml
         - text/xml
@@ -1087,7 +1087,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/eecds/logs:
     get:
       tags:
@@ -1118,7 +1118,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/document':
     get:
       tags:
@@ -1210,7 +1210,11 @@ paths:
           in: query
           required: false
           type: string
-        - name: loadInternalReference
+        - name: transportOrderReference
+          in: query
+          required: false
+          type: string
+        - name: cleaningCustomerReference
           in: query
           required: false
           type: string
@@ -1263,7 +1267,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EecdDocument.ArchivedEecdMetadataDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EecdDocument.ArchivedEecdMetadataDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/eftcocleaningcodes:
     get:
       tags:
@@ -1673,7 +1677,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{id}':
     get:
       tags:
@@ -2041,7 +2045,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/products/locations/integrated:
     get:
       tags:
@@ -2070,7 +2074,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
     post:
       tags:
         - IntegratedLoadingLocations
@@ -2322,7 +2326,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/organisations/{organisationId}/logs/integration/search':
     get:
       tags:
@@ -2401,7 +2405,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/logs/integration/search:
     get:
       tags:
@@ -2474,7 +2478,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/licensee:
     get:
       tags:
@@ -2664,7 +2668,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/organisations/{organisationId}/licenses':
     get:
       tags:
@@ -2692,6 +2696,39 @@ paths:
             type: array
             items:
               $ref: '#/definitions/MasterData.License'
+  '/v1/organisations/{organisationId}/settings':
+    put:
+      tags:
+        - Licenses
+      operationId: V1OrganisationsByOrganisationIdSettingsPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      parameters:
+        - name: organisationId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/License.Input.LicenseSettingsUpdate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MasterData.License'
   /v1/products/locations:
     post:
       tags:
@@ -2884,7 +2921,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/products/locations/search:
     get:
       tags:
@@ -2933,7 +2970,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{equipmentId}/loads/assign':
     post:
       tags:
@@ -3398,9 +3435,9 @@ paths:
             - COMPLETED
             - REJECTED
             - CANCELLED
-            - NONREGISTERED
             - MOVED
             - UPDATED
+            - NONREGISTERED
         - name: location
           in: query
           description: "A search string to find only those loads with loading locations containing this string. Optional;\r\n            when omitted, any loading location will do. As the loading location is a free text field entered by the despatcher, results may vary."
@@ -3412,7 +3449,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+              $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
         '204':
           description: Success
   '/v1/equipment/{equipmentId}/loads/{loadId}/unofficialproof':
@@ -3886,7 +3923,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
     post:
       tags:
         - Organisations
@@ -4740,7 +4777,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/users:
     get:
       tags:
@@ -5070,9 +5107,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -5196,9 +5233,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       fullName:
         type: string
@@ -5513,7 +5550,7 @@ definitions:
         $ref: '#/definitions/BookletData.CleaningProcess'
       cleanerComments:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5731,6 +5768,11 @@ definitions:
       spentLastMonth:
         format: int32
         type: integer
+      spentPerMonth:
+        type: object
+        additionalProperties:
+          format: int32
+          type: integer
   CreditData.CreditPackOveralSummary:
     type: object
     properties:
@@ -5800,7 +5842,7 @@ definitions:
       version:
         format: uuid
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5857,7 +5899,7 @@ definitions:
         items:
           format: uuid
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5900,7 +5942,7 @@ definitions:
       createdOn:
         format: date-time
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EecdDocument.ArchivedEecdMetadataDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EecdDocument.ArchivedEecdMetadataDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6154,7 +6196,7 @@ definitions:
           - PolymerComplete
           - PolymerIncomplete
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6355,7 +6397,7 @@ definitions:
       lastUpdatedOn:
         format: date-time
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6443,7 +6485,7 @@ definitions:
       version:
         format: uuid
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6587,7 +6629,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6760,7 +6802,7 @@ definitions:
         type: array
         items:
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6812,6 +6854,16 @@ definitions:
         type: string
       isIntegratedSeller:
         type: boolean
+  License.Input.LicenseSettingsUpdate:
+    type: object
+    properties:
+      archivalDurationInDays:
+        format: int32
+        type: integer
+      archivalRecipients:
+        type: array
+        items:
+          type: string
   LoadingLocation.LoadingLocationCreate:
     type: object
     properties:
@@ -6890,7 +6942,7 @@ definitions:
         type: string
       description:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6951,9 +7003,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -7015,7 +7067,7 @@ definitions:
         type: string
       unNumber:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -7066,9 +7118,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       displayDate:
         format: date-time
@@ -7112,7 +7164,7 @@ definitions:
         type: string
       description:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.27.19339.2, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -7624,4 +7676,4 @@ definitions:
         type: array
         items:
           format: uuid
-          type: string    
+          type: string
