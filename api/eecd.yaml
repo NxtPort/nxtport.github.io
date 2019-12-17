@@ -4,7 +4,7 @@ info:
   version: v1
   description: ''
   termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
-  contact:
+    contact:
     email: support@nxtport.eu
 schemes:
   - https
@@ -37,6 +37,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -66,6 +67,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -90,6 +92,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -119,6 +122,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -148,6 +152,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -172,6 +177,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: query
@@ -204,6 +210,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: locationId
           in: path
@@ -239,6 +246,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: locationId
           in: path
@@ -275,6 +283,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: locationId
           in: path
@@ -312,6 +321,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: locationId
           in: path
@@ -344,6 +354,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: userId
           in: query
@@ -376,6 +387,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -406,6 +418,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -441,6 +454,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -477,6 +491,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: search
           in: query
@@ -528,14 +543,14 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/complete':
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/complete':
     put:
       tags:
         - Cleanings
       summary: Complete a cleaning.
       description: "<p>\r\n            Completes a cleaning action. Similar to Update, with the main difference that this method alters the\r\n            state of the cleaning action. Only planned cleaning actions can be completed.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdCompletePut
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdCompletePut
       consumes:
         - application/xml
         - text/xml
@@ -547,6 +562,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -571,13 +587,13 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/signoff':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/signoff':
     put:
       tags:
         - Cleanings
       summary: Sign off a cleaning action.
       description: "<p>\r\n            Sign off a cleaning action, typically done by the driver of the equipment. After the cleaning action\r\n            has been signed, it can no longer be modified. When calling this method, a credit will be spent from\r\n            the equipment operator's account.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n            {\r\n                \"DriverName\": \"John Doe\",\r\n                \"DriverComments\" : \"Cleaning performed okay, but...\",\r\n                \"Signature\": \"data:image/gif;base64,...\"\r\n            }\r\n                    </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdSignoffPut
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdSignoffPut
       consumes:
         - application/xml
         - text/xml
@@ -589,6 +605,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -613,13 +630,13 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.CleaningSignoff'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/postsignoffcomment':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/postsignoffcomment':
     post:
       tags:
         - Cleanings
       summary: Add a comment to the cleaning action.
       description: "<p>\r\n            Adds a comment to the cleaning action. This may be done after the driver has signed off the cleaning\r\n            action, and may be done more than once.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdPostsignoffcommentPost
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdPostsignoffcommentPost
       consumes:
         - application/xml
         - text/xml
@@ -631,6 +648,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -655,18 +673,19 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/signature':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/signature':
     get:
       tags:
         - Cleanings
       summary: Get the signature of a signed off cleaning.
       description: "<p>\r\n            Gets the signature of a signed off cleaning as a base-64 encoded data url.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdSignatureGet
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdSignatureGet
       consumes: []
       produces:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -685,18 +704,19 @@ paths:
           description: Success
           schema:
             type: string
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/attachment':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/attachment':
     post:
       tags:
         - Cleanings
       summary: Upload a document to a cleaning.
       description: "<p>\r\n            Attaches a file to the cleaning, to be stored on the server for the duration of the life time\r\n            of the cleaning. Once the cleaning is purged from the booklet, so will its attached documents.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdAttachmentPost
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdAttachmentPost
       consumes: []
       produces:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -740,18 +760,19 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/BookletData.Attachment'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/attachment/{attachmentId}':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/attachment/{attachmentId}':
     get:
       tags:
         - Cleanings
       summary: Download a document attached to a cleaning action..
       description: "<p>\r\n            Returns the attached document as a downloadable file.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>EquipmentOperator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdAttachmentByAttachmentIdGet
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdAttachmentByAttachmentIdGet
       consumes: []
       produces:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -794,6 +815,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -829,6 +851,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: search
           in: query
@@ -848,15 +871,15 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
       deprecated: true
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningactionId}/invalidate':
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/invalidate':
     put:
       tags:
         - Cleanings
       summary: Invalidate a cleaning.
       description: "<p>\r\n            Revokes a cleaning action, to be replaced by a paper version. Only completed cleaning actions can be invalidated.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
-      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningactionIdInvalidatePut
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdInvalidatePut
       consumes:
         - application/xml
         - text/xml
@@ -868,6 +891,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -904,6 +928,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: amount
           in: path
@@ -934,6 +959,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -953,6 +979,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: warningThreshold
           in: path
@@ -977,6 +1004,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dateStart
           in: query
@@ -1009,6 +1037,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -1034,6 +1063,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: limit
           in: query
@@ -1057,7 +1087,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/eecds/logs:
     get:
       tags:
@@ -1070,6 +1100,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dateStart
           in: query
@@ -1087,7 +1118,156 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/document':
+    get:
+      tags:
+        - EEcds
+      summary: Generate an eecd document from a cleaning in a booklet.
+      description: "<p>\r\n            Generates a downloadable Eecd document based on a cleaning still in a booklet. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>TBD</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningIdDocumentGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      parameters:
+        - name: equipmentId
+          in: path
+          description: ''
+          required: true
+          type: string
+          format: uuid
+        - name: cleaningId
+          in: path
+          description: ''
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Models.FileResponse'
+  '/v1/eecds/archives/{id}':
+    get:
+      tags:
+        - EEcds
+      summary: Download an archived eECD.
+      description: "<p>\r\n            Serves the archived eECD as a downloadable pdf. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EecdsArchivesByIdGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Models.FileResponse'
+  /v1/eecds/archives:
+    get:
+      tags:
+        - EEcds
+      summary: Search archived eECDs.
+      description: "<p>\r\n            Gives a paged, filterable overview of archived eECD's for an organisation. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EecdsArchivesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      parameters:
+        - name: organisationId
+          in: query
+          required: false
+          type: string
+          format: uuid
+        - name: title
+          in: query
+          required: false
+          type: string
+        - name: reference
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: hasBeenDownloaded
+          in: query
+          required: false
+          type: boolean
+        - name: cleaningInternalReference
+          in: query
+          required: false
+          type: string
+        - name: transportOrderReference
+          in: query
+          required: false
+          type: string
+        - name: cleaningCustomerReference
+          in: query
+          required: false
+          type: string
+        - name: cleaningLocationId
+          in: query
+          required: false
+          type: string
+          format: uuid
+        - name: endedAtFrom
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: endedAtUntil
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: completedAtFrom
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: completedAtUntil
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: signedAtFrom
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: signedAtUntil
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EecdDocument.ArchivedEecdMetadataDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/eftcocleaningcodes:
     get:
       tags:
@@ -1100,6 +1280,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: lang
           in: query
@@ -1140,6 +1321,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -1166,6 +1348,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: type
           in: query
@@ -1208,6 +1391,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: type
           in: query
@@ -1250,6 +1434,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1283,6 +1468,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1316,6 +1502,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1344,6 +1531,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: code
           in: query
@@ -1383,6 +1571,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: operatorId
           in: query
@@ -1432,6 +1621,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipment
           in: body
@@ -1458,6 +1648,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: operatorId
           in: query
@@ -1486,7 +1677,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{id}':
     get:
       tags:
@@ -1499,6 +1690,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1533,6 +1725,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1564,6 +1757,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1594,6 +1788,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipments
           in: body
@@ -1630,6 +1825,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipments
           in: body
@@ -1660,6 +1856,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -1683,6 +1880,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: type
           in: query
@@ -1725,6 +1923,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -1747,6 +1946,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1774,6 +1974,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1800,6 +2001,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1822,6 +2024,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -1842,7 +2045,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/products/locations/integrated:
     get:
       tags:
@@ -1855,6 +2058,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: page
           in: query
@@ -1870,7 +2074,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
     post:
       tags:
         - IntegratedLoadingLocations
@@ -1888,6 +2092,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -1916,6 +2121,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1949,6 +2155,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -1982,6 +2189,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -2010,6 +2218,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: productId
           in: path
@@ -2049,6 +2258,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: locations
           in: body
@@ -2082,6 +2292,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: locations
           in: body
@@ -2110,11 +2321,12 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/organisations/{organisationId}/logs/integration/search':
     get:
       tags:
@@ -2127,6 +2339,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -2192,7 +2405,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/logs/integration/search:
     get:
       tags:
@@ -2205,6 +2418,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dateStart
           in: query
@@ -2264,7 +2478,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/licensee:
     get:
       tags:
@@ -2277,6 +2491,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: role
           in: query
@@ -2312,6 +2527,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -2342,6 +2558,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: license
           in: body
@@ -2372,6 +2589,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -2401,6 +2619,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -2425,6 +2644,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: nDaysUntilExpire
           in: query
@@ -2448,7 +2668,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/organisations/{organisationId}/licenses':
     get:
       tags:
@@ -2461,6 +2681,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -2475,6 +2696,39 @@ paths:
             type: array
             items:
               $ref: '#/definitions/MasterData.License'
+  '/v1/organisations/{organisationId}/settings':
+    put:
+      tags:
+        - Licenses
+      operationId: V1OrganisationsByOrganisationIdSettingsPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      parameters:
+        - name: organisationId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/License.Input.LicenseSettingsUpdate'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MasterData.License'
   /v1/products/locations:
     post:
       tags:
@@ -2493,6 +2747,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -2517,6 +2772,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -2546,6 +2802,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -2575,6 +2832,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -2605,6 +2863,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: locations
           in: body
@@ -2632,6 +2891,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: productId
           in: path
@@ -2661,7 +2921,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/products/locations/search:
     get:
       tags:
@@ -2674,6 +2934,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: sellerId
           in: query
@@ -2709,7 +2970,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   '/v1/equipment/{equipmentId}/loads/assign':
     post:
       tags:
@@ -2728,6 +2989,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -2760,6 +3022,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -2795,6 +3058,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -2833,6 +3097,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -2873,6 +3138,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -2919,6 +3185,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -2963,6 +3230,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3009,6 +3277,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3051,6 +3320,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3087,6 +3357,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3117,6 +3388,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: transportReference
           in: query
@@ -3163,9 +3435,9 @@ paths:
             - COMPLETED
             - REJECTED
             - CANCELLED
+            - NONREGISTERED
             - MOVED
             - UPDATED
-            - NONREGISTERED
         - name: location
           in: query
           description: "A search string to find only those loads with loading locations containing this string. Optional;\r\n            when omitted, any loading location will do. As the loading location is a free text field entered by the despatcher, results may vary."
@@ -3177,7 +3449,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+              $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
         '204':
           description: Success
   '/v1/equipment/{equipmentId}/loads/{loadId}/unofficialproof':
@@ -3192,6 +3464,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3251,6 +3524,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3310,6 +3584,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3351,6 +3626,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3398,6 +3674,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: equipmentId
           in: path
@@ -3434,6 +3711,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3453,6 +3731,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: sortBy
           in: query
@@ -3475,6 +3754,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3492,6 +3772,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3509,6 +3790,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3526,6 +3808,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3543,6 +3826,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3560,6 +3844,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3577,6 +3862,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3594,6 +3880,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3613,6 +3900,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: page
           in: query
@@ -3635,7 +3923,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
     post:
       tags:
         - Organisations
@@ -3653,6 +3941,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -3677,6 +3966,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -3706,6 +3996,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -3736,6 +4027,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3755,6 +4047,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -3772,6 +4065,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -3798,6 +4092,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: type
           in: path
@@ -3841,6 +4136,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -3867,6 +4163,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: sellerId
           in: query
@@ -3905,6 +4202,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -3937,6 +4235,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -3968,6 +4267,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: id
           in: path
@@ -3998,6 +4298,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -4034,6 +4335,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -4064,6 +4366,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: productId
           in: path
@@ -4103,6 +4406,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: productId
           in: path
@@ -4132,6 +4436,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: productId
           in: path
@@ -4172,6 +4477,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -4200,6 +4506,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: productId
           in: path
@@ -4259,6 +4566,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: uniqueReference
           in: path
@@ -4317,6 +4625,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: productId
           in: path
@@ -4341,6 +4650,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: productId
           in: path
@@ -4355,6 +4665,21 @@ paths:
             type: array
             items:
               $ref: '#/definitions/MasterData.SdsInfo'
+  /v1/reports/license-overview:
+    get:
+      tags:
+        - Reporting
+      operationId: V1ReportsLicense-overviewGet
+      consumes: []
+      produces:
+        - text/csv
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/OrganisationData.Api.Abstractions.Models.Lookups.Language'
   /v1/transportorders:
     post:
       tags:
@@ -4373,6 +4698,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: input
           in: body
@@ -4403,6 +4729,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: sellerId
           in: path
@@ -4432,6 +4759,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: page
           in: query
@@ -4449,7 +4777,7 @@ paths:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]'
+            $ref: '#/definitions/Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]'
   /v1/users:
     get:
       tags:
@@ -4462,6 +4790,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: page
           in: query
@@ -4499,6 +4828,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: dto
           in: body
@@ -4523,6 +4853,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: userid
           in: path
@@ -4552,6 +4883,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: userId
           in: path
@@ -4574,13 +4906,13 @@ paths:
       tags:
         - Users
       summary: Delete a user.
-      description: "<p>\r\n             Currently not available to public. \r\n                </p>"
       operationId: V1UsersByUseridDelete
       consumes: []
       produces:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: userid
           in: path
@@ -4605,6 +4937,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -4624,6 +4957,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: userId
           in: path
@@ -4655,6 +4989,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: userId
           in: path
@@ -4687,6 +5022,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       parameters:
         - name: organisationId
           in: path
@@ -4725,6 +5061,7 @@ paths:
         - text/plain
         - application/json
         - text/json
+        - text/csv
       responses:
         '200':
           description: Success
@@ -4770,9 +5107,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
+          - NONREGISTERED
           - MOVED
           - UPDATED
-          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -4896,9 +5233,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
+          - NONREGISTERED
           - MOVED
           - UPDATED
-          - NONREGISTERED
         type: string
       fullName:
         type: string
@@ -4952,6 +5289,8 @@ definitions:
         type: string
       locationName:
         type: string
+      supervisor:
+        type: string
       organisationId:
         format: uuid
         type: string
@@ -4981,6 +5320,9 @@ definitions:
         format: date-time
         type: string
       endedAt:
+        format: date-time
+        type: string
+      completedAt:
         format: date-time
         type: string
       representativeName:
@@ -5033,6 +5375,8 @@ definitions:
         type: string
       website:
         type: string
+      supervisor:
+        type: string
   Core.Entities.CleaningLocation:
     type: object
     properties:
@@ -5057,6 +5401,8 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Core.Entities.CleaningLocationData.CleaningLocationUser'
+      supervisor:
+        type: string
       dunsCode:
         type: string
       id:
@@ -5103,6 +5449,8 @@ definitions:
       fax:
         type: string
       website:
+        type: string
+      supervisor:
         type: string
   BookletData.CleaningActionCreate:
     type: object
@@ -5202,7 +5550,7 @@ definitions:
         $ref: '#/definitions/BookletData.CleaningProcess'
       cleanerComments:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.CleaningSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5414,6 +5762,17 @@ definitions:
       spent:
         format: int32
         type: integer
+      spentYearToDate:
+        format: int32
+        type: integer
+      spentLastMonth:
+        format: int32
+        type: integer
+      spentPerMonth:
+        type: object
+        additionalProperties:
+          format: int32
+          type: integer
   CreditData.CreditPackOveralSummary:
     type: object
     properties:
@@ -5426,6 +5785,10 @@ definitions:
       untouched:
         format: int32
         type: integer
+      purchased:
+        format: int32
+        type: integer
+        readOnly: true
       details:
         type: array
         items:
@@ -5479,7 +5842,7 @@ definitions:
       version:
         format: uuid
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.CreditData.WalletSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5536,7 +5899,7 @@ definitions:
         items:
           format: uuid
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EEcdLog.EEcdLog, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5578,6 +5941,86 @@ definitions:
         type: string
       createdOn:
         format: date-time
+        type: string
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.EecdDocument.ArchivedEecdMetadataDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
+    type: object
+    properties:
+      hitCountTotal:
+        format: int64
+        type: integer
+      hitCountPage:
+        format: int64
+        type: integer
+      pageCurrent:
+        format: int32
+        type: integer
+      pageSize:
+        format: int32
+        type: integer
+      pageTotal:
+        format: int32
+        type: integer
+      hasMorePages:
+        type: boolean
+      comment:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/Document.ArchivedEecdMetadataDetail'
+  Document.ArchivedEecdMetadataDetail:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      organisationId:
+        format: uuid
+        type: string
+      expiresOn:
+        format: date-time
+        type: string
+      title:
+        type: string
+      internalReference:
+        type: string
+      customerReference:
+        type: string
+      endedAt:
+        format: date-time
+        type: string
+      completedAt:
+        format: date-time
+        type: string
+      signedOffAt:
+        format: date-time
+        type: string
+      cleaningLocationId:
+        format: uuid
+        type: string
+      loads:
+        type: array
+        items:
+          $ref: '#/definitions/Document.ArchivedEecdLoadMetadataDetail'
+      reference:
+        format: int64
+        type: integer
+      downloadCount:
+        format: int32
+        type: integer
+      hash:
+        type: string
+  Document.ArchivedEecdLoadMetadataDetail:
+    type: object
+    properties:
+      loaderId:
+        format: uuid
+        type: string
+      internalReference:
+        type: string
+      customerReference:
+        type: string
+      loadingLocation:
         type: string
   ftcoCleaningCodes.EftcoCleaningCodeSummary:
     type: object
@@ -5753,7 +6196,7 @@ definitions:
           - PolymerComplete
           - PolymerIncomplete
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.Equipment, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -5954,7 +6397,7 @@ definitions:
       lastUpdatedOn:
         format: date-time
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IdentificationCode.IdentificationCodeDetail, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6042,7 +6485,7 @@ definitions:
       version:
         format: uuid
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.IntegratedLoadingLocation.Output.IntegratedLoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6186,7 +6629,7 @@ definitions:
         type: object
         additionalProperties:
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.TransportOrders.Output.TransportOrder, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6352,12 +6795,14 @@ definitions:
         type: string
       isIntegratedSeller:
         type: boolean
-      allowedOrganisations:
+      archivalDurationInDays:
+        format: int32
+        type: integer
+      archivalRecipients:
         type: array
         items:
-          format: uuid
           type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.MasterData.ExigentLicenseSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6409,6 +6854,16 @@ definitions:
         type: string
       isIntegratedSeller:
         type: boolean
+  License.Input.LicenseSettingsUpdate:
+    type: object
+    properties:
+      archivalDurationInDays:
+        format: int32
+        type: integer
+      archivalRecipients:
+        type: array
+        items:
+          type: string
   LoadingLocation.LoadingLocationCreate:
     type: object
     properties:
@@ -6487,7 +6942,7 @@ definitions:
         type: string
       description:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.LoadingLocation.LoadingLocation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6548,9 +7003,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
+          - NONREGISTERED
           - MOVED
           - UPDATED
-          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -6612,7 +7067,7 @@ definitions:
         type: string
       unNumber:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.BookletData.LoadSummary, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -6663,9 +7118,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
+          - NONREGISTERED
           - MOVED
           - UPDATED
-          - NONREGISTERED
         type: string
       displayDate:
         format: date-time
@@ -6709,7 +7164,7 @@ definitions:
         type: string
       description:
         type: string
-  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.0.19267.1, Culture=neutral, PublicKeyToken=null]]':
+  'Core.Abstraction.ResultsPage`1[[Nallian.eEcd.Api.Abstractions.Organisations.Output.Organisation, Nallian.eEcd.Api.Abstractions, Version=10.27.19346.6, Culture=neutral, PublicKeyToken=null]]':
     type: object
     properties:
       hitCountTotal:
@@ -7221,4 +7676,12 @@ definitions:
         type: array
         items:
           format: uuid
-          type: string    
+          type: string
+securityDefinitions:
+  Bearer:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: Please insert token into field
+security:
+  - Bearer: []
