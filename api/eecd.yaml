@@ -4,7 +4,7 @@ info:
   version: v1
   description: ''
   termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
-    contact:
+  contact:
     email: support@nxtport.eu
 schemes:
   - https
@@ -3435,9 +3435,9 @@ paths:
             - COMPLETED
             - REJECTED
             - CANCELLED
-            - NONREGISTERED
             - MOVED
             - UPDATED
+            - NONREGISTERED
         - name: location
           in: query
           description: "A search string to find only those loads with loading locations containing this string. Optional;\r\n            when omitted, any loading location will do. As the loading location is a free text field entered by the despatcher, results may vary."
@@ -5107,9 +5107,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -5233,9 +5233,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       fullName:
         type: string
@@ -7003,9 +7003,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -7118,9 +7118,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       displayDate:
         format: date-time
@@ -7677,11 +7677,3 @@ definitions:
         items:
           format: uuid
           type: string
-securityDefinitions:
-  Bearer:
-    name: Authorization
-    in: header
-    type: apiKey
-    description: Please insert token into field
-security:
-  - Bearer: []
