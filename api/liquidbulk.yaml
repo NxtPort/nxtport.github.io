@@ -1,0 +1,3234 @@
+swagger: '2.0'
+host: "api.nxtport.eu"
+info:
+  version: '1.0'
+  title: NxtPort Liquid Bulk API 1.0
+  description: NxtPort Liquid Bulk API.
+schemes:
+  - http
+  - https
+paths:
+  '/api/liquid-bulk/v{version}/dossiers':
+    get:
+      tags:
+        - EngineQuery
+      summary: "Get a list of dossiers that match the query parameters.\r\nOrdered by vessel ETA datetime DESC."
+      operationId: GetDossiers
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: portLocode
+          in: query
+          description: United Nations Code for Trade and Transport Locations.
+          required: false
+          type: string
+        - name: terminal
+          in: query
+          description: Terminal code as exposed by NxtPort.
+          required: false
+          type: string
+        - name: berth
+          in: query
+          description: Berth code as exposed by NxtPort.
+          required: false
+          type: string
+        - name: stay
+          in: query
+          description: Port-assigned stay number.
+          required: false
+          type: string
+        - name: voyage
+          in: query
+          description: Port-assigned voyage number.
+          required: false
+          type: string
+        - name: stakeholder-id
+          in: query
+          description: NxtPort stakeholder id.
+          required: false
+          type: integer
+          format: int32
+        - name: ref
+          in: query
+          description: Identifier used by one or more stakeholders to refer to a dossier context.
+          required: false
+          type: string
+        - name: dossier
+          in: query
+          description: Liquid dossier number.
+          required: false
+          type: string
+        - name: departed
+          in: query
+          description: "In case of \"true\", data is scoped to only those dossiers for which the activity \"Departure\" has a value for \"EndActual\".\r\nIn case of \"false\", data is scoped to only those dossiers for which the activity \"Departure\" does not have a value for \"EndActual\".\r\nIn case of parameter omission, data scoping is not impacted by \"Departure\" activity information."
+          required: false
+          type: boolean
+        - name: imo
+          in: query
+          description: International Maritime Organization vessel identifier.
+          required: false
+          type: string
+        - name: vessel-name
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: product
+          in: query
+          description: ''
+          required: false
+          type: string
+        - name: free-text
+          in: query
+          description: Free text search applied to all DossierOverview top level columns.
+          required: false
+          type: string
+        - name: start
+          in: query
+          description: 'Dossier has activities that take place in this datetime window, start inclusive'
+          required: false
+          type: string
+          format: date-time
+        - name: end
+          in: query
+          description: 'Dossier has activities that take place in this datetime window, end inclusive'
+          required: false
+          type: string
+          format: date-time
+        - name: order-by-field
+          in: query
+          description: Field name on which to order.
+          required: false
+          type: string
+          default: NextActivityEstimatedStart
+          enum:
+            - ClientReference
+            - DossierNumber
+            - StayNumber
+            - VoyageNumber
+            - VesselEta
+            - VesselEtd
+            - NextActivityEstimatedStart
+        - name: order-by
+          in: query
+          description: Order by asc / desc.
+          required: false
+          type: string
+          default: Descending
+          enum:
+            - Ascending
+            - Descending
+        - name: page
+          in: query
+          description: Result set page.
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: page-size
+          in: query
+          description: Result set page size.
+          required: false
+          type: integer
+          format: int32
+          default: 10
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/DossierOverview'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/dossiers/{id}':
+    get:
+      tags:
+        - EngineQuery
+      summary: Get a specific dossier.
+      operationId: GetDossier
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort dossier id.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Dossier'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/activities':
+    get:
+      tags:
+        - EngineQuery
+      summary: "Get a list of activities that match the query parameters.\r\nOrdered by estimated start datetime DESC."
+      operationId: GetActivities
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: terminal
+          in: query
+          description: Terminal code as exposed by NxtPort.
+          required: false
+          type: string
+        - name: berth
+          in: query
+          description: Berth code as exposed by NxtPort.
+          required: false
+          type: string
+        - name: stay
+          in: query
+          description: Port-assigned stay number. Limits scope to activities directly related to a stay number.
+          required: false
+          type: string
+        - name: dossier
+          in: query
+          description: NxtPort dossier id. Limits scope to activities directly related to this dossier.
+          required: false
+          type: integer
+          format: int32
+        - name: vessel
+          in: query
+          description: NxtPort vessel id. Limits scope to activities directly related to this vessel.
+          required: false
+          type: integer
+          format: int32
+        - name: activity-stakeholder
+          in: query
+          description: NxtPort stakeholder id. Limits scope to activities directly related to this stakeholder.
+          required: false
+          type: integer
+          format: int32
+        - name: dossier-stakeholder
+          in: query
+          description: NxtPort stakeholder id. Limits scope to activities directly related to dossiers related to this stakeholder.
+          required: false
+          type: integer
+          format: int32
+        - name: start
+          in: query
+          description: 'Activity takes place in this datetime window, start inclusive'
+          required: false
+          type: string
+          format: date-time
+        - name: end
+          in: query
+          description: 'Activity takes place in this datetime window, end inclusive'
+          required: false
+          type: string
+          format: date-time
+        - name: page
+          in: query
+          description: Result set page.
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: page-size
+          in: query
+          description: Result set page size.
+          required: false
+          type: integer
+          format: int32
+          default: 10
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Activity'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/activities/{id}':
+    get:
+      tags:
+        - EngineQuery
+      summary: Get a specific activity.
+      operationId: GetActivity
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort activity id.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Activity'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/extract/csv':
+    post:
+      tags:
+        - Extract
+      operationId: GetCsvExtract
+      consumes:
+        - application/json
+      produces: []
+      parameters:
+        - name: extractParameters
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/EngineModelExtractParameters'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  /healthz:
+    get:
+      tags:
+        - Health
+      operationId: Healthz
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+      parameters:
+        - name: authorizationKey
+          in: query
+          required: false
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/HealthResponse'
+        '403':
+          description: Forbidden
+        '503':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/HealthResponse'
+  '/api/liquid-bulk/v{version}/input-types':
+    get:
+      tags:
+        - Input
+      summary: "Get a list of allowed input types.\r\nIncludes key-value property descriptions.\r\nOrdered by InputType ASC."
+      operationId: GetInputTypes
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/InputTypeDescriptor'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/inputs':
+    get:
+      tags:
+        - Input
+      summary: "Get a list of inputs that match the query parameters.\r\nOrdered by creation datetime DESC."
+      operationId: GetInputs
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: dossier
+          in: query
+          description: NxtPort dossier id.
+          required: false
+          type: integer
+          format: int32
+        - name: activity
+          in: query
+          description: NxtPort activity id.
+          required: false
+          type: integer
+          format: int32
+        - name: type
+          in: query
+          description: NxtPort liquid bulk input type key.
+          required: false
+          type: string
+          enum:
+            - Dossier
+            - ShippingAgent
+            - PortEngineArrival
+            - PortEngineDeparture
+            - Sampling
+            - Analysis
+            - CargoOperations
+            - Inspection
+        - name: stakeholder
+          in: query
+          description: NxtPort stakeholder id.
+          required: false
+          type: integer
+          format: int32
+        - name: stakeholder-ref
+          in: query
+          description: Reference used by stakeholder company to refer to input context.
+          required: false
+          type: string
+        - name: start
+          in: query
+          description: 'Inputs for activities that take place in this datetime window, start inclusive'
+          required: false
+          type: string
+          format: date-time
+        - name: end
+          in: query
+          description: 'Inputs for activities that take place in this datetime window, end inclusive'
+          required: false
+          type: string
+          format: date-time
+        - name: page
+          in: query
+          description: Result set page.
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: page-size
+          in: query
+          description: Result set page size.
+          required: false
+          type: integer
+          format: int32
+          default: 10
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Input'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+    post:
+      tags:
+        - Input
+      summary: Create a new input.
+      operationId: PostInput
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: input
+          in: body
+          description: Desired representation.
+          required: false
+          schema:
+            $ref: '#/definitions/Input'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Input'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/inputs/{id}':
+    get:
+      tags:
+        - Input
+      summary: Get a specific input.
+      operationId: GetInput
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort input id.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Input'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/input-link-suggestions':
+    post:
+      tags:
+        - Input
+      summary: "Get a list of link suggestions for an input object.\r\nOrdered by dossier number, activity id DESC.\r\n\r\nTaken into account:\r\n- Source (maar niet als source specifiek naar zoek, meer als stakeholder algemeen)\r\n- Source ref\r\n- Assingee\r\n- Assignee ref\r\n- Type\r\n- Client\r\n- Vessel\r\n- Terminal\r\n- Berth\r\n- Cargo\r\n- Estimated start\r\n- Start\r\n- Esitmated end\r\n- End"
+      operationId: GetInputLinkSuggestions
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: input
+          in: body
+          description: (in)complete input object for which you would like to receive link suggestions.
+          required: false
+          schema:
+            $ref: '#/definitions/Input'
+        - name: page
+          in: query
+          description: Result set page.
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: page-size
+          in: query
+          description: Result set page size.
+          required: false
+          type: integer
+          format: int32
+          default: 10
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/LinkSuggestion'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/hints':
+    get:
+      tags:
+        - Input
+      summary: Query hints.
+      operationId: GetHints
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: input-id
+          in: query
+          description: Scopes data to all Hints related to this input id.
+          required: false
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Hint'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+    post:
+      tags:
+        - Input
+      summary: 'Create a new Hint for the Liquid Engine, connecting an input with a dossier.'
+      operationId: PostHint
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: hint
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/Hint'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Hint'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/hints/{id}':
+    get:
+      tags:
+        - Input
+      summary: Get a user created Hint by id.
+      operationId: GetHint
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort hint id.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Hint'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+    put:
+      tags:
+        - Input
+      summary: Update a user created Hint based on id.
+      operationId: PutHint
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort hint id.
+          required: true
+          type: integer
+          format: int32
+        - name: hint
+          in: body
+          description: Hint object. Should be fully specified.
+          required: false
+          schema:
+            $ref: '#/definitions/Hint'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Hint'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+    delete:
+      tags:
+        - Input
+      summary: Delete a user created Hint based on id.
+      operationId: DeleteHint
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort hint id.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/links':
+    get:
+      tags:
+        - Input
+      summary: "Links between input and model as they currently exist.\r\nLinks are created based on hints or inference."
+      operationId: GetLinks
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: input-id
+          in: query
+          description: NxtPort input id.
+          required: false
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Link'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/inputs/{id}/link':
+    put:
+      tags:
+        - Input
+      summary: "Update an input to reference an activity or dossier.\r\n\r\nPosting an empty link will sever the existing link to an activity and/or dossier.\r\nIn the event an activity ends up without linked inputs, it will be removed."
+      operationId: PutInputLink
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort input id.
+          required: true
+          type: integer
+          format: int32
+        - name: link
+          in: body
+          description: Desired representation.
+          required: false
+          schema:
+            $ref: '#/definitions/Link'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Link'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/logs':
+    get:
+      tags:
+        - Log
+      summary: "Get a list of logs that match the query parameters.\r\nOrdered by creation datetime DESC."
+      operationId: GetLogs
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: dossier
+          in: query
+          description: NxtPort dossier id.
+          required: false
+          type: integer
+          format: int32
+        - name: type
+          in: query
+          description: Reduce scope to a single log type.
+          required: false
+          type: string
+          enum:
+            - ActivityCreated
+            - ActivityStartEstimateUpdated
+            - ActivityEndEstimateUpdated
+            - AlertCreated
+            - AlertRemoved
+            - ActivityDeleted
+            - ActivityEnded
+            - ActivityStarted
+            - ActivityEventCreated
+            - ActivityEventRemoved
+            - DossierStakeholderAdded
+            - DossierStakeholderRemoved
+            - DossierUpdated
+            - DossierEnded
+            - DossierGranted
+            - DossierRevoked
+            - DossierCreated
+            - DossierRemoved
+        - name: category
+          in: query
+          description: Reduce scope to a single log category.
+          required: false
+          type: string
+          enum:
+            - Nautical
+            - General
+            - Activity
+        - name: alert
+          in: query
+          description: Limit scope to regular log entries or alerts. Both are included when this param is omitted.
+          required: false
+          type: boolean
+        - name: stakeholder
+          in: query
+          description: NxtPort stakeholder id. Log relates to an activity in which the entity is a stakeholder.
+          required: false
+          type: integer
+          format: int32
+        - name: start
+          in: query
+          description: 'The oldest log returned should not be older than this date, inclusive.'
+          required: false
+          type: string
+          format: date-time
+        - name: page
+          in: query
+          description: Result set page.
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: page-size
+          in: query
+          description: Result set page size.
+          required: false
+          type: integer
+          format: int32
+          default: 10
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Log'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/read-logs':
+    post:
+      tags:
+        - Log
+      summary: Marks a list of log entries as read.
+      operationId: MarkLogsAsRead
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: dossierLogIds
+          in: body
+          description: Array of log-id's you want to mark as read.
+          required: false
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              format: int32
+              type: integer
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/IActionResult'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/ports':
+    get:
+      tags:
+        - Referential
+      summary: Get a list of known ports as United Nations Code for Trade and Transport Locations.
+      operationId: GetPorts
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              type: string
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/ports/{locode}':
+    get:
+      tags:
+        - Referential
+      summary: "Get hierarchy of known terminals and berths within the desired port by United Nations Code for Trade and Transport Locations.\r\nOrdered by terminal code ASC."
+      operationId: GetPort
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: locode
+          in: path
+          description: United Nations Code for Trade and Transport Locations.
+          required: true
+          type: string
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/PortLayout'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/vessels':
+    get:
+      tags:
+        - Referential
+      summary: "Get a list of vessels matching the available query parameters.\r\nOrdered by vessel name ASC."
+      operationId: GetVessels
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: Name starts with.
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Result set page.
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: page-size
+          in: query
+          description: Result set page size.
+          required: false
+          type: integer
+          format: int32
+          default: 10
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Vessel'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+    post:
+      tags:
+        - Referential
+      summary: Create a new vessel.
+      operationId: PostVessel
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: vessel
+          in: body
+          description: Desired representation.
+          required: false
+          schema:
+            $ref: '#/definitions/Vessel'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Vessel'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/vessels/{id}':
+    get:
+      tags:
+        - Referential
+      summary: Get a specific vessel.
+      operationId: GetVessel
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort id.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Vessel'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+    put:
+      tags:
+        - Referential
+      summary: Update an existing vessel.
+      operationId: PutVessel
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: vessel
+          in: body
+          description: Desired representation.
+          required: false
+          schema:
+            $ref: '#/definitions/Vessel'
+        - name: id
+          in: path
+          description: NxtPort id.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Vessel'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/stakeholders':
+    get:
+      tags:
+        - Referential
+      summary: "Get a list of stakeholders matching the available query parameters.\r\nOrdered by stakeholder name ASC."
+      operationId: GetStakeholders
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: name
+          in: query
+          description: Stakeholder name should contain this value.
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: Result set page.
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: page-size
+          in: query
+          description: Result set page size.
+          required: false
+          type: integer
+          format: int32
+          default: 10
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Stakeholder'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+    post:
+      tags:
+        - Referential
+      summary: Create a new stakeholder.
+      operationId: PostStakeholder
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: stakeholder
+          in: body
+          description: Desired representation.
+          required: false
+          schema:
+            $ref: '#/definitions/Stakeholder'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Stakeholder'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '409':
+          description: Conflict
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/stakeholders/{id}':
+    get:
+      tags:
+        - Referential
+      summary: Get a specific stakeholder.
+      operationId: GetStakeholder
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: NxtPort id.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Stakeholder'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+    put:
+      tags:
+        - Referential
+      summary: Update an existing stakeholder.
+      operationId: PutStakeholder
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: stakeholder
+          in: body
+          description: Desired representation.
+          required: false
+          schema:
+            $ref: '#/definitions/Stakeholder'
+        - name: id
+          in: path
+          description: Human-readable unique public identifier assigned to "entities" by NxtPort.
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Stakeholder'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/products':
+    get:
+      tags:
+        - Referential
+      summary: Get a list of known ports product types.
+      operationId: GetProductTypes
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: code
+          in: query
+          required: false
+          type: string
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Product'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+    post:
+      tags:
+        - Referential
+      summary: Creates a product type.
+      operationId: PostProductType
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: product
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/Product'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Product'
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Product'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/products/{id}':
+    put:
+      tags:
+        - Referential
+      summary: 'Updates a known product type, if it does not exist, inserts.'
+      operationId: PutProductType
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+        - name: product
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/Product'
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Product'
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Product'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+    delete:
+      tags:
+        - Referential
+      summary: Deletes a known product type.
+      operationId: DeleteProduct
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '204':
+          description: Success
+          schema:
+            $ref: '#/definitions/IActionResult'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '404':
+          description: Not Found
+        '500':
+          description: Server Error
+  '/api/liquid-bulk/v{version}/enums':
+    get:
+      tags:
+        - Referential
+      summary: Get a list of all NxtPort Liquid Bulk enums and their possible values. Ordered by name ASC.
+      operationId: GetEnums
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: version
+          in: path
+          required: true
+          type: string
+        - name: Ocp-Apim-Subscription-Key
+          in: header
+          required: false
+          type: string
+        - name: Authorization
+          in: header
+          required: false
+          type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/EnumDescriptor'
+        '400':
+          description: Bad Request
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+        '500':
+          description: Server Error
+definitions:
+  DossierOverview:
+    description: 'A flat high level overview of a dossier at a certain point in time, from the perspective of a particular stakeholder.'
+    type: object
+    properties:
+      generatedForStakeholderId:
+        format: int32
+        description: NxtPort stakeholder id for whom this overview was generated.
+        type: integer
+      id:
+        format: int32
+        description: NxtPort dossier id.
+        type: integer
+      clientStakeholderId:
+        format: int32
+        description: Client Stakeholder id.
+        type: integer
+      clientStakeholderName:
+        description: Client Stakeholder name.
+        type: string
+      dossierNumber:
+        description: A unique human readable number created by NxtPort.
+        type: string
+      requestingStakeholderReference:
+        description: A list of references used by the stakeholder to refer to this document.
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+      portLocode:
+        description: United Nations Code for Trade and Transport Locations.
+        type: string
+      terminal:
+        description: Terminal code as exposed by NxtPort.
+        type: string
+      berth:
+        description: Berth code as exposed by NxtPort.
+        type: string
+      stayNumber:
+        description: StayNumber within the port.
+        type: string
+      voyageType:
+        description: Type of voyage within the port.
+        enum:
+          - In
+          - Out
+          - Shift
+        type: string
+      voyageNumber:
+        description: VoyageNumber within the port.
+        type: string
+      voyageEstimateArrivalDateTime:
+        format: date-time
+        description: Current estimated arrival time for the relevant vessel voyage.
+        type: string
+      voyageActualArrivalDateTime:
+        format: date-time
+        description: Actual arrival time for the relevant vessel voyage.
+        type: string
+      voyageEstimateDepartureDateTime:
+        format: date-time
+        description: Current estimated departure time for the relevant vessel voyage.
+        type: string
+      voyageActualDepartureDateTime:
+        format: date-time
+        description: Actual departure time for the relevant vessel voyage.
+        type: string
+      vesselName:
+        description: Human readable name.
+        type: string
+      vesselTypeCode:
+        description: 'Discriminator, mainly used differentiate between ocean carrier and barge.'
+        type: string
+      vesselImo:
+        description: International Maritime Organization vessel identifier.
+        type: string
+      vesselLengthMeters:
+        format: double
+        description: Length in meters.
+        type: number
+      vesselWidthMeters:
+        format: double
+        description: Width in meters.
+        type: number
+      vesselDepthMeters:
+        format: double
+        description: Depth in meters.
+        type: number
+      cargoOverviews:
+        description: List of cargo overviews.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/CargoOverview'
+      currentActivityType:
+        description: Name of the activity type currently being done on the dossier.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      currentActivityExpectedStartDateTime:
+        format: date-time
+        description: Expected start time of the currently ongoing activity.
+        type: string
+      currentActivityExpectedEndDateTime:
+        format: date-time
+        description: Expected completion time of the currently ongoing activity.
+        type: string
+      currentActivityActualStartDateTime:
+        format: date-time
+        description: Actual start time of the currently ongoing activity.
+        type: string
+      currentActivityActualEndDateTime:
+        format: date-time
+        description: Actual completion time of the currently ongoing activity.
+        type: string
+      nextStakeholderActivityType:
+        description: Name of the next activity relevant to the stakeholder for which the overview was generated.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      nextStakeholderActivityExpectedStartDateTime:
+        format: date-time
+        description: Expected start time of next activity relevant to the stakeholder for which the overview was generated.
+        type: string
+      nextStakeholderActivityExpectedEndDateTime:
+        format: date-time
+        description: Expected end time of next activity relevant to the stakeholder for which the overview was generated.
+        type: string
+      nextStakeholderActivityActualStartDateTime:
+        format: date-time
+        description: actual start time of next activity relevant to the stakeholder for which the overview was generated.
+        type: string
+      nextStakeholderActivityActualEndDateTime:
+        format: date-time
+        description: Actual end time of next activity relevant to the stakeholder for which the overview was generated.
+        type: string
+      alerts:
+        description: List of alerts
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Alert'
+  CargoOverview:
+    description: Represents overview of a cargo.
+    type: object
+    properties:
+      cargoQuantity:
+        format: double
+        description: Total cargo quantity per unit.
+        type: number
+      cargoUnit:
+        description: Cargo quantity unit of measurement.
+        enum:
+          - Mtvac
+          - Mtair
+        type: string
+      cargoContents:
+        description: Cargo contents represented as string.
+        type: string
+      cargoOperation:
+        description: Cargo is either loaded or discharged.
+        enum:
+          - Loading
+          - Discharging
+        type: string
+  Alert:
+    description: Represents a flattened alert entry.
+    type: object
+    properties:
+      id:
+        format: int32
+        description: NxtPort id. Automatically assigned during creation.
+        type: integer
+      createdOn:
+        format: date-time
+        description: Moment at which the alert entry was created.
+        type: string
+      alertType:
+        description: Discriminator.
+        enum:
+          - Conflict
+          - BehindNoConflictNoGap
+          - AheadNoConflictNoGap
+          - BehindNoConflictWithGap
+          - AheadNoConflictWithGap
+        type: string
+      activity1Id:
+        format: int32
+        description: NxtPort activity id.
+        type: integer
+      liquidBulkActivity1Type:
+        description: Activity type key.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      activity2Id:
+        format: int32
+        description: NxtPort activity id.
+        type: integer
+      liquidBulkActivity2Type:
+        description: Activity type key.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      textMessage:
+        description: Human-readable information regarding this entry.
+        type: string
+  Dossier:
+    description: Represents a dossier.
+    type: object
+    properties:
+      id:
+        format: int32
+        description: NxtPort id. Automatically assigned during creation.
+        type: integer
+      createdOn:
+        format: date-time
+        description: Moment at which the dossier was created.
+        type: string
+      dossierNumber:
+        description: A unique human readable number created by NxtPort.
+        type: string
+      creatorStakeholderId:
+        format: int32
+        description: NxtPort stakeholder id.
+        type: integer
+      clientStakeholderId:
+        format: int32
+        type: integer
+      requestingStakeholderReference:
+        description: A list of references used by the stakeholder to refer to this document.
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+      portLocode:
+        description: United Nations Code for Trade and Transport Locations.
+        type: string
+      terminal:
+        description: Terminal code as exposed by NxtPort.
+        type: string
+      berth:
+        description: Berth code as exposed by NxtPort.
+        type: string
+      voyageType:
+        description: Type of voyage within the port.
+        enum:
+          - In
+          - Out
+          - Shift
+        type: string
+      voyageNumber:
+        description: VoyageNumber within the port.
+        type: string
+      stayNumber:
+        description: StayNumber within the port.
+        type: string
+      originPortName:
+        description: Origin port name.
+        type: string
+      destinationPortName:
+        description: Destination port name.
+        type: string
+      voyageEstimateArrivalDateTime:
+        format: date-time
+        description: Current estimated arrival time for the relevant vessel voyage.
+        type: string
+      voyageActualArrivalDateTime:
+        format: date-time
+        description: Actual arrival time for the relevant vessel voyage.
+        type: string
+      voyageEstimateDepartureDateTime:
+        format: date-time
+        description: Current estimated departure time for the relevant vessel voyage.
+        type: string
+      voyageActualDepartureDateTime:
+        format: date-time
+        description: Actual departure time for the relevant vessel voyage.
+        type: string
+      vessel:
+        $ref: '#/definitions/Vessel'
+        description: Vessel moving cargo for this dossier.
+      activities:
+        description: Activities taking place around this dossier.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Activity'
+      currentActivityType:
+        description: Name of the activity type currently being done on the dossier.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      currentActivityExpectedStartDateTime:
+        format: date-time
+        description: Expected start time of the currently ongoing activity.
+        type: string
+      currentActivityExpectedEndDateTime:
+        format: date-time
+        description: Expected completion time of the currently ongoing activity.
+        type: string
+      currentActivityActualStartDateTime:
+        format: date-time
+        description: Actual start time of the currently ongoing activity.
+        type: string
+      currentActivityActualEndDateTime:
+        format: date-time
+        description: Actual completion time of the currently ongoing activity.
+        type: string
+      nextStakeholderActivityType:
+        description: Name of the next activity relevant to the stakeholder for which the overview was generated.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      nextStakeholderActivityExpectedStartDateTime:
+        format: date-time
+        description: Expected start time of next activity relevant to the stakeholder for which the overview was generated.
+        type: string
+      nextStakeholderActivityExpectedEndDateTime:
+        format: date-time
+        description: Expected end time of next activity relevant to the stakeholder for which the overview was generated.
+        type: string
+      nextStakeholderActivityActualStartDateTime:
+        format: date-time
+        description: actual start time of next activity relevant to the stakeholder for which the overview was generated.
+        type: string
+      nextStakeholderActivityActualEndDateTime:
+        format: date-time
+        description: Actual end time of next activity relevant to the stakeholder for which the overview was generated.
+        type: string
+      cargo:
+        description: List of rich cargo objects.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/CargoView'
+      alerts:
+        description: List of alerts
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Alert'
+  Vessel:
+    description: Represents a vessel.
+    type: object
+    properties:
+      id:
+        format: int32
+        description: "NxtPort id. Automatically assigned during creation.\r\nPreferred means of vessel identification."
+        type: integer
+      imo:
+        description: International Maritime Organization vessel identifier.
+        type: string
+      eni:
+        description: European Number of Identification vessel identifier.
+        type: string
+      callSign:
+        description: Vessel call sign.
+        type: string
+      msi:
+        description: Marine Service International
+        type: string
+      name:
+        description: Human readable name.
+        type: string
+      lengthMeters:
+        format: double
+        description: Length in meters.
+        type: number
+      widthMeters:
+        format: double
+        description: Width in meters.
+        type: number
+      depthMeters:
+        format: double
+        description: Depth in meters.
+        type: number
+      actualDraughtMeters:
+        format: double
+        description: How low the ship sits in the water.
+        type: number
+      maximumDraughtMeters:
+        format: double
+        description: How low the ship could theoretically sit in the water.
+        type: number
+      deadWeightTonnage:
+        format: double
+        description: "Total contents of a ship including cargo, fuel, crew, passengers, food, and water aside from boiler water.\r\nIt is expressed in long tons of 1.016,0469088 kilograms."
+        type: number
+      vesselTypeCode:
+        description: 'Discriminator, mainly used differentiate between ocean carrier and barge.'
+        type: string
+  Activity:
+    description: Represents an activity
+    type: object
+    properties:
+      id:
+        format: int32
+        description: NxtPort id. Automatically assigned during creation.
+        type: integer
+      createdOn:
+        format: date-time
+        description: Moment at which the activity was created.
+        type: string
+      updatedOn:
+        format: date-time
+        description: Moment at which the activity was last updated.
+        type: string
+      inputs:
+        description: List of inputs that lead to the current state of this activity.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/InputReference'
+      dossierId:
+        format: int32
+        description: NxtPort dossier id.
+        type: integer
+      activityType:
+        description: Activity type key.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      dateTimeWindow:
+        $ref: '#/definitions/DateTimeWindow'
+        description: Datetime window during which the activity takes place.
+      lastSourceStakeholder:
+        $ref: '#/definitions/ParticipantStakeholder'
+        description: Stakeholder that provided data + their reference.
+      lastAssigneeStakeholder:
+        $ref: '#/definitions/ParticipantStakeholder'
+        description: Stakeholder that will execute activity + their reference.
+      relatedVesselIds:
+        description: List of vessel ids related to this activity other than the one at dossier level.
+        uniqueItems: false
+        type: array
+        items:
+          format: int32
+          type: integer
+      propertyValues:
+        description: Key-value properties containing human readable details about this activity.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/PropertyValue'
+      activityEvents:
+        description: Activity events related to this activity.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/ActivityEvent'
+  CargoView:
+    description: Represents a cargo.
+    type: object
+    properties:
+      id:
+        format: int32
+        description: NxtPort id. Automatically assigned during creation.
+        type: integer
+      sequence:
+        format: int32
+        description: Sequence number for cargo within the same dossier.
+        type: integer
+      reference:
+        description: Non-unique reference assigned to cargo object.
+        type: string
+      remarks:
+        description: Free text.
+        type: string
+      operation:
+        description: Cargo is either loaded or discharged.
+        enum:
+          - Loading
+          - Discharging
+        type: string
+      portOfLoading:
+        description: United Nations Code for Trade and Transport Locations for port at which cargo is loaded.
+        type: string
+      portOfDischarge:
+        description: United Nations Code for Trade and Transport Locations for port at which cargo is discharged.
+        type: string
+      content:
+        description: List of cargo contents represented as string.
+        type: string
+      quantity:
+        format: double
+        description: Cargo quantity.
+        type: number
+      quantityUnit:
+        description: Unit of measurement in which quantity is expressed.
+        enum:
+          - Mtvac
+          - Mtair
+        type: string
+      loadingWindow:
+        $ref: '#/definitions/DateTimeWindow'
+        description: DateTime window during which loading takes place.
+      dischargeWindow:
+        $ref: '#/definitions/DateTimeWindow'
+        description: DateTime window during which discharging takes place.
+      vaporsWindow:
+        $ref: '#/definitions/DateTimeWindow'
+        description: DateTime window during which vapors takes place.
+      isHeated:
+        description: Cargo is heated.
+        type: boolean
+      unNumber:
+        description: Cargo UN number.
+        type: string
+      vesselImoClass:
+        description: Vessel Imo Class
+        enum:
+          - One
+          - Two
+          - Three
+        type: string
+      temperatureCelcius:
+        format: int32
+        description: Cargo temperature in Celcius.
+        type: integer
+      tankCount:
+        format: int32
+        description: Number of tanks
+        type: integer
+      requiredConnectionType:
+        description: The connection type required to load or discharge product
+        type: string
+      doVapors:
+        description: Should vapors circulation be done
+        type: boolean
+      vaporsDurationHours:
+        format: int32
+        description: Duration for which vapors should be circulated
+        type: integer
+      numberOfSamples:
+        format: int32
+        description: Number of samples of the related Sampling activity.
+        type: integer
+      circulationMinutes:
+        format: int32
+        description: Circulation minutes of the related Sampling activity.
+        type: integer
+      analysisTypes:
+        description: Analysis-types of the related Analysis activity.
+        uniqueItems: false
+        type: array
+        items:
+          enum:
+            - Mini
+            - Full
+          type: string
+      connectionResponsibleName:
+        description: Name of the connection responsible.
+        type: string
+  InputReference:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      createdOn:
+        format: date-time
+        type: string
+  DateTimeWindow:
+    type: object
+    properties:
+      beginEstimate:
+        format: date-time
+        type: string
+      endEstimate:
+        format: date-time
+        type: string
+      beginActual:
+        format: date-time
+        type: string
+      endActual:
+        format: date-time
+        type: string
+  ParticipantStakeholder:
+    description: Represents a company acting as a stakeholder in the context of an input or activity.
+    type: object
+    properties:
+      id:
+        format: int32
+        description: "NxtPort id. Automatically assigned during creation.\r\nScoped to specific input, not global!"
+        type: integer
+      name:
+        description: 'Stakeholder name, for convenience'
+        type: string
+      reference:
+        description: Reference used by stakeholder company to refer to input context.
+        type: string
+      supplyChainRole:
+        description: NxtPort SupplyChainRole
+        enum:
+          - LB_Unspecified
+          - LB_Agent
+          - LB_Surveyor
+          - LB_Terminal
+          - LB_Ship
+          - LB_Cargo
+          - LB_Admin
+        type: string
+      vat:
+        description: Btw
+        type: string
+      nxtEntityId:
+        description: Btw
+        type: string
+  PropertyValue:
+    description: "Represents a key-value property.\r\nData type is enforced by backend based on configuration.\r\nType is available by means of InputTypeDescriptors."
+    type: object
+    properties:
+      name:
+        description: Property key.
+        type: string
+      value:
+        description: Property value.
+        type: string
+      dataType:
+        description: Property data type.
+        enum:
+          - LiquidString
+          - LiquidInt
+          - LiquidDecimal
+          - LiquidDate
+          - LiquidBool
+        type: string
+  ActivityEvent:
+    description: Represents an activity event.
+    type: object
+    properties:
+      activityEventDate:
+        format: date-time
+        description: Activity event date and time.
+        type: string
+      activityEventType:
+        description: Activity event type.
+        enum:
+          - PortEngineArrivalTendered
+          - PortEngineArrivalRetendered
+          - PortEngineArrivalAccepted
+          - CargoOperationsCargoArmConnected
+          - CargoOperationsCargoArmDisconnected
+          - CargoOperationsPaused
+          - CargoOperationsResumed
+          - InspectionDocumentsOnBoard
+        type: string
+  EngineModelExtractParameters:
+    type: object
+    properties:
+      beginEstimate:
+        format: date-time
+        type: string
+      berthCodes:
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+      vesselIds:
+        uniqueItems: false
+        type: array
+        items:
+          format: int32
+          type: integer
+      productCodes:
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+      operationCodes:
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+  HealthResponse:
+    type: object
+    properties:
+      status:
+        format: int32
+        type: integer
+      type:
+        type: string
+      title:
+        type: string
+      detail:
+        type: string
+  InputTypeDescriptor:
+    description: Describes the optional key-value properties by input type.
+    type: object
+    properties:
+      type:
+        description: Input type discriminator.
+        enum:
+          - Dossier
+          - ShippingAgent
+          - PortEngineArrival
+          - PortEngineDeparture
+          - Sampling
+          - Analysis
+          - CargoOperations
+          - Inspection
+        type: string
+      fields:
+        description: List of properties.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/PropertyDescription'
+  PropertyDescription:
+    description: Describes a key-value property.
+    type: object
+    properties:
+      key:
+        description: Key.
+        type: string
+      dataType:
+        description: Data type.
+        enum:
+          - LiquidString
+          - LiquidInt
+          - LiquidDecimal
+          - LiquidDate
+          - LiquidBool
+        type: string
+      default:
+        description: Default value.
+        type: string
+      mandatory:
+        description: Determines if field is mandatory. Can coexist with NxtPort.Services.LiquidBulk.API.Contracts.Input.Dynamic.PropertyDescription.Default.
+        type: boolean
+      whiteList:
+        $ref: '#/definitions/WhiteList'
+        description: Optional information regarding a whitelist of possible values
+  WhiteList:
+    type: object
+    properties:
+      sourceType:
+        enum:
+          - Enumeration
+          - Endpoint
+        type: string
+      name:
+        type: string
+  Input:
+    description: Represents a rich input.
+    type: object
+    properties:
+      id:
+        format: int32
+        description: NxtPort id. Automatically assigned during creation.
+        type: integer
+      createdOn:
+        format: date-time
+        description: Moment at which input was registered by NxtPort.
+        type: string
+      eventDateTime:
+        format: date-time
+        description: Moment to determine input application order.
+        type: string
+      inputType:
+        description: Used to express intent.
+        enum:
+          - Dossier
+          - ShippingAgent
+          - PortEngineArrival
+          - PortEngineDeparture
+          - Sampling
+          - Analysis
+          - CargoOperations
+          - Inspection
+        type: string
+      sourceType:
+        description: 'Means through which the information was received, such as ftp or email.'
+        enum:
+          - Ftp
+          - Email
+          - Excel
+          - Pdf
+        type: string
+      sourceStakeholder:
+        $ref: '#/definitions/ParticipantStakeholder'
+        description: Stakeholder that provided data + their reference.
+      assigneeStakeholder:
+        $ref: '#/definitions/ParticipantStakeholder'
+        description: Stakeholder that will execute activity + their reference.
+      clientStakeholder:
+        $ref: '#/definitions/ParticipantStakeholder'
+        description: Stakeholder which ordered the activity to be executed + their reference.
+      vesselIdentification:
+        $ref: '#/definitions/VesselIdentification'
+        description: Identifies a vessel related to this input.
+      locationIdentification:
+        $ref: '#/definitions/LocationIdentification'
+        description: Identifies a location related to this input.
+      cargoProductTypes:
+        description: List of cargo product types.
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+      cargo:
+        description: List of rich cargo objects.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Cargo'
+      properties:
+        description: List of key-value properties.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/PropertyValue'
+      activityEvents:
+        description: List of activity events.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/ActivityEvent'
+      dateTimeWindow1:
+        $ref: '#/definitions/DateTimeWindow'
+        description: First dateTime window during which the activity occurs.
+      dateTimeWindow2:
+        $ref: '#/definitions/DateTimeWindow'
+        description: Second dateTime window during which the activity occurs.
+      link:
+        $ref: '#/definitions/Link'
+        description: Link object that relates input to an activity or dossier.
+      links:
+        description: Link objects that relates input to an activity or dossier.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Link'
+      stayNumber:
+        description: Port assigned Stay Number.
+        type: string
+      voyageNumber:
+        description: Port assigned Voyage Number.
+        type: string
+  VesselIdentification:
+    description: A collection of optional values that can be used to identify a vessel.
+    type: object
+    properties:
+      vesselId:
+        format: int32
+        description: "NxtPort vessel id.\r\nPreferred means of vessel identification."
+        type: integer
+      vesselImo:
+        description: International Maritime Organization vessel identifier.
+        type: string
+      vesselEni:
+        description: European Number of Identification vessel identifier.
+        type: string
+  LocationIdentification:
+    description: A collection of optional values that can be used to identify a location.
+    type: object
+    properties:
+      portLocode:
+        description: United Nations Code for Trade and Transport Locations.
+        type: string
+      terminalCode:
+        description: Terminal code as exposed by NxtPort.
+        type: string
+      berthCode:
+        description: Berth code as exposed by NxtPort.
+        type: string
+  Cargo:
+    description: 'Represents a cargo. If all you know is the content, that is ok.'
+    type: object
+    properties:
+      id:
+        format: int32
+        description: NxtPort id. Automatically assigned during creation.
+        type: integer
+      sequence:
+        format: int32
+        description: Sequence number for cargo within the same dossier.
+        type: integer
+      reference:
+        description: Non-unique reference assigned to cargo object.
+        type: string
+      remarks:
+        description: Free text.
+        type: string
+      operation:
+        description: Cargo is either loaded or discharged.
+        enum:
+          - Loading
+          - Discharging
+        type: string
+      portOfLoading:
+        description: United Nations Code for Trade and Transport Locations for port at which cargo is loaded.
+        type: string
+      portOfDischarge:
+        description: United Nations Code for Trade and Transport Locations for port at which cargo is discharged.
+        type: string
+      content:
+        description: List of cargo contents represented as string.
+        type: string
+      quantity:
+        format: double
+        description: Cargo quantity.
+        type: number
+      quantityUnit:
+        description: Unit of measurement in which quantity is expressed.
+        enum:
+          - Mtvac
+          - Mtair
+        type: string
+      loadingWindow:
+        $ref: '#/definitions/DateTimeWindow'
+        description: DateTime window during which loading takes place.
+      dischargeWindow:
+        $ref: '#/definitions/DateTimeWindow'
+        description: DateTime window during which discharging takes place.
+      vaporsWindow:
+        $ref: '#/definitions/DateTimeWindow'
+        description: DateTime window during which vapors takes place.
+      isHeated:
+        description: Cargo is heated.
+        type: boolean
+      unNumber:
+        description: Cargo UN number.
+        type: string
+      vesselImoClass:
+        description: Vessel Imo Class
+        enum:
+          - One
+          - Two
+          - Three
+        type: string
+      temperatureCelcius:
+        format: int32
+        description: Cargo temperature in Celcius.
+        type: integer
+      tankCount:
+        format: int32
+        description: Number of tanks
+        type: integer
+      requiredConnectionType:
+        description: The connection type required to load or discharge product
+        type: string
+      connectionResponsibleStakeholderId:
+        format: int32
+        description: The connection responsible stakeholder id.
+        type: integer
+      doVapors:
+        description: Should vapors circulation be done
+        type: boolean
+      vaporsDurationHours:
+        format: int32
+        description: Duration for which vapors should be circulated
+        type: integer
+      activityEvents:
+        description: List of cargo related activity events.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/ActivityEvent'
+  Link:
+    description: Represents a link between input and a activity or dossier.
+    type: object
+    properties:
+      activityId:
+        format: int32
+        description: NxtPort activity id.
+        type: integer
+      dossierId:
+        format: int32
+        description: NxtPort dossier id.
+        type: integer
+      isEmpty:
+        type: boolean
+        readOnly: true
+      isMeaningful:
+        type: boolean
+        readOnly: true
+      isLinkInput:
+        type: boolean
+        readOnly: true
+      isLinkInputWithDossier:
+        type: boolean
+        readOnly: true
+      isLinkInputWithSpecificExistingActivityWithinDossier:
+        type: boolean
+        readOnly: true
+      isUnlinkInput:
+        type: boolean
+        readOnly: true
+  LinkSuggestion:
+    type: object
+    properties:
+      dossier:
+        $ref: '#/definitions/DossierSuggestion'
+      activity:
+        $ref: '#/definitions/ActivitySuggestion'
+  DossierSuggestion:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      vesselImo:
+        type: string
+      clientName:
+        type: string
+      berth:
+        type: string
+      vesselArrivalEstimate:
+        format: date-time
+        type: string
+      vesselArrivalActual:
+        format: date-time
+        type: string
+      products:
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+      clientReference:
+        type: string
+  ActivitySuggestion:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      references:
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+      products:
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+      assigneeStakeholderName:
+        type: string
+  Hint:
+    type: object
+    properties:
+      id:
+        format: int32
+        type: integer
+      inputId:
+        format: int32
+        type: integer
+      dossierId:
+        format: int32
+        type: integer
+  Log:
+    description: Represents a flattened log entry.
+    type: object
+    properties:
+      id:
+        format: int32
+        description: NxtPort id. Automatically assigned during creation.
+        type: integer
+      createdOn:
+        format: date-time
+        description: Moment at which the log entry was created.
+        type: string
+      dossierId:
+        format: int32
+        description: NxtPort dossier id.
+        type: integer
+      dossierLogType:
+        description: Discriminator.
+        enum:
+          - ActivityCreated
+          - ActivityStartEstimateUpdated
+          - ActivityEndEstimateUpdated
+          - AlertCreated
+          - AlertRemoved
+          - ActivityDeleted
+          - ActivityEnded
+          - ActivityStarted
+          - ActivityEventCreated
+          - ActivityEventRemoved
+          - DossierStakeholderAdded
+          - DossierStakeholderRemoved
+          - DossierUpdated
+          - DossierEnded
+          - DossierGranted
+          - DossierRevoked
+          - DossierCreated
+          - DossierRemoved
+        type: string
+      stakeholderId:
+        format: int32
+        description: Optional stakeholder id
+        type: integer
+      stakeholderName:
+        description: Optional stakeholder name
+        type: string
+      stakeholderRoleCode:
+        description: Optional stakeholder role
+        type: string
+      activity1Id:
+        format: int32
+        description: NxtPort activity id.
+        type: integer
+      liquidBulkActivity1Type:
+        description: Activity type key.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      activity2Id:
+        format: int32
+        description: NxtPort activity id.
+        type: integer
+      liquidBulkActivity2Type:
+        description: Activity type key.
+        enum:
+          - LoadingLaycan
+          - DischargeWindow
+          - ToBerth
+          - Departure
+          - Sampling
+          - Analysis
+          - Discharging
+          - Vapours
+          - Loading
+          - Inspection
+          - Blocked
+        type: string
+      vesselId:
+        format: int32
+        description: Optional vessel id
+        type: integer
+      vesselName:
+        description: Optional vessel name
+        type: string
+      valueDateTime:
+        format: date-time
+        description: Optional field value - DateTime
+        type: string
+      valueString:
+        description: Optional field value - string
+        type: string
+      valueInt:
+        format: int32
+        description: Optional field value - int
+        type: integer
+      textMessage:
+        description: Human-readable information regarding this entry.
+        type: string
+      isReadByCurrentStakeholder:
+        description: True if calling stakeholder has marked the log entry as read.
+        type: boolean
+  IActionResult:
+    type: object
+    properties: {}
+  PortLayout:
+    description: Basic representation of physical port layout.
+    type: object
+    properties:
+      locode:
+        description: United Nations Code for Trade and Transport Locations.
+        type: string
+      name:
+        description: Friendly name in English.
+        type: string
+      latitudeDeg:
+        format: double
+        description: Geographical South-North position -90 to 90
+        type: number
+      longitudeDeg:
+        format: double
+        description: Geographical West-East position -180 to 180
+        type: number
+      terminals:
+        description: List of known terminals in port.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Terminal'
+  Terminal:
+    description: Basic terminal representation.
+    type: object
+    properties:
+      code:
+        description: Terminal code as exposed by NxtPort.
+        type: string
+      name:
+        description: Friendly name in English.
+        type: string
+      latitudeDeg:
+        format: double
+        description: Geographical South-North position -90 to 90
+        type: number
+      longitudeDeg:
+        format: double
+        description: Geographical West-East position -180 to 180
+        type: number
+      berths:
+        description: List of known berths in terminal.
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Berth'
+  Berth:
+    description: Basic berth representation
+    type: object
+    properties:
+      code:
+        description: Berth code as exposed by NxtPort.
+        type: string
+      latitudeDeg:
+        format: double
+        description: Geographical South-North position -90 to 90
+        type: number
+      longitudeDeg:
+        format: double
+        description: Geographical West-East position -180 to 180
+        type: number
+  Stakeholder:
+    description: Represents a stakeholder.
+    type: object
+    properties:
+      id:
+        format: int32
+        description: LiquidBulk stakeholder id
+        type: integer
+      nxtEntityId:
+        description: "Human-readable unique public identifier assigned to \"entities\" by NxtPort.\r\nThis carries over between use cases."
+        type: string
+      name:
+        description: Official stakeholder name.
+        type: string
+      vat:
+        description: VAT Number.
+        type: string
+      roles:
+        description: List of roles the stakeholder is assigned within the use case context.
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+  Product:
+    description: Represents a product.
+    type: object
+    properties:
+      id:
+        description: LiquidBulk product id - generated by NxtPort when creating a product.
+        type: string
+      name:
+        description: Product name
+        type: string
+      unNumber:
+        description: Product UN Number
+        type: string
+      imoClass:
+        description: Product IMO Class
+        type: string
+  EnumDescriptor:
+    type: object
+    properties:
+      name:
+        type: string
+      values:
+        uniqueItems: false
+        type: array
+        items:
+          type: string
+securityDefinitions:
+  Bearer:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
+  Subscription:
+    name: Ocp-Apim-Subscription-Key
+    in: header
+    type: apiKey
+    description: API subscription key. Assigned by NxtPort to your organization.
+security:
+  - Bearer: []
+    Subscription: []
