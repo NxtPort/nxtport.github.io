@@ -13,5 +13,6 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [VGM](https://nxtport.github.io/?api=vgm)
 * [Container Tare Weight](https://nxtport.github.io/?api=ctw) by ContainerWeight
 * [Bulkchain](https://nxtport.github.io/?api=bulkchain)
+* [Liquid Bulk](https://nxtport.github.io/?api=liquidbulk)
 
 More information about NxtPort at [nxtport.eu](https://www.nxtport.eu/en/apis) or the OpenAPI specification at [openapis.org](https://www.openapis.org/).
