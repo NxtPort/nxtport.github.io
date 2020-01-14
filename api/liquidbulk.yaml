@@ -1,9 +1,10 @@
 swagger: '2.0'
-host: "api.nxtport.eu"
 info:
   version: '1.0'
   title: NxtPort Liquid Bulk API 1.0
   description: NxtPort Liquid Bulk API.
+host: "api.nxtport.eu"
+basePath: /
 schemes:
   - http
   - https
