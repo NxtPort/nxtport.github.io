@@ -2387,8 +2387,8 @@ paths:
             - ORIGINAL
             - UPDATED
             - CANCELLED
-            - OTHER
             - CANCELED
+            - OTHER
         - name: page
           in: query
           description: The index of the page. Optional; defaults to 1.
@@ -2460,8 +2460,8 @@ paths:
             - ORIGINAL
             - UPDATED
             - CANCELLED
-            - OTHER
             - CANCELED
+            - OTHER
         - name: page
           in: query
           description: The index of the page. Optional; defaults to 1.
@@ -6677,8 +6677,8 @@ definitions:
           - ORIGINAL
           - UPDATED
           - CANCELLED
-          - OTHER
           - CANCELED
+          - OTHER
         type: string
       sentOn:
         format: date-time
