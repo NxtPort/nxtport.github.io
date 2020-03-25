@@ -2427,8 +2427,8 @@ paths:
             - ORIGINAL
             - UPDATED
             - CANCELLED
-            - OTHER
             - CANCELED
+            - OTHER
         - name: page
           in: query
           description: The index of the page. Optional; defaults to 1.
@@ -2500,8 +2500,8 @@ paths:
             - ORIGINAL
             - UPDATED
             - CANCELLED
-            - OTHER
             - CANCELED
+            - OTHER
         - name: page
           in: query
           description: The index of the page. Optional; defaults to 1.
@@ -3541,9 +3541,9 @@ paths:
             - COMPLETED
             - REJECTED
             - CANCELLED
-            - NONREGISTERED
             - MOVED
             - UPDATED
+            - NONREGISTERED
         - name: location
           in: query
           description: "A search string to find only those loads with loading locations containing this string. Optional;\r\n            when omitted, any loading location will do. As the loading location is a free text field entered by the despatcher, results may vary."
@@ -5205,9 +5205,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -5331,9 +5331,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       fullName:
         type: string
@@ -5475,24 +5475,13 @@ definitions:
         type: string
       supervisor:
         type: string
-  CleaningLocation.CleaningLocationUpdate:
+  CleaningLocationData.CleaningLocationUser:
     type: object
     properties:
-      name:
+      id:
+        format: uuid
         type: string
-      description:
-        type: string
-      addressLines:
-        type: object
-        additionalProperties:
-          type: string
-      phone:
-        type: string
-      fax:
-        type: string
-      website:
-        type: string
-      supervisor:
+      fullName:
         type: string
   BookletData.CleaningAction:
     type: object
@@ -5593,6 +5582,25 @@ definitions:
       version:
         format: uuid
         type: string
+  CleaningLocation.CleaningLocationUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      addressLines:
+        type: object
+        additionalProperties:
+          type: string
+      phone:
+        type: string
+      fax:
+        type: string
+      website:
+        type: string
+      supervisor:
+        type: string
   BookletData.CleaningActionCreate:
     type: object
     properties:
@@ -5610,14 +5618,6 @@ definitions:
         type: array
         items:
           type: string
-  CleaningLocationData.CleaningLocationUser:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      fullName:
-        type: string
   BookletData.CompartmentCleaning:
     type: object
     properties:
@@ -5740,49 +5740,25 @@ definitions:
     properties:
       comment:
         type: string
-  CreditData.CreditPackOveralSummary:
+  CreditData.CreditTransactionContext:
     type: object
     properties:
-      depleted:
-        format: int32
-        type: integer
-      inUse:
-        format: int32
-        type: integer
-      untouched:
-        format: int32
-        type: integer
-      purchased:
-        format: int32
-        type: integer
-        readOnly: true
-      details:
-        type: array
-        items:
-          $ref: '#/definitions/CreditData.CreditPackSummary'
-  CreditData.CreditSummary:
-    type: object
-    properties:
-      purchased:
-        format: int32
-        type: integer
-      remaining:
-        format: int32
-        type: integer
-      spent:
-        format: int32
-        type: integer
-      spentYearToDate:
-        format: int32
-        type: integer
-      spentLastMonth:
-        format: int32
-        type: integer
-      spentPerMonth:
-        type: object
-        additionalProperties:
-          format: int32
-          type: integer
+      reason:
+        enum:
+          - AddedCredits
+          - CompleteLoad
+          - CreateEecd
+          - SignOffCleaning
+          - CompleteLoadForPaperEecd
+          - InvalidateCleaningAction
+        type: string
+      bookletId:
+        format: uuid
+        type: string
+      eEcd:
+        type: string
+      comment:
+        type: string
   CreditData.CreditWalletSummary:
     type: object
     properties:
@@ -5804,6 +5780,23 @@ definitions:
         $ref: '#/definitions/CreditData.CreditSummary'
       creditPacks:
         $ref: '#/definitions/CreditData.CreditPackOveralSummary'
+  CreditData.CreditTransaction:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      performedOn:
+        format: date-time
+        type: string
+      performedBy:
+        format: uuid
+        type: string
+      amount:
+        format: int32
+        type: integer
+      details:
+        $ref: '#/definitions/CreditData.CreditTransactionContext'
   CreditData.CreditPack:
     type: object
     properties:
@@ -5843,6 +5836,49 @@ definitions:
       version:
         format: uuid
         type: string
+  CreditData.CreditSummary:
+    type: object
+    properties:
+      purchased:
+        format: int32
+        type: integer
+      remaining:
+        format: int32
+        type: integer
+      spent:
+        format: int32
+        type: integer
+      spentYearToDate:
+        format: int32
+        type: integer
+      spentLastMonth:
+        format: int32
+        type: integer
+      spentPerMonth:
+        type: object
+        additionalProperties:
+          format: int32
+          type: integer
+  CreditData.CreditPackOveralSummary:
+    type: object
+    properties:
+      depleted:
+        format: int32
+        type: integer
+      inUse:
+        format: int32
+        type: integer
+      untouched:
+        format: int32
+        type: integer
+      purchased:
+        format: int32
+        type: integer
+        readOnly: true
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/CreditData.CreditPackSummary'
   CreditData.CreditPackSummary:
     type: object
     properties:
@@ -5861,6 +5897,68 @@ definitions:
       initialCredits:
         format: int32
         type: integer
+  CreditData.WalletSummary:
+    type: object
+    properties:
+      walletId:
+        format: uuid
+        type: string
+      organisations:
+        type: array
+        items:
+          format: uuid
+          type: string
+      warningThreshold:
+        format: int32
+        type: integer
+      creditsPurchased:
+        format: int32
+        type: integer
+      creditsRemaining:
+        format: int32
+        type: integer
+      packsPurchased:
+        format: int32
+        type: integer
+      packsActive:
+        format: int32
+        type: integer
+      packIds:
+        type: array
+        items:
+          format: uuid
+          type: string
+  CreditData.CreditWallet:
+    type: object
+    properties:
+      owners:
+        type: array
+        items:
+          format: uuid
+          type: string
+      warningThreshold:
+        format: int32
+        type: integer
+      id:
+        format: uuid
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      createdByUser:
+        format: uuid
+        type: string
+      lastUpdatedOn:
+        format: date-time
+        type: string
+      lastUpdatedByUser:
+        format: uuid
+        type: string
+      isDeleted:
+        type: boolean
+      version:
+        format: uuid
+        type: string
   EftcoCleaningCode:
     type: object
     properties:
@@ -5897,104 +5995,6 @@ definitions:
       version:
         format: uuid
         type: string
-  CreditData.CreditWallet:
-    type: object
-    properties:
-      owners:
-        type: array
-        items:
-          format: uuid
-          type: string
-      warningThreshold:
-        format: int32
-        type: integer
-      id:
-        format: uuid
-        type: string
-      createdOn:
-        format: date-time
-        type: string
-      createdByUser:
-        format: uuid
-        type: string
-      lastUpdatedOn:
-        format: date-time
-        type: string
-      lastUpdatedByUser:
-        format: uuid
-        type: string
-      isDeleted:
-        type: boolean
-      version:
-        format: uuid
-        type: string
-  CreditData.CreditTransactionContext:
-    type: object
-    properties:
-      reason:
-        enum:
-          - AddedCredits
-          - CompleteLoad
-          - CreateEecd
-          - SignOffCleaning
-          - CompleteLoadForPaperEecd
-          - InvalidateCleaningAction
-        type: string
-      bookletId:
-        format: uuid
-        type: string
-      eEcd:
-        type: string
-      comment:
-        type: string
-  CreditData.CreditTransaction:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      performedOn:
-        format: date-time
-        type: string
-      performedBy:
-        format: uuid
-        type: string
-      amount:
-        format: int32
-        type: integer
-      details:
-        $ref: '#/definitions/CreditData.CreditTransactionContext'
-  CreditData.WalletSummary:
-    type: object
-    properties:
-      walletId:
-        format: uuid
-        type: string
-      organisations:
-        type: array
-        items:
-          format: uuid
-          type: string
-      warningThreshold:
-        format: int32
-        type: integer
-      creditsPurchased:
-        format: int32
-        type: integer
-      creditsRemaining:
-        format: int32
-        type: integer
-      packsPurchased:
-        format: int32
-        type: integer
-      packsActive:
-        format: int32
-        type: integer
-      packIds:
-        type: array
-        items:
-          format: uuid
-          type: string
   ResultsPage.CreditData.WalletSummary:
     type: object
     properties:
@@ -6183,20 +6183,40 @@ definitions:
             type: string
           DE:
             type: string
-  Equipment.EquipmentCleanliness:
+  MasterData.EquipmentPut:
     type: object
     properties:
-      state:
+      equipmentType:
         enum:
-          - CompletelyClean
-          - PartiallyDirty
-          - CompletelyDirty
-          - Unknown
+          - TANKCONTAINER
+          - TANKTRAILER
+          - IBC
+          - RAILTANK
         type: string
+      subGroup:
+        type: string
+      numberOfManholes:
+        format: int32
+        type: integer
+      numberOfCompartments:
+        format: int32
+        type: integer
       compartments:
-        type: object
-        additionalProperties:
-          $ref: '#/definitions/Equipment.CompartmentCleanliness'
+        type: array
+        items:
+          $ref: '#/definitions/MasterData.Compartment'
+      isSubContracted:
+        type: boolean
+      subContractor:
+        type: string
+      licensePlate:
+        type: string
+      containerId:
+        type: string
+      isIso6346Compliant:
+        type: boolean
+      internalEquipmentCode:
+        type: string
   MasterData.Equipment:
     required:
       - equipmentType
@@ -6268,6 +6288,20 @@ definitions:
       baffles:
         format: int32
         type: integer
+  Equipment.EquipmentCleanliness:
+    type: object
+    properties:
+      state:
+        enum:
+          - CompletelyClean
+          - PartiallyDirty
+          - CompletelyDirty
+          - Unknown
+        type: string
+      compartments:
+        type: object
+        additionalProperties:
+          $ref: '#/definitions/Equipment.CompartmentCleanliness'
   Equipment.CompartmentCleanliness:
     type: object
     properties:
@@ -6281,40 +6315,6 @@ definitions:
         enum:
           - PolymerComplete
           - PolymerIncomplete
-        type: string
-  MasterData.EquipmentPut:
-    type: object
-    properties:
-      equipmentType:
-        enum:
-          - TANKCONTAINER
-          - TANKTRAILER
-          - IBC
-          - RAILTANK
-        type: string
-      subGroup:
-        type: string
-      numberOfManholes:
-        format: int32
-        type: integer
-      numberOfCompartments:
-        format: int32
-        type: integer
-      compartments:
-        type: array
-        items:
-          $ref: '#/definitions/MasterData.Compartment'
-      isSubContracted:
-        type: boolean
-      subContractor:
-        type: string
-      licensePlate:
-        type: string
-      containerId:
-        type: string
-      isIso6346Compliant:
-        type: boolean
-      internalEquipmentCode:
         type: string
   ResultsPage.MasterData.Equipment:
     type: object
@@ -6745,8 +6745,8 @@ definitions:
           - ORIGINAL
           - UPDATED
           - CANCELLED
-          - OTHER
           - CANCELED
+          - OTHER
         type: string
       sentOn:
         format: date-time
@@ -7089,9 +7089,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -7190,9 +7190,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       displayDate:
         format: date-time
