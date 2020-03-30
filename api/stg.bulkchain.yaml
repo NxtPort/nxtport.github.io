@@ -4,7 +4,6 @@ info:
   title: NxtPort Bulkchain API
 basePath: /bulkchain/live/v1
 schemes:
-  - http
   - https
 paths:
   /order/types:
