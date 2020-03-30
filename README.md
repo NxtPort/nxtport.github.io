@@ -3,6 +3,7 @@
 The repository **nxtport.github.io** lets you visualize and interact with the NxtPort API's without having any of the implementation logic in place. Click any of the following links for documentation in OpenAPI format. Available API's are listed in alphabetical order.
 
 * [Bulkchain](https://nxtport.github.io/?api=bulkchain)
+* [Bulkchain Staging](https://nxtport.github.io/?api=stg.bulkchain)
 * [Container Tare Weight](https://nxtport.github.io/?api=ctw) by ContainerWeight
 * [eECD](https://nxtport.github.io/?api=eecd)
 * [Import Consignment](https://nxtport.github.io/?api=import_consignment_data)
