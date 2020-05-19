@@ -14,7 +14,7 @@ paths:
     get:
       tags:
         - Enum
-      operationId: GetAvailableTypes
+      operationId: GetAvailableOrderTypes
       consumes: []
       produces:
         - application/json
@@ -30,7 +30,28 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
+  /visit/types:
+    get:
+      tags:
+        - Enum
+      operationId: GetAvailableVisitTypes
+      consumes: []
+      produces:
+        - application/json
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              type: string
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
   /order/terms:
     get:
       tags:
@@ -51,7 +72,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
   /stakeholder/roles:
     get:
       tags:
@@ -72,40 +93,16 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
-  /orders:
+            $ref: '#/definitions/ErrorResponseDto'
+  /order/states:
     get:
       tags:
-        - Order
-      operationId: GetOrders
+        - Enum
+      operationId: GetAvailableStates
       consumes: []
       produces:
         - application/json
-      parameters:
-        - name: page
-          in: query
-          required: false
-          type: integer
-          format: int32
-          default: 1
-        - name: pagesize
-          in: query
-          required: false
-          type: integer
-          format: int32
-          default: 25
-        - name: ordertype
-          in: query
-          required: false
-          type: string
-        - name: published
-          in: query
-          required: false
-          type: boolean
-        - name: privatereference
-          in: query
-          required: false
-          type: string
+      parameters: []
       responses:
         '200':
           description: Success
@@ -113,47 +110,37 @@ paths:
             uniqueItems: false
             type: array
             items:
-              $ref: '#/definitions/Order'
+              type: string
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
-    post:
+            $ref: '#/definitions/ErrorResponseDto'
+  /healthz:
+    get:
       tags:
-        - Order
-      operationId: PostOrder
-      consumes:
-        - application/json-patch+json
+        - Health
+      operationId: Healthz
+      consumes: []
+      produces:
+        - text/plain
         - application/json
         - text/json
-        - application/*+json
-      produces:
-        - application/json
       parameters:
-        - name: postOrder
-          in: body
-          required: false
-          schema:
-            $ref: '#/definitions/Order'
-        - name: publish
+        - name: authorizationKey
           in: query
           required: false
-          type: boolean
-          default: false
-        - name: publishvisits
-          in: query
-          required: false
-          type: boolean
-          default: false
+          type: string
       responses:
-        '201':
+        '200':
           description: Success
           schema:
-            $ref: '#/definitions/Order'
-        '500':
+            $ref: '#/definitions/HealthResponse'
+        '403':
+          description: Forbidden
+        '503':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/HealthResponse'
   '/orders/{bulkchainid}':
     get:
       tags:
@@ -176,6 +163,10 @@ paths:
           required: false
           type: integer
           format: int32
+        - name: state
+          in: query
+          required: false
+          type: string
       responses:
         '200':
           description: Success
@@ -184,7 +175,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     delete:
       tags:
         - Order
@@ -203,7 +194,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     patch:
       tags:
         - Order
@@ -235,6 +226,16 @@ paths:
           required: false
           type: boolean
           default: false
+        - name: nextState
+          in: query
+          required: false
+          type: boolean
+          default: false
+        - name: silentUpdate
+          in: query
+          required: false
+          type: boolean
+          default: false
       responses:
         '200':
           description: Success
@@ -243,7 +244,243 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
+  /orders:
+    get:
+      tags:
+        - Order
+      operationId: GetOrders
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: ordertype
+          in: query
+          required: false
+          type: string
+        - name: published
+          in: query
+          required: false
+          type: boolean
+        - name: privatereference
+          in: query
+          required: false
+          type: string
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: pagesize
+          in: query
+          required: false
+          type: integer
+          format: int32
+          default: 25
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/OrdersPaging'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+    post:
+      tags:
+        - Order
+      operationId: PostOrder
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - name: postOrder
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/Order'
+        - name: publish
+          in: query
+          required: false
+          type: boolean
+          default: false
+        - name: publishvisits
+          in: query
+          required: false
+          type: boolean
+          default: false
+        - name: nextState
+          in: query
+          required: false
+          type: boolean
+          default: false
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Order'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/history':
+    get:
+      tags:
+        - Order
+      operationId: GetOrderHistory
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: stateChangesOnly
+          in: query
+          required: false
+          type: boolean
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/OrderHistory'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/changes':
+    get:
+      tags:
+        - Order
+      operationId: GetOrderChanges
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: fromVersion
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: toVersion
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/OrderChanges'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/OrderChanges'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/reservation/goods/{goodsitemid}':
+    get:
+      tags:
+        - ReservationGoods
+      operationId: GetReservationGood
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: goodsitemid
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/GoodsItem'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+    delete:
+      tags:
+        - ReservationGoods
+      operationId: DeleteReservationGood
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: goodsitemid
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+    patch:
+      tags:
+        - ReservationGoods
+      operationId: PatchReservationGood
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: goodsitemid
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: patchItem
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/GoodsItem'
+        - name: silentUpdate
+          in: query
+          required: false
+          type: boolean
+          default: false
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/GoodsItem'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
   '/orders/{bulkchainid}/reservation/goods':
     get:
       tags:
@@ -273,14 +510,11 @@ paths:
         '200':
           description: Success
           schema:
-            uniqueItems: false
-            type: array
-            items:
-              $ref: '#/definitions/GoodsItem'
+            $ref: '#/definitions/GoodsPaging'
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     post:
       tags:
         - ReservationGoods
@@ -310,12 +544,12 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
-  '/orders/{bulkchainid}/reservation/goods/{goodsitemid}':
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/stakeholders/{nxtentityid}':
     get:
       tags:
-        - ReservationGoods
-      operationId: GetReservationGood
+        - Stakeholder
+      operationId: GetStakeholder
       consumes: []
       produces:
         - application/json
@@ -324,24 +558,23 @@ paths:
           in: path
           required: true
           type: string
-        - name: goodsitemid
+        - name: nxtentityid
           in: path
           required: true
-          type: integer
-          format: int32
+          type: string
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/GoodsItem'
+            $ref: '#/definitions/Stakeholder'
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     delete:
       tags:
-        - ReservationGoods
-      operationId: DeleteReservationGood
+        - Stakeholder
+      operationId: DeleteStakeholder
       consumes: []
       produces:
         - application/json
@@ -350,22 +583,23 @@ paths:
           in: path
           required: true
           type: string
-        - name: goodsitemid
+        - name: nxtentityid
           in: path
           required: true
-          type: integer
-          format: int32
+          type: string
       responses:
         '200':
           description: Success
+          schema:
+            $ref: '#/definitions/Stakeholder'
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     patch:
       tags:
-        - ReservationGoods
-      operationId: PatchReservationGood
+        - Stakeholder
+      operationId: PatchStakeholder
       consumes:
         - application/json-patch+json
         - application/json
@@ -378,25 +612,29 @@ paths:
           in: path
           required: true
           type: string
-        - name: goodsitemid
+        - name: nxtentityid
           in: path
           required: true
-          type: integer
-          format: int32
-        - name: patchItem
+          type: string
+        - name: patchStakeholder
           in: body
           required: false
           schema:
-            $ref: '#/definitions/GoodsItem'
+            $ref: '#/definitions/Stakeholder'
+        - name: silentUpdate
+          in: query
+          required: false
+          type: boolean
+          default: false
       responses:
         '200':
           description: Success
           schema:
-            $ref: '#/definitions/GoodsItem'
+            $ref: '#/definitions/Stakeholder'
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
   '/orders/{bulkchainid}/stakeholders':
     get:
       tags:
@@ -421,7 +659,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     post:
       tags:
         - Stakeholder
@@ -454,92 +692,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
-  '/orders/{bulkchainid}/stakeholders/{nxtentityid}':
-    get:
-      tags:
-        - Stakeholder
-      operationId: GetStakeholder
-      consumes: []
-      produces:
-        - application/json
-      parameters:
-        - name: bulkchainid
-          in: path
-          required: true
-          type: string
-        - name: nxtentityid
-          in: path
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/Stakeholder'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/ServerError'
-    delete:
-      tags:
-        - Stakeholder
-      operationId: DeleteStakeholder
-      consumes: []
-      produces:
-        - application/json
-      parameters:
-        - name: bulkchainid
-          in: path
-          required: true
-          type: string
-        - name: nxtentityid
-          in: path
-          required: true
-          type: string
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/Stakeholder'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/ServerError'
-    patch:
-      tags:
-        - Stakeholder
-      operationId: PatchStakeholder
-      consumes:
-        - application/json-patch+json
-        - application/json
-        - text/json
-        - application/*+json
-      produces:
-        - application/json
-      parameters:
-        - name: bulkchainid
-          in: path
-          required: true
-          type: string
-        - name: nxtentityid
-          in: path
-          required: true
-          type: string
-        - name: patchStakeholder
-          in: body
-          required: false
-          schema:
-            $ref: '#/definitions/Stakeholder'
-      responses:
-        '200':
-          description: Success
-          schema:
-            $ref: '#/definitions/Stakeholder'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
   /stakeholders:
     get:
       tags:
@@ -560,79 +713,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
-  '/orders/{bulkchainid}/visits':
-    get:
-      tags:
-        - Visit
-      operationId: GetVisits
-      consumes: []
-      produces:
-        - application/json
-      parameters:
-        - name: bulkchainid
-          in: path
-          required: true
-          type: string
-        - name: page
-          in: query
-          required: false
-          type: integer
-          format: int32
-          default: 1
-        - name: pageSize
-          in: query
-          required: false
-          type: integer
-          format: int32
-          default: 25
-      responses:
-        '200':
-          description: Success
-          schema:
-            uniqueItems: false
-            type: array
-            items:
-              $ref: '#/definitions/Visit'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/ServerError'
-    post:
-      tags:
-        - Visit
-      operationId: PostVisit
-      consumes:
-        - application/json-patch+json
-        - application/json
-        - text/json
-        - application/*+json
-      produces:
-        - application/json
-      parameters:
-        - name: bulkchainid
-          in: path
-          required: true
-          type: string
-        - name: postVisit
-          in: body
-          required: false
-          schema:
-            $ref: '#/definitions/Visit'
-        - name: publish
-          in: query
-          required: false
-          type: boolean
-          default: false
-      responses:
-        '201':
-          description: Success
-          schema:
-            $ref: '#/definitions/Visit'
-        '500':
-          description: Server Error
-          schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
   '/orders/{bulkchainid}/visits/{visitid}':
     get:
       tags:
@@ -665,10 +746,18 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/Visit'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     delete:
       tags:
         - Visit
@@ -689,10 +778,18 @@ paths:
       responses:
         '200':
           description: Success
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     patch:
       tags:
         - Visit
@@ -729,15 +826,410 @@ paths:
           required: false
           type: boolean
           default: false
+        - name: silentUpdate
+          in: query
+          required: false
+          type: boolean
+          default: false
       responses:
         '200':
           description: Success
           schema:
             $ref: '#/definitions/Visit'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/visits':
+    get:
+      tags:
+        - Visit
+      operationId: GetVisits
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: visittype
+          in: query
+          required: false
+          type: string
+        - name: hasarrived
+          in: query
+          required: false
+          type: boolean
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+          default: 25
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/Visit'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+    post:
+      tags:
+        - Visit
+      operationId: PostVisit
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: postVisit
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/Visit'
+        - name: publish
+          in: query
+          required: false
+          type: boolean
+          default: false
+      responses:
+        '201':
+          description: Success
+          schema:
+            $ref: '#/definitions/Visit'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+  /visits:
+    get:
+      tags:
+        - Visit
+      operationId: GetVisitsSummary
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: ordertypes
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          uniqueItems: false
+        - name: orderreference
+          in: query
+          required: false
+          type: string
+        - name: vesselimo
+          in: query
+          required: false
+          type: string
+        - name: types
+          in: query
+          required: false
+          type: array
+          items:
+            type: string
+          collectionFormat: multi
+          uniqueItems: false
+        - name: reference
+          in: query
+          required: false
+          type: string
+        - name: operatorname
+          in: query
+          required: false
+          type: string
+        - name: estimatedarrivalfrom
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: estimatedarrivalto
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: originunlocode
+          in: query
+          required: false
+          type: string
+        - name: originberth
+          in: query
+          required: false
+          type: string
+        - name: destinationlocode
+          in: query
+          required: false
+          type: string
+        - name: destinationberth
+          in: query
+          required: false
+          type: string
+        - name: hasarrived
+          in: query
+          required: false
+          type: boolean
+        - name: published
+          in: query
+          required: false
+          type: boolean
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+          default: 25
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/VisitSummaryPaging'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/visits/{visitid}/unexpectedChanges':
+    get:
+      tags:
+        - Visit
+      operationId: GetUnexpectedChanges
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: visitid
+          in: path
+          required: true
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            uniqueItems: false
+            type: array
+            items:
+              $ref: '#/definitions/UnexpectedChange'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/visits/{visitid}/unexpectedChanges/{version}':
+    put:
+      tags:
+        - Visit
+      operationId: ResolveUnexpectedChange
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: visitid
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: version
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: resolveObject
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/ResolveUnexpectedChange'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/visits/{visitid}/attachments':
+    post:
+      tags:
+        - VisitAttachments
+      operationId: UploadVisitAttachment
+      consumes:
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: visitid
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: file
+          in: body
+          required: false
+          schema:
+            $ref: '#/definitions/File'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/Attachment'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+  '/orders/{bulkchainid}/visits/{visitid}/attachments/{attachmentid}':
+    get:
+      tags:
+        - VisitAttachments
+      operationId: GetVisitAttachment
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: visitid
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: attachmentid
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/File'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
+    delete:
+      tags:
+        - VisitAttachments
+      operationId: DeleteVisitAttachment
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: bulkchainid
+          in: path
+          required: true
+          type: string
+        - name: visitid
+          in: path
+          required: true
+          type: integer
+          format: int32
+        - name: attachmentid
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Success
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
   '/orders/{bulkchainid}/visits/{visitid}/goods':
     get:
       tags:
@@ -779,7 +1271,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     post:
       tags:
         - VisitGoods
@@ -814,7 +1306,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
   '/orders/{bulkchainid}/visits/{visitid}/goods/{goodsitemid}':
     get:
       tags:
@@ -846,7 +1338,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     delete:
       tags:
         - VisitGoods
@@ -875,7 +1367,7 @@ paths:
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
     patch:
       tags:
         - VisitGoods
@@ -907,22 +1399,88 @@ paths:
           required: false
           schema:
             $ref: '#/definitions/GoodsItem'
+        - name: confirm
+          in: query
+          required: false
+          type: boolean
+          default: false
+        - name: silentUpdate
+          in: query
+          required: false
+          type: boolean
+          default: false
       responses:
         '200':
           description: Success
           schema:
             $ref: '#/definitions/GoodsItem'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
         '500':
           description: Server Error
           schema:
-            $ref: '#/definitions/ServerError'
+            $ref: '#/definitions/ErrorResponseDto'
+  /goods:
+    get:
+      tags:
+        - VisitGoods
+      operationId: GetGoodsSummary
+      consumes: []
+      produces:
+        - application/json
+      parameters:
+        - name: mrn
+          in: query
+          required: false
+          type: string
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+          default: 1
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+          default: 25
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/VisitSummaryPaging'
+        '500':
+          description: Server Error
+          schema:
+            $ref: '#/definitions/ErrorResponseDto'
 definitions:
-  ServerError:
+  ErrorResponseDto:
     type: object
     properties:
       error:
-        type: string
+        description: Gets or sets the error.
+        uniqueItems: false
+        type: array
+        items:
+          type: string
       identifier:
+        format: uuid
+        description: Gets the identifier.
+        type: string
+  HealthResponse:
+    type: object
+    properties:
+      status:
+        format: int32
+        type: integer
+      type:
+        type: string
+      title:
+        type: string
+      detail:
         type: string
   Order:
     type: object
@@ -936,6 +1494,14 @@ definitions:
         readOnly: true
       type:
         type: string
+      state:
+        enum:
+          - Draft
+          - Master
+          - LoadingPermit
+          - MatesReceipt
+        type: string
+        readOnly: true
       isVisitListComplete:
         type: boolean
       stakeholders:
@@ -986,6 +1552,8 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Property'
+      contactPerson:
+        $ref: '#/definitions/ContactPerson'
   Visit:
     type: object
     properties:
@@ -1027,11 +1595,21 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/HandlingInstruction'
+      loadingInstructions:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/LoadingInstruction'
       packaging:
         uniqueItems: false
         type: array
         items:
           $ref: '#/definitions/Package'
+      attachments:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Attachment'
       operator:
         $ref: '#/definitions/EntityIdentification'
       stay:
@@ -1046,6 +1624,8 @@ definitions:
         type: string
       blNumber:
         type: string
+      loadingPermitNumber:
+        type: string
       bookingNumber:
         type: string
       createdByNxtEntityId:
@@ -1054,10 +1634,24 @@ definitions:
       publishedOn:
         format: date-time
         type: string
+        readOnly: true
       confirmedOn:
         format: date-time
         type: string
         readOnly: true
+      updatedOn:
+        format: date-time
+        type: string
+        readOnly: true
+      createdOn:
+        format: date-time
+        type: string
+        readOnly: true
+      properties:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Property'
   Reservation:
     type: object
     properties:
@@ -1082,6 +1676,13 @@ definitions:
         type: boolean
       isCoaster:
         type: boolean
+      seaVoyage:
+        $ref: '#/definitions/ReservationSeaVoyage'
+      properties:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Property'
   EntityIdentification:
     type: object
     properties:
@@ -1100,6 +1701,15 @@ definitions:
         type: string
       value:
         type: string
+  ContactPerson:
+    type: object
+    properties:
+      name:
+        type: string
+      email:
+        type: string
+      phoneNumber:
+        type: string
   Carriage:
     type: object
     properties:
@@ -1111,6 +1721,12 @@ definitions:
     type: object
     properties:
       id:
+        format: int32
+        type: integer
+        readOnly: true
+      orderId:
+        type: string
+      visitId:
         format: int32
         type: integer
         readOnly: true
@@ -1166,7 +1782,16 @@ definitions:
         type: string
       handlingInstructionUrl:
         type: string
-      handlingInstructionFile:
+  LoadingInstruction:
+    type: object
+    properties:
+      loadingInstructionCode:
+        type: string
+      loadingInstructionName:
+        type: string
+      loadingInstructionDescription:
+        type: string
+      loadingInstructionUrl:
         type: string
   Package:
     type: object
@@ -1174,12 +1799,29 @@ definitions:
       sequenceId:
         format: int32
         type: integer
+      packageReference:
+        type: string
       packageType:
         type: string
       numberOfPackages:
         format: int32
         type: integer
       contents:
+        type: string
+  Attachment:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      type:
+        type: string
+      path:
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      createdBy:
         type: string
   Stay:
     type: object
@@ -1205,6 +1847,15 @@ definitions:
         $ref: '#/definitions/VisitLocationAddress'
       portLocation:
         $ref: '#/definitions/VisitLocationPortLocation'
+  ReservationSeaVoyage:
+    type: object
+    properties:
+      portOfDestination:
+        type: string
+      shippingLine:
+        type: string
+      vesselName:
+        type: string
   Measurements:
     type: object
     properties:
@@ -1289,6 +1940,99 @@ definitions:
         type: number
       unit:
         type: string
+      type:
+        type: string
+  OrdersPaging:
+    type: object
+    properties:
+      items:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Order'
+      _page:
+        $ref: '#/definitions/Pagination'
+  Pagination:
+    type: object
+    properties:
+      size:
+        format: int32
+        type: integer
+      totalElements:
+        format: int32
+        type: integer
+      totalPages:
+        format: int32
+        type: integer
+      number:
+        format: int32
+        type: integer
+  OrderHistory:
+    type: object
+    properties:
+      orderId:
+        type: string
+      versions:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/OrderHistoryVersion'
+  OrderHistoryVersion:
+    type: object
+    properties:
+      version:
+        format: int32
+        type: integer
+      state:
+        enum:
+          - Draft
+          - Master
+          - LoadingPermit
+          - MatesReceipt
+        type: string
+      stateChanged:
+        type: boolean
+      createdOn:
+        format: date-time
+        type: string
+  OrderChanges:
+    type: object
+    properties:
+      changes:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/OrderChange'
+  OrderChange:
+    type: object
+    properties:
+      visitId:
+        format: int32
+        type: integer
+      goodsItemId:
+        format: int32
+        type: integer
+      reservationGoodsItemId:
+        format: int32
+        type: integer
+      path:
+        type: string
+      op:
+        type: string
+      from:
+        type: string
+      value:
+        type: object
+  GoodsPaging:
+    type: object
+    properties:
+      items:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/GoodsItem'
+      _page:
+        $ref: '#/definitions/Pagination'
   EntityInformation:
     type: object
     properties:
@@ -1313,6 +2057,149 @@ definitions:
       vat:
         type: string
       eori:
+        type: string
+  VisitSummaryPaging:
+    type: object
+    properties:
+      items:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/VisitSummary'
+      _page:
+        $ref: '#/definitions/Pagination'
+  VisitSummary:
+    type: object
+    properties:
+      orderId:
+        type: string
+      orderPrivateReference:
+        type: string
+      orderType:
+        type: string
+      hasUnexpectedChanges:
+        type: boolean
+      hasUnresolvedChanges:
+        type: boolean
+      id:
+        format: int32
+        type: integer
+        readOnly: true
+      reference:
+        type: string
+      isDirectTransfer:
+        type: boolean
+      isBarge:
+        type: boolean
+      isVessel:
+        type: boolean
+      isRail:
+        type: boolean
+      isTruck:
+        type: boolean
+      isCoaster:
+        type: boolean
+      carriages:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Carriage'
+      goods:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/GoodsItem'
+      marksAndNumbers:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Mark'
+      handlingInstructions:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/HandlingInstruction'
+      loadingInstructions:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/LoadingInstruction'
+      packaging:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Package'
+      attachments:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Attachment'
+      operator:
+        $ref: '#/definitions/EntityIdentification'
+      stay:
+        $ref: '#/definitions/Stay'
+      origin:
+        $ref: '#/definitions/VisitLocation'
+      destination:
+        $ref: '#/definitions/VisitLocation'
+      voyageNumber:
+        type: string
+      vesselIMO:
+        type: string
+      blNumber:
+        type: string
+      loadingPermitNumber:
+        type: string
+      bookingNumber:
+        type: string
+      createdByNxtEntityId:
+        type: string
+        readOnly: true
+      publishedOn:
+        format: date-time
+        type: string
+        readOnly: true
+      confirmedOn:
+        format: date-time
+        type: string
+        readOnly: true
+      updatedOn:
+        format: date-time
+        type: string
+        readOnly: true
+      createdOn:
+        format: date-time
+        type: string
+        readOnly: true
+      properties:
+        uniqueItems: false
+        type: array
+        items:
+          $ref: '#/definitions/Property'
+  UnexpectedChange:
+    type: object
+    properties:
+      orderVersion:
+        format: int32
+        type: integer
+      createdOn:
+        format: date-time
+        type: string
+      createdByEntityName:
+        type: string
+      resolved:
+        type: boolean
+  ResolveUnexpectedChange:
+    type: object
+    properties:
+      resolved:
+        type: boolean
+  File:
+    type: object
+    properties:
+      type:
+        type: string
+      data:
         type: string
 securityDefinitions:
   Bearer:
