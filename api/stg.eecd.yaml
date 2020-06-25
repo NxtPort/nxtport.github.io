@@ -600,7 +600,7 @@ paths:
     put:
       tags:
         - Cleanings
-      summary: Sign off a cleaning action.
+      summary: Sign off of the eECD by driver.
       description: "<p>\r\n            Sign off a cleaning action, typically done by the driver of the equipment. After the cleaning action\r\n            has been signed, it can no longer be modified. When calling this method, a credit will be spent from\r\n            the equipment operator's account.\r\n                </p>\r\n<p>\r\n  <code><pre>\r\n            {\r\n                \"DriverName\": \"John Doe\",\r\n                \"DriverComments\" : \"Cleaning performed okay, but...\",\r\n                \"Signature\": \"data:image/gif;base64,...\"\r\n            }\r\n                    </pre></code>\r\n</p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningActionIdSignoffPut
       consumes:
@@ -1176,12 +1176,33 @@ paths:
           description: Success
           schema:
             type: file
+  '/v1/eecds/archives/{id}/attachments':
+    get:
+      tags:
+        - EEcds
+      summary: Download an archived eECD's attachments.
+      description: "<p>\r\n            Serves the archived eECD's attachments as a downloadable zip. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EecdsArchivesByIdAttachmentsGet
+      consumes: []
+      produces:
+        - application/zip
+      parameters:
+        - name: id
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: file
   /v1/eecds/archives:
     get:
       tags:
         - EEcds
       summary: Search archived eECDs.
-      description: "<p>\r\n            Gives a paged, filterable overview of archived eECD's for an organisation. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Gives a paged, filterable overview of archived eECD's for an organisation. \r\n            Search url cannot be longer than 2048 characters on Internet Explorer.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
       operationId: V1EecdsArchivesGet
       consumes: []
       produces:
@@ -1197,6 +1218,19 @@ paths:
           required: false
           type: string
           format: uuid
+        - name: equipmentId
+          in: query
+          required: false
+          type: string
+          format: uuid
+        - name: uniqueEquipmentId
+          in: query
+          required: false
+          type: string
+        - name: loadingLocation
+          in: query
+          required: false
+          type: string
         - name: title
           in: query
           required: false
@@ -1227,6 +1261,18 @@ paths:
           required: false
           type: string
           format: uuid
+        - name: equipmentOperatorName
+          in: query
+          required: false
+          type: string
+        - name: cleaningCompanyName
+          in: query
+          required: false
+          type: string
+        - name: loaderName
+          in: query
+          required: false
+          type: string
         - name: endedAtFrom
           in: query
           required: false
@@ -1253,6 +1299,16 @@ paths:
           type: string
           format: date-time
         - name: signedAtUntil
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: loadCompletedAtFrom
+          in: query
+          required: false
+          type: string
+          format: date-time
+        - name: loadCompletedAtUntil
           in: query
           required: false
           type: string
@@ -1569,6 +1625,164 @@ paths:
           description: Bad Request
         '404':
           description: Not Found
+  '/v1/equipment/{equipmentId}/eppls/{epplId}/document':
+    get:
+      tags:
+        - EPpls
+      summary: Generate an eppl document from an eppl in a booklet.
+      description: "<p>\r\n            Generates a downloadable Eppl document based on an eppl still in a booklet. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdEpplsByEpplIdDocumentGet
+      consumes: []
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: equipmentId
+          in: path
+          required: true
+          type: string
+          format: uuid
+        - name: epplId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: file
+  '/v1/equipment/{equipmentId}/eppls/{epplId}':
+    get:
+      tags:
+        - EPpls
+      summary: Get a single eppl.
+      description: "<p>\r\n                Gets a single eppl signed off for an equipment. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdEpplsByEpplIdGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: equipmentId
+          in: path
+          description: The ID of the equipment.
+          required: true
+          type: string
+          format: uuid
+        - name: epplId
+          in: path
+          description: The ID of the eppl.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BookletData.EPpl.EPpl'
+  '/v1/eppls/archives/{archiveId}':
+    get:
+      tags:
+        - EPpls
+      summary: Download an archived ePPL.
+      description: "<p>\r\n            Serves the archived ePPL as a downloadable pdf. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EpplsArchivesByArchiveIdGet
+      consumes: []
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: archiveId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: file
+  /v1/eppls/archives:
+    get:
+      tags:
+        - EPpls
+      summary: Search archived ePPL's.
+      description: "<p>\r\n            Gives a paged, filterable overview of archived ePPL's for an organisation. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EpplsArchivesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: organisationId
+          in: query
+          required: false
+          type: string
+          format: uuid
+        - name: equipmentId
+          in: query
+          required: false
+          type: string
+          format: uuid
+        - name: uniqueEquipmentId
+          in: query
+          required: false
+          type: string
+        - name: loadingLocation
+          in: query
+          required: false
+          type: string
+        - name: title
+          in: query
+          required: false
+          type: string
+        - name: reference
+          in: query
+          required: false
+          type: integer
+          format: int64
+        - name: hasBeenDownloaded
+          in: query
+          required: false
+          type: boolean
+        - name: transportOrderReference
+          in: query
+          required: false
+          type: string
+        - name: equipmentOperatorName
+          in: query
+          required: false
+          type: string
+        - name: organisationName
+          in: query
+          required: false
+          type: string
+        - name: loaderName
+          in: query
+          required: false
+          type: string
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ResultsPage.EecdDocument.ArchivedEpplMetadataDetail'
   /v1/equipment:
     get:
       tags:
@@ -1888,6 +2102,26 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/Equipment.EquipmentCleanliness'
+  /v1/errormessages:
+    get:
+      tags:
+        - ErrorMessages
+      summary: Returns all errormessages used in the api
+      description: "<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n    <li>Viewer</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ErrormessagesGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: object
+            additionalProperties:
+              type: string
   /v1/organisations/identification-codes:
     get:
       tags:
@@ -2428,6 +2662,8 @@ paths:
             - UPDATED
             - CANCELLED
             - CANCELED
+            - LOADED
+            - PARTIALLYLOADED
             - OTHER
         - name: page
           in: query
@@ -2501,6 +2737,8 @@ paths:
             - UPDATED
             - CANCELLED
             - CANCELED
+            - LOADED
+            - PARTIALLYLOADED
             - OTHER
         - name: page
           in: query
@@ -3541,9 +3779,9 @@ paths:
             - COMPLETED
             - REJECTED
             - CANCELLED
+            - NONREGISTERED
             - MOVED
             - UPDATED
-            - NONREGISTERED
         - name: location
           in: query
           description: "A search string to find only those loads with loading locations containing this string. Optional;\r\n            when omitted, any loading location will do. As the loading location is a free text field entered by the despatcher, results may vary."
@@ -5189,6 +5427,10 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/BookletData.HistoricalCleaning'
+      ePpls:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.HistoricalEPpl'
   BookletData.HistoricalLoad:
     type: object
     properties:
@@ -5205,9 +5447,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
+          - NONREGISTERED
           - MOVED
           - UPDATED
-          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -5281,6 +5523,36 @@ definitions:
         type: string
       isUnaccompanied:
         type: boolean
+  BookletData.HistoricalEPpl:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      reference:
+        type: string
+      status:
+        enum:
+          - SIGNEDOFF
+          - CANCELLED
+        type: string
+      loads:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.EPplLoad'
+      nextLoadId:
+        format: uuid
+        type: string
+      ePplLoadCounter:
+        format: int32
+        type: integer
+      referenceDate:
+        format: date-time
+        type: string
+        readOnly: true
   BookletData.Product:
     type: object
     properties:
@@ -5331,9 +5603,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
+          - NONREGISTERED
           - MOVED
           - UPDATED
-          - NONREGISTERED
         type: string
       fullName:
         type: string
@@ -5456,6 +5728,42 @@ definitions:
         type: boolean
       expired:
         type: boolean
+  BookletData.EPplLoad:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      numberOfAllowedPreviousLoads:
+        format: int32
+        type: integer
+      maxHoursWithoutCleaning:
+        format: int32
+        type: integer
+      maxHoursPreviousLoad:
+        format: int32
+        type: integer
+      productReference:
+        type: string
+      productId:
+        format: uuid
+        type: string
+      chemicalName:
+        type: string
+      loaderReference:
+        type: string
+      loaderId:
+        format: uuid
+        type: string
+      equipmentOperatorReference:
+        type: string
+      loadingDate:
+        format: date-time
+        type: string
+      unNumber:
+        type: string
+      adrClass:
+        type: string
   CleaningLocation.CleaningLocationCreate:
     type: object
     properties:
@@ -5475,24 +5783,13 @@ definitions:
         type: string
       supervisor:
         type: string
-  CleaningLocation.CleaningLocationUpdate:
+  CleaningLocationData.CleaningLocationUser:
     type: object
     properties:
-      name:
+      id:
+        format: uuid
         type: string
-      description:
-        type: string
-      addressLines:
-        type: object
-        additionalProperties:
-          type: string
-      phone:
-        type: string
-      fax:
-        type: string
-      website:
-        type: string
-      supervisor:
+      fullName:
         type: string
   BookletData.CleaningAction:
     type: object
@@ -5593,6 +5890,25 @@ definitions:
       version:
         format: uuid
         type: string
+  CleaningLocation.CleaningLocationUpdate:
+    type: object
+    properties:
+      name:
+        type: string
+      description:
+        type: string
+      addressLines:
+        type: object
+        additionalProperties:
+          type: string
+      phone:
+        type: string
+      fax:
+        type: string
+      website:
+        type: string
+      supervisor:
+        type: string
   BookletData.CleaningActionCreate:
     type: object
     properties:
@@ -5610,14 +5926,6 @@ definitions:
         type: array
         items:
           type: string
-  CleaningLocationData.CleaningLocationUser:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      fullName:
-        type: string
   BookletData.CompartmentCleaning:
     type: object
     properties:
@@ -5740,49 +6048,26 @@ definitions:
     properties:
       comment:
         type: string
-  CreditData.CreditPackOveralSummary:
+  CreditData.CreditTransactionContext:
     type: object
     properties:
-      depleted:
-        format: int32
-        type: integer
-      inUse:
-        format: int32
-        type: integer
-      untouched:
-        format: int32
-        type: integer
-      purchased:
-        format: int32
-        type: integer
-        readOnly: true
-      details:
-        type: array
-        items:
-          $ref: '#/definitions/CreditData.CreditPackSummary'
-  CreditData.CreditSummary:
-    type: object
-    properties:
-      purchased:
-        format: int32
-        type: integer
-      remaining:
-        format: int32
-        type: integer
-      spent:
-        format: int32
-        type: integer
-      spentYearToDate:
-        format: int32
-        type: integer
-      spentLastMonth:
-        format: int32
-        type: integer
-      spentPerMonth:
-        type: object
-        additionalProperties:
-          format: int32
-          type: integer
+      reason:
+        enum:
+          - AddedCredits
+          - CompleteLoad
+          - CreateEecd
+          - SignOffCleaning
+          - CompleteLoadForPaperEecd
+          - InvalidateCleaningAction
+          - CompleteLoadWithEppl
+        type: string
+      bookletId:
+        format: uuid
+        type: string
+      eEcd:
+        type: string
+      comment:
+        type: string
   CreditData.CreditWalletSummary:
     type: object
     properties:
@@ -5804,6 +6089,23 @@ definitions:
         $ref: '#/definitions/CreditData.CreditSummary'
       creditPacks:
         $ref: '#/definitions/CreditData.CreditPackOveralSummary'
+  CreditData.CreditTransaction:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      performedOn:
+        format: date-time
+        type: string
+      performedBy:
+        format: uuid
+        type: string
+      amount:
+        format: int32
+        type: integer
+      details:
+        $ref: '#/definitions/CreditData.CreditTransactionContext'
   CreditData.CreditPack:
     type: object
     properties:
@@ -5843,6 +6145,49 @@ definitions:
       version:
         format: uuid
         type: string
+  CreditData.CreditSummary:
+    type: object
+    properties:
+      purchased:
+        format: int32
+        type: integer
+      remaining:
+        format: int32
+        type: integer
+      spent:
+        format: int32
+        type: integer
+      spentYearToDate:
+        format: int32
+        type: integer
+      spentLastMonth:
+        format: int32
+        type: integer
+      spentPerMonth:
+        type: object
+        additionalProperties:
+          format: int32
+          type: integer
+  CreditData.CreditPackOveralSummary:
+    type: object
+    properties:
+      depleted:
+        format: int32
+        type: integer
+      inUse:
+        format: int32
+        type: integer
+      untouched:
+        format: int32
+        type: integer
+      purchased:
+        format: int32
+        type: integer
+        readOnly: true
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/CreditData.CreditPackSummary'
   CreditData.CreditPackSummary:
     type: object
     properties:
@@ -5861,6 +6206,71 @@ definitions:
       initialCredits:
         format: int32
         type: integer
+  CreditData.WalletSummary:
+    type: object
+    properties:
+      walletId:
+        format: uuid
+        type: string
+      organisations:
+        type: array
+        items:
+          format: uuid
+          type: string
+      warningThreshold:
+        format: int32
+        type: integer
+      creditsPurchased:
+        format: int32
+        type: integer
+      creditsRemaining:
+        format: int32
+        type: integer
+      packsPurchased:
+        format: int32
+        type: integer
+      packsActive:
+        format: int32
+        type: integer
+      packIds:
+        type: array
+        items:
+          format: uuid
+          type: string
+  CreditData.CreditWallet:
+    type: object
+    properties:
+      owners:
+        type: array
+        items:
+          format: uuid
+          type: string
+      warningThreshold:
+        format: int32
+        type: integer
+      spentEPplCredits:
+        format: int32
+        type: integer
+      id:
+        format: uuid
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      createdByUser:
+        format: uuid
+        type: string
+      lastUpdatedOn:
+        format: date-time
+        type: string
+      lastUpdatedByUser:
+        format: uuid
+        type: string
+      isDeleted:
+        type: boolean
+      version:
+        format: uuid
+        type: string
   EftcoCleaningCode:
     type: object
     properties:
@@ -5897,104 +6307,6 @@ definitions:
       version:
         format: uuid
         type: string
-  CreditData.CreditWallet:
-    type: object
-    properties:
-      owners:
-        type: array
-        items:
-          format: uuid
-          type: string
-      warningThreshold:
-        format: int32
-        type: integer
-      id:
-        format: uuid
-        type: string
-      createdOn:
-        format: date-time
-        type: string
-      createdByUser:
-        format: uuid
-        type: string
-      lastUpdatedOn:
-        format: date-time
-        type: string
-      lastUpdatedByUser:
-        format: uuid
-        type: string
-      isDeleted:
-        type: boolean
-      version:
-        format: uuid
-        type: string
-  CreditData.CreditTransactionContext:
-    type: object
-    properties:
-      reason:
-        enum:
-          - AddedCredits
-          - CompleteLoad
-          - CreateEecd
-          - SignOffCleaning
-          - CompleteLoadForPaperEecd
-          - InvalidateCleaningAction
-        type: string
-      bookletId:
-        format: uuid
-        type: string
-      eEcd:
-        type: string
-      comment:
-        type: string
-  CreditData.CreditTransaction:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      performedOn:
-        format: date-time
-        type: string
-      performedBy:
-        format: uuid
-        type: string
-      amount:
-        format: int32
-        type: integer
-      details:
-        $ref: '#/definitions/CreditData.CreditTransactionContext'
-  CreditData.WalletSummary:
-    type: object
-    properties:
-      walletId:
-        format: uuid
-        type: string
-      organisations:
-        type: array
-        items:
-          format: uuid
-          type: string
-      warningThreshold:
-        format: int32
-        type: integer
-      creditsPurchased:
-        format: int32
-        type: integer
-      creditsRemaining:
-        format: int32
-        type: integer
-      packsPurchased:
-        format: int32
-        type: integer
-      packsActive:
-        format: int32
-        type: integer
-      packIds:
-        type: array
-        items:
-          format: uuid
-          type: string
   ResultsPage.CreditData.WalletSummary:
     type: object
     properties:
@@ -6070,6 +6382,13 @@ definitions:
       id:
         format: uuid
         type: string
+      equipmentId:
+        format: uuid
+        type: string
+      equipmentOperatorName:
+        type: string
+      uniqueEquipmentId:
+        type: string
       organisationId:
         format: uuid
         type: string
@@ -6094,6 +6413,10 @@ definitions:
       cleaningLocationId:
         format: uuid
         type: string
+      cleaningCompanyName:
+        type: string
+      state:
+        type: string
       loads:
         type: array
         items:
@@ -6106,6 +6429,8 @@ definitions:
         type: integer
       hash:
         type: string
+      hasAttachments:
+        type: boolean
   Document.ArchivedEecdLoadMetadataDetail:
     type: object
     properties:
@@ -6117,6 +6442,11 @@ definitions:
       customerReference:
         type: string
       loadingLocation:
+        type: string
+      loaderName:
+        type: string
+      loadCompleted:
+        format: date-time
         type: string
   ResultsPage.EecdDocument.ArchivedEecdMetadataDetail:
     type: object
@@ -6162,7 +6492,7 @@ definitions:
       errors:
         type: array
         items:
-          type: string
+          $ref: '#/definitions/Common.ErrorResponse'
       missingOptionalCodes:
         type: array
         items:
@@ -6183,20 +6513,67 @@ definitions:
             type: string
           DE:
             type: string
-  Equipment.EquipmentCleanliness:
+  Common.ErrorResponse:
     type: object
     properties:
-      state:
-        enum:
-          - CompletelyClean
-          - PartiallyDirty
-          - CompletelyDirty
-          - Unknown
+      message:
         type: string
-      compartments:
+      messageCode:
+        type: string
+      parameters:
+        type: array
+        items:
+          type: object
+      messageTemplate:
+        type: string
+  Document.EpplCompartmentLoadHistory:
+    type: object
+    properties:
+      key:
+        type: string
+      loads:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.EPplLoad'
+  BookletData.EPpl.EPpl:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      reference:
+        type: string
+      status:
+        enum:
+          - SIGNEDOFF
+          - CANCELLED
+        type: string
+      previousLoads:
+        type: array
+        items:
+          $ref: '#/definitions/Document.EpplCompartmentLoadHistory'
+      nextLoadId:
+        format: uuid
+        type: string
+  EftcoCleaningCodes.EftcoCleaningCodeUpdate:
+    type: object
+    properties:
+      code:
+        type: string
+      descriptions:
         type: object
-        additionalProperties:
-          $ref: '#/definitions/Equipment.CompartmentCleanliness'
+        properties:
+          NL:
+            type: string
+          EN:
+            type: string
+          FR:
+            type: string
+          DE:
+            type: string
   MasterData.Equipment:
     required:
       - equipmentType
@@ -6241,33 +6618,81 @@ definitions:
         type: string
       isIso6346Compliant:
         type: boolean
-  EftcoCleaningCodes.EftcoCleaningCodeUpdate:
+  Document.ArchivedEpplMetadataDetail:
     type: object
     properties:
-      code:
+      id:
+        format: uuid
         type: string
-      descriptions:
-        type: object
-        properties:
-          NL:
-            type: string
-          EN:
-            type: string
-          FR:
-            type: string
-          DE:
-            type: string
-  MasterData.Compartment:
+      equipmentId:
+        format: uuid
+        type: string
+      equipmentOperatorName:
+        type: string
+      uniqueEquipmentId:
+        type: string
+      organisationId:
+        format: uuid
+        type: string
+      organisationName:
+        type: string
+      expiresOn:
+        format: date-time
+        type: string
+      title:
+        type: string
+      loads:
+        type: array
+        items:
+          $ref: '#/definitions/Document.ArchivedEpplLoadMetadataDetail'
+      reference:
+        format: int64
+        type: integer
+      downloadCount:
+        format: int32
+        type: integer
+      hash:
+        type: string
+  Document.ArchivedEpplLoadMetadataDetail:
     type: object
     properties:
-      key:
+      loaderId:
+        format: uuid
         type: string
-      volume:
+      loaderName:
+        type: string
+      internalReference:
+        type: string
+      customerReference:
+        type: string
+      loadingLocation:
+        type: string
+  ResultsPage.EecdDocument.ArchivedEpplMetadataDetail:
+    type: object
+    properties:
+      hitCountTotal:
+        format: int64
+        type: integer
+      hitCountPage:
+        format: int64
+        type: integer
+      pageCurrent:
         format: int32
         type: integer
-      baffles:
+      pageSize:
         format: int32
         type: integer
+      pageTotal:
+        format: int32
+        type: integer
+      hasMorePages:
+        type: boolean
+      comment:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/Document.ArchivedEpplMetadataDetail'
   Equipment.CompartmentCleanliness:
     type: object
     properties:
@@ -6282,6 +6707,17 @@ definitions:
           - PolymerComplete
           - PolymerIncomplete
         type: string
+  MasterData.Compartment:
+    type: object
+    properties:
+      key:
+        type: string
+      volume:
+        format: int32
+        type: integer
+      baffles:
+        format: int32
+        type: integer
   MasterData.EquipmentPut:
     type: object
     properties:
@@ -6316,6 +6752,20 @@ definitions:
         type: boolean
       internalEquipmentCode:
         type: string
+  Equipment.EquipmentCleanliness:
+    type: object
+    properties:
+      state:
+        enum:
+          - CompletelyClean
+          - PartiallyDirty
+          - CompletelyDirty
+          - Unknown
+        type: string
+      compartments:
+        type: object
+        additionalProperties:
+          $ref: '#/definitions/Equipment.CompartmentCleanliness'
   ResultsPage.MasterData.Equipment:
     type: object
     properties:
@@ -6407,6 +6857,10 @@ definitions:
     properties:
       key:
         type: string
+      errorResponses:
+        type: array
+        items:
+          $ref: '#/definitions/Common.ErrorResponse'
       errors:
         type: array
         items:
@@ -6746,6 +7200,8 @@ definitions:
           - UPDATED
           - CANCELLED
           - CANCELED
+          - LOADED
+          - PARTIALLYLOADED
           - OTHER
         type: string
       sentOn:
@@ -6881,6 +7337,8 @@ definitions:
         type: string
       isIntegratedSeller:
         type: boolean
+      isIntegratedLoader:
+        type: boolean
       archivalDurationInDays:
         format: int32
         type: integer
@@ -6923,6 +7381,8 @@ definitions:
         format: date-time
         type: string
       isIntegratedSeller:
+        type: boolean
+      isIntegratedLoader:
         type: boolean
   ResultsPage.MasterData.ExigentLicenseSummary:
     type: object
@@ -7045,6 +7505,11 @@ definitions:
         type: array
         items:
           type: string
+      extraTask:
+        enum:
+          - NONE
+          - ISSUEPPL
+        type: string
   ResultsPage.LoadingLocation.LoadingLocation:
     type: object
     properties:
@@ -7089,9 +7554,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
+          - NONREGISTERED
           - MOVED
           - UPDATED
-          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -7111,6 +7576,9 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/BookletData.Attachment'
+      ePplId:
+        format: uuid
+        type: string
   BookletData.LoadAcceptation:
     type: object
     properties:
@@ -7124,6 +7592,11 @@ definitions:
         format: uuid
         type: string
       comment:
+        type: string
+      extraTask:
+        enum:
+          - NONE
+          - ISSUEPPL
         type: string
   BookletData.LoadRejection:
     type: object
@@ -7190,9 +7663,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
+          - NONREGISTERED
           - MOVED
           - UPDATED
-          - NONREGISTERED
         type: string
       displayDate:
         format: date-time
@@ -7471,6 +7944,15 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/MasterData.SdsInfo'
+      numberOfAllowedPreviousLoads:
+        format: int32
+        type: integer
+      maxHoursWithouthCleaning:
+        format: int32
+        type: integer
+      maxHoursPreviousLoad:
+        format: int32
+        type: integer
   MasterData.SdsInfo:
     required:
       - sdsDate
@@ -7543,6 +8025,15 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/MasterData.SdsInfo'
+      numberOfAllowedPreviousLoads:
+        format: int32
+        type: integer
+      maxHoursWithouthCleaning:
+        format: int32
+        type: integer
+      maxHoursPreviousLoad:
+        format: int32
+        type: integer
   MasterData.Loader:
     type: object
     properties:
@@ -7722,6 +8213,8 @@ definitions:
         format: date-time
         type: string
       isIntegratedSeller:
+        type: boolean
+      isIntegratedLoader:
         type: boolean
   Users.Input.UserUpdate:
     type: object
