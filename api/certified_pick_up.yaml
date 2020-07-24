@@ -1,13 +1,16 @@
 swagger: '2.0'
 info:
-  title: NxtPort Certified Pick-Up API
   version: v1
+  title: NxtPort Certified Pick-Up API
+  termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
+  contact:
+    email: support@nxtport.eu
 host: api-uat.nxtport.eu
 basePath: /certified-pickup/v1
 schemes:
   - https
 paths:
-  '/{port-locode}/containers/{equipment-number}/import/gate-out':
+  /{port-locode}/containers/{equipment-number}/import/gate-out:
     put:
       tags:
         - gate-out
@@ -45,7 +48,7 @@ paths:
             $ref: '#/definitions/ProblemDetails'
         '500':
           description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/pickup-rights':
+  /{port-locode}/containers/{equipment-number}/import/pickup-rights:
     put:
       tags:
         - pickup-rights
@@ -83,7 +86,7 @@ paths:
             $ref: '#/definitions/ProblemDetails'
         '500':
           description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/commercial-release':
+  /{port-locode}/containers/{equipment-number}/import/commercial-release:
     put:
       tags:
         - release-lights
@@ -121,7 +124,7 @@ paths:
             $ref: '#/definitions/ProblemDetails'
         '500':
           description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/terminal-release':
+  /{port-locode}/containers/{equipment-number}/import/terminal-release:
     put:
       tags:
         - release-lights
@@ -159,7 +162,7 @@ paths:
             $ref: '#/definitions/ProblemDetails'
         '500':
           description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/release-lights-status':
+  /{port-locode}/containers/{equipment-number}/import/release-lights-status:
     get:
       tags:
         - release-lights
@@ -187,7 +190,7 @@ paths:
             $ref: '#/definitions/ProblemDetails'
         '500':
           description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/green-light-status':
+  /{port-locode}/containers/{equipment-number}/import/green-light-status:
     get:
       tags:
         - release-lights
@@ -215,7 +218,7 @@ paths:
             $ref: '#/definitions/ProblemDetails'
         '500':
           description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/release-rights':
+  /{port-locode}/containers/{equipment-number}/import/release-rights:
     put:
       tags:
         - release-rights
@@ -253,7 +256,7 @@ paths:
             $ref: '#/definitions/ProblemDetails'
         '500':
           description: Error accessing API
-  '/{port-locode}/containers/import/release-rights':
+  /{port-locode}/containers/import/release-rights:
     get:
       tags:
         - release-rights
