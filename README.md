@@ -4,6 +4,7 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 
 * [Bulkchain](https://nxtport.github.io/?api=bulkchain)
 * [Bulkchain Staging](https://nxtport.github.io/?api=stg.bulkchain)
+* [Certified Pick Up](https://nxtport.github.io/?api=certified_pick_up) 
 * [Container Tare Weight](https://nxtport.github.io/?api=ctw) by ContainerWeight
 * [eECD](https://nxtport.github.io/?api=eecd)
 * [Import Consignment](https://nxtport.github.io/?api=import_consignment_data)

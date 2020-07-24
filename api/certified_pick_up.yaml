@@ -1,0 +1,548 @@
+swagger: '2.0'
+info:
+  title: NxtPort Certified Pick-Up API
+  version: v1
+host: api-uat.nxtport.eu
+basePath: /certified-pickup/v1
+schemes:
+  - https
+paths:
+  '/{port-locode}/containers/{equipment-number}/import/gate-out':
+    put:
+      tags:
+        - gate-out
+      consumes:
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: port-locode
+          required: true
+          type: string
+        - in: path
+          name: equipment-number
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/GateOut'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/BaseApiResponse'
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '405':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '500':
+          description: Error accessing API
+  '/{port-locode}/containers/{equipment-number}/import/pickup-rights':
+    put:
+      tags:
+        - pickup-rights
+      consumes:
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: port-locode
+          required: true
+          type: string
+        - in: path
+          name: equipment-number
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/SubmitPickupRight'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/BaseApiResponse'
+        '400':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '500':
+          description: Error accessing API
+  '/{port-locode}/containers/{equipment-number}/import/commercial-release':
+    put:
+      tags:
+        - release-lights
+      consumes:
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: port-locode
+          required: true
+          type: string
+        - in: path
+          name: equipment-number
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/CommercialReleaseAction'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/BaseApiResponse'
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '405':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '500':
+          description: Error accessing API
+  '/{port-locode}/containers/{equipment-number}/import/terminal-release':
+    put:
+      tags:
+        - release-lights
+      consumes:
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: port-locode
+          required: true
+          type: string
+        - in: path
+          name: equipment-number
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/TerminalRelease'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/BaseApiResponse'
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '405':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '500':
+          description: Error accessing API
+  '/{port-locode}/containers/{equipment-number}/import/release-lights-status':
+    get:
+      tags:
+        - release-lights
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: port-locode
+          required: true
+          type: string
+        - in: path
+          name: equipment-number
+          required: true
+          type: string
+      responses:
+        '202':
+          description: Accepted
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '404':
+          description: Resource not found
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '500':
+          description: Error accessing API
+  '/{port-locode}/containers/{equipment-number}/import/green-light-status':
+    get:
+      tags:
+        - release-lights
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: port-locode
+          required: true
+          type: string
+        - in: path
+          name: equipment-number
+          required: true
+          type: string
+      responses:
+        '202':
+          description: Accepted
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '404':
+          description: Resource not found
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '500':
+          description: Error accessing API
+  '/{port-locode}/containers/{equipment-number}/import/release-rights':
+    put:
+      tags:
+        - release-rights
+      consumes:
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - application/json
+      parameters:
+        - in: path
+          name: port-locode
+          required: true
+          type: string
+        - in: path
+          name: equipment-number
+          required: true
+          type: string
+        - in: body
+          name: body
+          schema:
+            $ref: '#/definitions/ReleaseRightAction'
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/BaseApiResponse'
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '405':
+          description: Invalid input
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '500':
+          description: Error accessing API
+  '/{port-locode}/containers/import/release-rights':
+    get:
+      tags:
+        - release-rights
+      produces:
+        - application/json
+      parameters:
+        - in: query
+          name: page
+          type: integer
+          format: int32
+        - in: query
+          name: pageSize
+          type: integer
+          format: int32
+        - in: query
+          name: status
+          type: string
+        - in: query
+          name: equipmentnumberfilter
+          type: string
+        - in: query
+          name: billofladingnumberfilter
+          type: string
+        - in: query
+          name: shippingagentnamefilter
+          type: string
+        - in: query
+          name: shippingagenttinfilter
+          type: string
+        - in: query
+          name: terminalnamefilter
+          type: string
+        - in: query
+          name: currentstakeholdernamefilter
+          type: string
+        - in: query
+          name: currentstakeholdertinfilter
+          type: string
+        - in: query
+          name: releaserightstatusfilter
+          type: string
+        - in: path
+          name: port-locode
+          required: true
+          type: string
+      responses:
+        '202':
+          description: Accepted
+          schema:
+            $ref: '#/definitions/BaseApiResponse'
+        '400':
+          description: Invalid or missing request header
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '404':
+          description: Resource not found
+          schema:
+            $ref: '#/definitions/ProblemDetails'
+        '500':
+          description: Error accessing API
+definitions:
+  ProblemDetails:
+    type: object
+    properties:
+      type:
+        type: string
+      title:
+        type: string
+      status:
+        format: int32
+        type: integer
+      detail:
+        type: string
+      instance:
+        type: string
+    additionalProperties:
+      type: object
+  GateOut:
+    type: object
+    properties:
+      portLoCode:
+        type: string
+      equipmentNumber:
+        type: string
+      billOfLadingNumbers:
+        type: array
+        items:
+          type: string
+      timestamp:
+        format: date-time
+        type: string
+  BaseApiResponse:
+    type: object
+    properties:
+      publicReferenceId:
+        type: string
+      externalReferenceId:
+        type: string
+  PartyType:
+    enum:
+      - Truck
+      - Rail
+      - Barge
+    type: string
+  PickupParty:
+    type: object
+    properties:
+      partyType:
+        $ref: '#/definitions/PartyType'
+      mobilePhoneNumber:
+        type: string
+  PickupRightActionType:
+    enum:
+      - Assign
+      - Update
+      - Revoke
+    type: string
+  SubmitPickupRight:
+    type: object
+    properties:
+      terminalCode:
+        type: string
+      billOfLadingNumbers:
+        type: array
+        items:
+          type: string
+      pickupParty:
+        $ref: '#/definitions/PickupParty'
+      timestamp:
+        format: date-time
+        type: string
+      actionType:
+        $ref: '#/definitions/PickupRightActionType'
+      equipmentNumber:
+        type: string
+      portLoCode:
+        type: string
+  ActionType:
+    enum:
+      - Transfer
+      - Accept
+      - Decline
+      - Revoke
+      - Release
+      - Update
+      - Block
+      - Unblock
+      - Delete
+    type: string
+  IdentificationType:
+    enum:
+      - NxtEntityId
+      - Tin
+      - Eori
+      - Duns
+      - SCAC
+    type: string
+  Identification:
+    type: object
+    properties:
+      identificationType:
+        $ref: '#/definitions/IdentificationType'
+      identificationCode:
+        type: string
+  CommercialReleaseAction:
+    type: object
+    properties:
+      releaseIdentification:
+        type: string
+      releaseOrderReference:
+        type: string
+      equipmentType:
+        type: string
+      billOfLadingNumbers:
+        type: array
+        items:
+          type: string
+      terminalCode:
+        type: string
+      actionType:
+        $ref: '#/definitions/ActionType'
+      carrier:
+        $ref: '#/definitions/Identification'
+      releaseTo:
+        $ref: '#/definitions/Identification'
+      releaseDateTimeUtc:
+        format: date-time
+        type: string
+      expirationDateTimeUtc:
+        format: date-time
+        type: string
+      equipmentNumber:
+        type: string
+      portLoCode:
+        type: string
+  TerminalReleaseActionType:
+    enum:
+      - Release
+      - Scanning
+      - Block
+    type: string
+  TerminalRelease:
+    type: object
+    properties:
+      terminalCode:
+        type: string
+      actionType:
+        $ref: '#/definitions/TerminalReleaseActionType'
+      releaseDateTimeUtc:
+        format: date-time
+        type: string
+      equipmentNumber:
+        type: string
+      portLoCode:
+        type: string
+  ReleaseRightStatus:
+    enum:
+      - Unknown
+      - Assigned
+      - Pending
+      - Accepted
+      - Declined
+      - Revoked
+      - Archived
+      - Blocked
+      - Expired
+      - Unblocked
+    type: string
+  ReleaseRightAction:
+    type: object
+    properties:
+      releaseIdentification:
+        type: string
+      terminalCode:
+        type: string
+      actionType:
+        $ref: '#/definitions/ActionType'
+      reasonForAction:
+        type: string
+      billOfLadingNumbers:
+        type: array
+        items:
+          type: string
+      releaseFrom:
+        $ref: '#/definitions/Identification'
+      releaseTo:
+        $ref: '#/definitions/Identification'
+      carrier:
+        $ref: '#/definitions/Identification'
+      releaseDateTimeUtc:
+        format: date-time
+        type: string
+      expirationDateTimeUtc:
+        format: date-time
+        type: string
+      validFrom:
+        format: date-time
+        type: string
+      equipmentNumber:
+        type: string
+      portLoCode:
+        type: string
+  ReleaseStatusFilter:
+    enum:
+      - Active
+      - Pending
+      - Police
+      - Terminal
+      - Shipping
+    type: string
+securityDefinitions:
+  Authorization:
+    name: Authorization
+    in: header
+    type: apiKey
+    description: >-
+      JWT authorization token using the Bearer scheme. Different for each user
+      of the API. Keep in mind that you have to put the word "Bearer" and then a
+      space in front of the access token. For example "Bearer
+      f8e6d39a81fc4d31957086fe03630858".
+  Subscription:
+    type: apiKey
+    in: header
+    name: Ocp-Apim-Subscription-Key
+    description: API subscription key. Assigned by NxtPort to your organization.
+security:
+  - Authorization: []
+    Subscription: []
