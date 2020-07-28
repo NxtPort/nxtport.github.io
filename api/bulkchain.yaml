@@ -1953,6 +1953,22 @@ definitions:
         type: string
       vesselName:
         type: string
+      loadingPort:
+        type: string
+      loadingBerth:
+        type: string
+      eta:
+        format: date-time
+        type: string
+      etd:
+        format: date-time
+        type: string
+      closingVessel:
+        format: date-time
+        type: string
+      closingGoods:
+        format: date-time
+        type: string
   Reservation:
     type: object
     properties:
