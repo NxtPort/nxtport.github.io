@@ -11,56 +11,6 @@ security:
   - Authorization: []
     Subscription: []
 paths:
-  '/{port-locode}/containers/{equipment-number}/import/gate-out':
-    put:
-      tags:
-        - gate-out
-      parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GateOut'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/GateOut'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/GateOut'
-        required: false
-      responses:
-        '202':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '405':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Error accessing API
-          content: {}
-      x-codegen-request-body-name: body
   '/{port-locode}/containers/{equipment-number}/import/pickup-rights':
     put:
       tags:
@@ -103,56 +53,6 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '401':
           description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Error accessing API
-          content: {}
-      x-codegen-request-body-name: body
-  '/{port-locode}/containers/{equipment-number}/import/commercial-release':
-    put:
-      tags:
-        - release-lights
-      parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CommercialReleaseAction'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/CommercialReleaseAction'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/CommercialReleaseAction'
-        required: false
-      responses:
-        '202':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '405':
-          description: Invalid input
           content:
             application/json:
               schema:
