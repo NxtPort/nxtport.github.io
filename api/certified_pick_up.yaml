@@ -61,6 +61,50 @@ paths:
           description: Error accessing API
           content: {}
       x-codegen-request-body-name: body
+  '/{port-locode}/preannouncements/codes':
+    post:
+      tags:
+        - pre-announcement
+      parameters:
+        - in: path
+          name: port-locode
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '401':
+          description: 'Unauthorized, role or scope forbids you from taking this action'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
   '/{port-locode}/containers/{equipment-number}/import/terminal-release':
     put:
       tags:
@@ -315,6 +359,26 @@ paths:
           content: {}
 components:
   schemas:
+    CreatePreAnnouncementCodes:
+      type: object
+      properties:
+        portLoCode:
+          type: string
+        releaseRights:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReleaseRightIdentifier'
+        modeOfTransport:
+          type: string
+    ReleaseRightIdentifier:
+      type: object
+      properties:
+        billOfLadingNumbers:
+          type: array
+          items:
+            type: string
+        containerNr:
+          type: string
     ProblemDetails:
       type: object
       properties:
