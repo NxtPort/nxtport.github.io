@@ -1,31 +1,31 @@
 openapi: 3.0.1
 info:
-  title: NxtPort Certified Pick-Up API
+  title: NxtPort.Equipment.Import.CertifiedReleaseProject
   termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
   contact:
     email: support@nxtport.eu
   version: v1
 servers:
-  - url: 'https://api-uat.nxtport.eu/certified-pickup/v1'
+- url: https://api-uat.nxtport.eu/certified-pickup/v1
 security:
-  - Authorization: []
-    Subscription: []
+- Authorization: []
+- Subscription: []
 paths:
-  '/{port-locode}/containers/{equipment-number}/import/pickup-rights':
+  /{port-locode}/containers/{equipment-number}/import/pickup-rights:
     put:
       tags:
-        - pickup-rights
+      - pickup-rights
       parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -39,73 +39,79 @@ paths:
               $ref: '#/components/schemas/SubmitPickupRight'
         required: false
       responses:
-        '202':
+        202:
           description: Accepted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BaseApiResponse'
-        '400':
+        400:
           description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        500:
           description: Error accessing API
           content: {}
       x-codegen-request-body-name: body
-  '/{port-locode}/preannouncements/codes':
-    post:
+  /{port-locode}/containers/{equipment-number}/import/commercial-release:
+    put:
       tags:
-        - pre-announcement
+      - release-lights
       parameters:
-        - in: path
-          name: port-locode
-          required: true
-          schema:
-            type: string
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+              $ref: '#/components/schemas/CommercialReleaseAction'
           text/json:
             schema:
-              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+              $ref: '#/components/schemas/CommercialReleaseAction'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+              $ref: '#/components/schemas/CommercialReleaseAction'
+        required: false
       responses:
-        '202':
+        202:
           description: Accepted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BaseApiResponse'
-        '400':
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        405:
           description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        500:
           description: Error accessing API
           content: {}
       x-codegen-request-body-name: body
-  '/{port-locode}/containers/{equipment-number}/import/terminal-release':
+  /{port-locode}/containers/{equipment-number}/import/terminal-release:
     put:
       tags:
         - release-lights
@@ -155,89 +161,89 @@ paths:
           description: Error accessing API
           content: {}
       x-codegen-request-body-name: body
-  '/{port-locode}/containers/{equipment-number}/import/release-lights-status':
+  /{port-locode}/containers/{equipment-number}/import/release-lights-status:
     get:
       tags:
-        - release-lights
+      - release-lights
       parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
-        '202':
+        202:
           description: Accepted
           content: {}
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '404':
+        404:
           description: Resource not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        500:
           description: Error accessing API
           content: {}
-  '/{port-locode}/containers/{equipment-number}/import/green-light-status':
+  /{port-locode}/containers/{equipment-number}/import/green-light-status:
     get:
       tags:
-        - release-lights
+      - release-lights
       parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
-        '202':
+        202:
           description: Accepted
           content: {}
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '404':
+        404:
           description: Resource not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        500:
           description: Error accessing API
           content: {}
-  '/{port-locode}/containers/{equipment-number}/import/release-rights':
+  /{port-locode}/containers/{equipment-number}/import/release-rights:
     put:
       tags:
-        - release-rights
+      - release-rights
       parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
@@ -251,134 +257,114 @@ paths:
               $ref: '#/components/schemas/ReleaseRightAction'
         required: false
       responses:
-        '202':
+        202:
           description: Accepted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BaseApiResponse'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '405':
+        405:
           description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        500:
           description: Error accessing API
           content: {}
       x-codegen-request-body-name: body
-  '/{port-locode}/containers/import/release-rights':
+  /{port-locode}/containers/import/release-rights:
     get:
       tags:
-        - release-rights
+      - release-rights
       parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-        - name: pageSize
-          in: query
-          schema:
-            type: integer
-            format: int32
-        - name: status
-          in: query
-          schema:
-            type: string
-        - name: equipmentnumberfilter
-          in: query
-          schema:
-            type: string
-        - name: billofladingnumberfilter
-          in: query
-          schema:
-            type: string
-        - name: shippingagentnamefilter
-          in: query
-          schema:
-            type: string
-        - name: shippingagenttinfilter
-          in: query
-          schema:
-            type: string
-        - name: terminalnamefilter
-          in: query
-          schema:
-            type: string
-        - name: currentstakeholdernamefilter
-          in: query
-          schema:
-            type: string
-        - name: currentstakeholdertinfilter
-          in: query
-          schema:
-            type: string
-        - name: releaserightstatusfilter
-          in: query
-          schema:
-            type: string
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: equipmentnumberfilter
+        in: query
+        schema:
+          type: string
+      - name: billofladingnumberfilter
+        in: query
+        schema:
+          type: string
+      - name: shippingagentnamefilter
+        in: query
+        schema:
+          type: string
+      - name: shippingagenttinfilter
+        in: query
+        schema:
+          type: string
+      - name: terminalnamefilter
+        in: query
+        schema:
+          type: string
+      - name: currentstakeholdernamefilter
+        in: query
+        schema:
+          type: string
+      - name: currentstakeholdertinfilter
+        in: query
+        schema:
+          type: string
+      - name: releaserightstatusfilter
+        in: query
+        schema:
+          type: string
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
       responses:
-        '202':
+        202:
           description: Accepted
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/BaseApiResponse'
-        '400':
+        400:
           description: Invalid or missing request header
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '404':
+        404:
           description: Resource not found
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        500:
           description: Error accessing API
           content: {}
 components:
   schemas:
-    CreatePreAnnouncementCodes:
-      type: object
-      properties:
-        portLoCode:
-          type: string
-        releaseRights:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReleaseRightIdentifier'
-        modeOfTransport:
-          type: string
-    ReleaseRightIdentifier:
-      type: object
-      properties:
-        billOfLadingNumbers:
-          type: array
-          items:
-            type: string
-        containerNr:
-          type: string
     ProblemDetails:
       type: object
       properties:
@@ -396,20 +382,6 @@ components:
       additionalProperties:
         type: object
         properties: {}
-    GateOut:
-      type: object
-      properties:
-        portLoCode:
-          type: string
-        equipmentNumber:
-          type: string
-        billOfLadingNumbers:
-          type: array
-          items:
-            type: string
-        timestamp:
-          type: string
-          format: date-time
     BaseApiResponse:
       type: object
       properties:
@@ -420,9 +392,9 @@ components:
     PartyType:
       type: string
       enum:
-        - Truck
-        - Rail
-        - Barge
+      - Truck
+      - Rail
+      - Barge
     PickupParty:
       type: object
       properties:
@@ -433,13 +405,19 @@ components:
     PickupRightActionType:
       type: string
       enum:
-        - Assign
-        - Update
-        - Revoke
+      - Assign
+      - Update
+      - Revoke
     SubmitPickupRight:
       type: object
       properties:
+        portLocode:
+          type: string
         terminalCode:
+          type: string
+        equipmentNumber:
+          type: string
+        releaseIdentification:
           type: string
         billOfLadingNumbers:
           type: array
@@ -452,30 +430,26 @@ components:
           format: date-time
         actionType:
           $ref: '#/components/schemas/PickupRightActionType'
-        equipmentNumber:
-          type: string
-        portLoCode:
-          type: string
     ActionType:
       type: string
       enum:
-        - Transfer
-        - Accept
-        - Decline
-        - Revoke
-        - Release
-        - Update
-        - Block
-        - Unblock
-        - Delete
+      - Transfer
+      - Accept
+      - Decline
+      - Revoke
+      - Release
+      - Update
+      - Block
+      - Unblock
+      - Delete
     IdentificationType:
       type: string
       enum:
-        - NxtEntityId
-        - Tin
-        - Eori
-        - Duns
-        - SCAC
+      - NxtEntityId
+      - Tin
+      - Eori
+      - Duns
+      - Apcs
     Identification:
       type: object
       properties:
@@ -490,12 +464,16 @@ components:
           type: string
         releaseOrderReference:
           type: string
+        equipmentNumber:
+          type: string
         equipmentType:
           type: string
         billOfLadingNumbers:
           type: array
           items:
             type: string
+        portLoCode:
+          type: string
         terminalCode:
           type: string
         actionType:
@@ -510,10 +488,6 @@ components:
         expirationDateTimeUtc:
           type: string
           format: date-time
-        equipmentNumber:
-          type: string
-        portLoCode:
-          type: string
     TerminalReleaseActionType:
       type: string
       enum:
@@ -534,25 +508,16 @@ components:
           type: string
         portLoCode:
           type: string
-    ReleaseRightStatus:
-      type: string
-      enum:
-        - Unknown
-        - Assigned
-        - Pending
-        - Accepted
-        - Declined
-        - Revoked
-        - Archived
-        - Blocked
-        - Expired
-        - Unblocked
     ReleaseRightAction:
       type: object
       properties:
         releaseIdentification:
           type: string
+        portLoCode:
+          type: string
         terminalCode:
+          type: string
+        equipmentNumber:
           type: string
         actionType:
           $ref: '#/components/schemas/ActionType'
@@ -577,26 +542,11 @@ components:
         validFrom:
           type: string
           format: date-time
-        equipmentNumber:
-          type: string
-        portLoCode:
-          type: string
-    ReleaseStatusFilter:
-      type: string
-      enum:
-        - Active
-        - Pending
-        - Police
-        - Terminal
-        - Shipping
   securitySchemes:
     Authorization:
       type: apiKey
-      description: >-
-        JWT authorization token using the Bearer scheme. Different for each user
-        of the API. Keep in mind that you have to put the word "Bearer" and then
-        a space in front of the access token. For example "Bearer
-        f8e6d39a81fc4d31957086fe03630858".
+      description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization:
+        Bearer {token}"'
       name: Authorization
       in: header
     Subscription:
