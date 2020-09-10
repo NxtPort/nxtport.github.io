@@ -1,6 +1,6 @@
 openapi: 3.0.1
 info:
-  title: NxtPort.Equipment.Import.CertifiedReleaseProject
+  title:  NxtPort Certified Pick-Up API
   termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
   contact:
     email: support@nxtport.eu
