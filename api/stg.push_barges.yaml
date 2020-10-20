@@ -1,0 +1,108 @@
+openapi: 3.0.0
+info:
+  title: NxtPort Push Barges Location API
+  version: v1
+paths:
+  /tracking/bargelocations:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BargeLocation"
+        description: The values for a bargelocation
+        required: true
+      responses:
+        "200":
+          description: Ok
+        # "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Server Error
+security:
+  - Authorization: []
+    Subscription: []
+servers:
+  - url: https://api-stg.nxtport.eu/push-barges/v1
+components:
+  securitySchemes:
+    Authorization:
+      name: Authorization
+      in: header
+      type: apiKey
+      description: JWT authorization token using the Bearer scheme. Different for each user
+        of the API. Keep in mind that you have to put the word "Bearer" and then
+        a space in front of the access token. For example "Bearer
+        f8e6d39a81fc4d31957086fe03630858".
+    Subscription:
+      type: apiKey
+      in: header
+      name: Ocp-Apim-Subscription-Key
+      description: API subscription key. Assigned by NxtPort to your organization.
+  schemas:
+    BargeLocation:
+      description: References a specific location of a barge
+      required:
+        - company
+        - company_id
+        - eni
+        - lat
+        - lon
+        - timestamp_location
+      type: object
+      properties:
+        company:
+          description: Name of the Company
+          maxLength: 255
+          minLength: 0
+          type: string
+        company_id:
+          description: EORI number of the Company
+          maxLength: 20
+          minLength: 0
+          type: string
+        eni:
+          description: European number of identification
+          maxLength: 8
+          minLength: 8
+          type: string
+        heading:
+          format: double
+          description: Direction in degrees
+          maximum: 360
+          minimum: 0
+          type: number
+        lat:
+          format: double
+          description: Latitude in WGS84 standard
+          maximum: 90
+          minimum: -90
+          type: number
+        length:
+          format: double
+          description: Length in meters
+          type: number
+        lon:
+          format: double
+          description: Longitude in WGS84 standard
+          maximum: 180
+          minimum: -180
+          type: number
+        speed:
+          format: double
+          description: Speed in kilometers per hour
+          type: number
+        timestamp_location:
+          format: date-time
+          description: Timestamp of the location (ISO 8601 formatted timestamp)
+          type: string
+        timestamp_message:
+          format: date-time
+          description: Timestamp of the message (ISO 8601 formatted timestamp)
+          type: string
+        width:
+          format: double
+          description: Width in meters
+          type: number
