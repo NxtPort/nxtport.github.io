@@ -15,7 +15,7 @@ paths:
       responses:
         "200":
           description: Ok
-        # "400":
+        "400":
           description: Bad Request
         "401":
           description: Unauthorized
