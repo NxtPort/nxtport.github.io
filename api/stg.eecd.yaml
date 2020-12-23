@@ -172,7 +172,7 @@ paths:
       tags:
         - CleaningLocations
       summary: Get all cleaning locations for an organisation.
-      description: "<p>\r\n            Gets a list of all cleaning locations for a given organisation, including the contact details such as\r\n            phone number and address. Does not include the users for each location.\r\n            location.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Gets a list of all cleaning locations for a given organisation, including the contact details such as\r\n            phone number and address. Does not include the users for each location.\r\n            location.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>EquipmentOperator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Location Manager</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningsLocationsOrganisationGet
       consumes: []
       produces:
@@ -375,6 +375,86 @@ paths:
             type: array
             items:
               $ref: '#/definitions/CleaningLocation'
+  '/v1/equipment/{equipmentId}/cleaningactions/request':
+    post:
+      tags:
+        - Cleanings
+      summary: Request a cleaning action.
+      description: "<p>\r\n            Requests a new cleaning action. This is required to view the booklet containing the equipment history.\r\n            Only one active cleaning action is permitted per equipment.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdCleaningactionsRequestPost
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      parameters:
+        - name: equipmentId
+          in: path
+          description: The ID of the equipment.
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          description: The body containing the cleaning location.
+          required: false
+          schema:
+            $ref: '#/definitions/BookletData.CleaningActionCreateRequest'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BookletData.CleaningAction'
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/request':
+    put:
+      tags:
+        - Cleanings
+      summary: Update a cleaning action request.
+      description: "<p>\r\n            Updates a cleaning action request. This can be done to any cleaning action that has state requested.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningIdRequestPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      parameters:
+        - name: equipmentId
+          in: path
+          description: The ID of the equipment.
+          required: true
+          type: string
+          format: uuid
+        - name: cleaningId
+          in: path
+          description: The ID of the cleaning request.
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          description: The body containing the details of the cleaning action.
+          required: false
+          schema:
+            $ref: '#/definitions/BookletData.CleaningActionCreateRequest'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BookletData.CleaningAction'
   '/v1/equipment/{equipmentId}/cleaningactions':
     post:
       tags:
@@ -491,7 +571,7 @@ paths:
       tags:
         - Cleanings
       summary: Search through the cleanings of an organisation.
-      description: "<p>\r\n            Get all cleanings for the logged in organisation. Optionally filter by equipment, date or status.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
+      description: "<p>\r\n            Get all cleanings for the logged in organisation. Optionally filter by equipment, date, status or cleaning location.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
       operationId: V1CleaningactionsGet
       consumes: []
       produces:
@@ -537,6 +617,7 @@ paths:
           required: false
           type: string
           enum:
+            - REQUESTED
             - PLANNED
             - COMPLETED
             - SIGNEDOFF
@@ -545,6 +626,74 @@ paths:
         - name: organisationId
           in: query
           description: The ID of the organisation that owns the cleanings. Only available to super admins.
+          required: false
+          type: string
+          format: uuid
+        - name: cleaningLocationId
+          in: query
+          description: The ID of the cleaning location where the cleaning is planned/executed. Optional.
+          required: false
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ResultsPage.BookletData.CleaningSummary'
+  /v1/cleaningactions/requests:
+    get:
+      tags:
+        - Cleanings
+      summary: Search through the cleaning requests issued by an organisation.
+      description: "<p>\r\n            Get all cleaning requests issued by the logged in organisation. Optionally filter by equipment, date or cleaning location.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1CleaningactionsRequestsGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: search
+          in: query
+          description: "A search string to find specific equipment, by either license plate or container\r\n            ID. Optional. If given, it needs to be at least 2 characters long. Spaces and special characters are filtered\r\n            from the search string."
+          required: false
+          type: string
+        - name: page
+          in: query
+          description: The index of the page. Optional; defaults to 1.
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          description: The size of each page. Optiona; defaults to 20.
+          required: false
+          type: integer
+          format: int32
+        - name: dateStart
+          in: query
+          description: The first date that is taken into account when searching. Optional.
+          required: false
+          type: string
+          format: date-time
+        - name: dateEnd
+          in: query
+          description: The latest date that is taken into account when searching. Optional.
+          required: false
+          type: string
+          format: date-time
+        - name: organisationId
+          in: query
+          description: The ID of the organisation that issued the cleaning requests. Only available to super admins.
+          required: false
+          type: string
+          format: uuid
+        - name: cleaningLocationId
+          in: query
+          description: The ID of the cleaning location where the cleaning is planned/executed. Optional.
           required: false
           type: string
           format: uuid
@@ -827,6 +976,50 @@ paths:
         - name: comment
           in: body
           description: Comment explaining why the cleaning had to be cancelled.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/BookletData.CleaningAction'
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/reject':
+    put:
+      tags:
+        - Cleanings
+      summary: Reject a cleaning request.
+      description: "<p>\r\n            Rejects a cleaning request that has not yet been planned. Note that the rejected cleaning still appears in logs\r\n            and the booklet containing the equipment history.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningIdRejectPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+        - application/*+xml
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+      parameters:
+        - name: equipmentId
+          in: path
+          description: The ID of the equipment.
+          required: true
+          type: string
+          format: uuid
+        - name: cleaningId
+          in: path
+          description: the ID of the cleaning action.
+          required: true
+          type: string
+          format: uuid
+        - name: comment
+          in: body
+          description: Comment explaining why the cleaning had to be rejected.
           required: false
           schema:
             type: string
@@ -1273,6 +1466,10 @@ paths:
           in: query
           required: false
           type: string
+        - name: cleaningLocationName
+          in: query
+          required: false
+          type: string
         - name: endedAtFrom
           in: query
           required: false
@@ -1328,6 +1525,34 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/ResultsPage.EecdDocument.ArchivedEecdMetadataDetail'
+  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/request/document':
+    get:
+      tags:
+        - EEcos
+      summary: Generate an eeco document from a cleaning request in a booklet.
+      description: "<p>\r\n            Generates a downloadable Eeco document based on a cleaning request still in a booklet. \r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentByEquipmentIdCleaningactionsByCleaningIdRequestDocumentGet
+      consumes: []
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: equipmentId
+          in: path
+          description: ''
+          required: true
+          type: string
+          format: uuid
+        - name: cleaningId
+          in: path
+          description: ''
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: file
   /v1/eftcocleaningcodes:
     get:
       tags:
@@ -2102,6 +2327,188 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/Equipment.EquipmentCleanliness'
+  /v1/equipment/export:
+    get:
+      tags:
+        - Equipment
+      summary: "Request an export of the equipment of the organisation in CSV.\r\nThe CSV is created asynchronously and will be available for download afterwards."
+      description: "<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentExportGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: boolean
+  /v1/equipmentfields:
+    get:
+      tags:
+        - EquipmentField
+      summary: Get all equipmentfields.
+      description: "<p>\r\n            Returns all equipmentfields with their values.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Equipment Manager</li>\r\n    <li>Equipment Master Data Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentfieldsGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: page
+          in: query
+          required: false
+          type: integer
+          format: int32
+        - name: pageSize
+          in: query
+          required: false
+          type: integer
+          format: int32
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/ResultsPage.MasterData.EquipmentField'
+        '400':
+          description: Bad Request
+    post:
+      tags:
+        - EquipmentField
+      summary: Create an equipmentfield.
+      description: "<p>\r\n            Creates a new equipmentfield. No equipmentfield with the same fieldname may exist.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Equipment Master Data Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentfieldsPost
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+        - application/*+xml
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: dto
+          in: body
+          description: The body containing the details of the equipmentfield.
+          required: false
+          schema:
+            $ref: '#/definitions/MasterData.EquipmentField'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MasterData.EquipmentField'
+        '400':
+          description: Bad Request
+  '/v1/equipmentfields/{id}':
+    get:
+      tags:
+        - EquipmentField
+      summary: Get an equipmentfield.
+      description: "<p>\r\n            Gets an equipmentfield. \r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Equipment Master Data Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentfieldsByIdGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the equipmentfield.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MasterData.EquipmentField'
+    put:
+      tags:
+        - EquipmentField
+      summary: Update an equipmentField.
+      description: "<p>\r\n            Updates an equipmentField.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Equipment Master Data Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentfieldsByIdPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+        - application/*+xml
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the equipmentField.
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          description: The body containing the details of the updated equipmentfield.
+          required: false
+          schema:
+            $ref: '#/definitions/MasterData.EquipmentFieldPut'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/MasterData.EquipmentField'
+        '400':
+          description: Bad Request
+    delete:
+      tags:
+        - EquipmentField
+      summary: Delete an equipmentField.
+      description: "<p>\r\n            Deletes an equipmentField.\r\n                </p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Equipment Master Data Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1EquipmentfieldsByIdDelete
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the equipmentField.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '204':
+          description: Success
+          schema:
+            type: boolean
   /v1/errormessages:
     get:
       tags:
@@ -2991,6 +3398,32 @@ paths:
             items:
               $ref: '#/definitions/MasterData.License'
   '/v1/organisations/{organisationId}/settings':
+    get:
+      tags:
+        - OrganisationSettings
+      summary: Get settings of an organisation.
+      description: "<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Community Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Eecd Provisioning Admin</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n    <li>Location Manager</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsByOrganisationIdSettingsGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: organisationId
+          in: path
+          description: The ID of the organisation.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/OrganisationSettings.OrganisationSettings'
     put:
       tags:
         - Licenses
@@ -3190,6 +3623,26 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Common.BulkResult'
+  /v1/products/locations/export:
+    get:
+      tags:
+        - LoadingLocations
+      summary: Request an export of the loading locations of the organisation in CSV.
+      description: "<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsLocationsExportGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: boolean
   '/v1/products/{productId}/loaders/{loaderId}/locations':
     get:
       tags:
@@ -3299,7 +3752,6 @@ paths:
         - application/json
         - text/json
         - application/*+json
-        - application/*+xml
       produces:
         - text/plain
         - application/json
@@ -3373,7 +3825,6 @@ paths:
         - application/json
         - text/json
         - application/*+json
-        - application/*+xml
       produces:
         - text/plain
         - application/json
@@ -3508,7 +3959,6 @@ paths:
         - application/json
         - text/json
         - application/*+json
-        - application/*+xml
       produces:
         - text/plain
         - application/json
@@ -3779,9 +4229,9 @@ paths:
             - COMPLETED
             - REJECTED
             - CANCELLED
-            - NONREGISTERED
             - MOVED
             - UPDATED
+            - NONREGISTERED
         - name: location
           in: query
           description: "A search string to find only those loads with loading locations containing this string. Optional;\r\n            when omitted, any loading location will do. As the loading location is a free text field entered by the despatcher, results may vary."
@@ -4213,6 +4663,27 @@ paths:
             type: array
             items:
               type: string
+  '/v1/masterdata/{masterDataStorageId}/file':
+    get:
+      tags:
+        - MasterData
+      summary: Returns the requested master data storage file from storage.
+      description: "<p>\r\n            Gets the requested masterdatastoragefile if not yet expired/deleted. \r\n                </p>"
+      operationId: V1MasterdataByMasterDataStorageIdFileGet
+      consumes: []
+      produces:
+        - text/csv
+      parameters:
+        - name: masterDataStorageId
+          in: path
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: file
   /v1/organisations:
     get:
       tags:
@@ -4482,6 +4953,132 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Users.Output.UserRole'
+  '/v1/organisationsettings/{id}':
+    get:
+      tags:
+        - OrganisationSettings
+      summary: Get organisationsettings by id.
+      description: "<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsettingsByIdGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the organisationSettings.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/OrganisationSettings.OrganisationSettings'
+    put:
+      tags:
+        - OrganisationSettings
+      summary: Update organisationsettings.
+      description: "<p>\r\n            Updates organisationsettings for an organisation.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsettingsByIdPut
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+        - application/*+xml
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the organisationsettings.
+          required: true
+          type: string
+          format: uuid
+        - name: dto
+          in: body
+          description: The settings for the organisation.
+          required: false
+          schema:
+            $ref: '#/definitions/OrganisationSettings.OrganisationSettings'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/OrganisationSettings.OrganisationSettings'
+    delete:
+      tags:
+        - OrganisationSettings
+      summary: Delete organisationsettings.
+      description: "<p>\r\n            Deletes organisationsettings for an organisation.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsettingsByIdDelete
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: id
+          in: path
+          description: The ID of the organisationsettings.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: boolean
+  /v1/organisationsettings:
+    post:
+      tags:
+        - OrganisationSettings
+      summary: Create new organisationsettings.
+      description: "<p>\r\n            Creates new organisationsettings for an organisation. The organisation cannot already have settings stored.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n</p>"
+      operationId: V1OrganisationsettingsPost
+      consumes:
+        - application/xml
+        - text/xml
+        - application/json-patch+json
+        - application/json
+        - text/json
+        - application/*+json
+        - application/*+xml
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      parameters:
+        - name: dto
+          in: body
+          description: The settings for the organisation.
+          required: false
+          schema:
+            $ref: '#/definitions/OrganisationSettings.OrganisationSettings'
+      responses:
+        '200':
+          description: Success
+          schema:
+            $ref: '#/definitions/OrganisationSettings.OrganisationSettings'
   /v1/products:
     get:
       tags:
@@ -4687,6 +5284,26 @@ paths:
               $ref: '#/definitions/Common.BulkResult'
         '400':
           description: Bad Request
+  /v1/products/export:
+    get:
+      tags:
+        - Products
+      summary: Request an export of the products of the organisation in CSV.
+      description: "<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsExportGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: boolean
   /v1/products/bulk:
     delete:
       tags:
@@ -4834,6 +5451,28 @@ paths:
           description: Success
           schema:
             $ref: '#/definitions/MasterData.Product'
+  '/v1/products/{productId}/sds/cloud':
+    get:
+      tags:
+        - Products
+      summary: Download the SDS document if available on cloud.
+      description: "<p>\r\n            Download the SDS file in the requested language, if it's available.\r\n                </p>\r\n<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsByProductIdSdsCloudGet
+      consumes: []
+      produces:
+        - application/octet-stream
+      parameters:
+        - name: productId
+          in: path
+          description: The ID of the product.
+          required: true
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: file
   /v1/products/sds/import:
     post:
       tags:
@@ -4872,6 +5511,26 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Common.BulkResult'
+  /v1/products/sds/export:
+    get:
+      tags:
+        - Products
+      summary: Request an export of the sds of the organisation in CSV.
+      description: "<p>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n</p>\r\n<p>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n</p>"
+      operationId: V1ProductsSdsExportGet
+      consumes: []
+      produces:
+        - text/plain
+        - application/json
+        - text/json
+        - text/csv
+        - application/xml
+        - text/xml
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: boolean
   '/v1/products/{productId}/sds/{language}/blob':
     put:
       tags:
@@ -5005,6 +5664,48 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Lookups.Language'
+  /v1/reports/royalty-overview:
+    get:
+      tags:
+        - Reporting
+      operationId: V1ReportsRoyalty-overviewGet
+      consumes: []
+      produces:
+        - text/csv
+      parameters:
+        - name: referenceDate
+          in: query
+          required: false
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Reporting.RoyaltyReportDetail'
+  /v1/reports/eecds-overview:
+    get:
+      tags:
+        - Reporting
+      operationId: V1ReportsEecds-overviewGet
+      consumes: []
+      produces:
+        - text/csv
+      parameters:
+        - name: referenceDate
+          in: query
+          required: false
+          type: string
+          format: date-time
+      responses:
+        '200':
+          description: Success
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Reporting.CreatedEecdsReportDetail'
   /v1/transportorders:
     post:
       tags:
@@ -5447,9 +6148,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -5465,6 +6166,15 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/BookletData.Attachment'
+      extraTask:
+        enum:
+          - NONE
+          - ISSUEPPL
+          - ISSUEECO
+        type: string
+      epplId:
+        format: uuid
+        type: string
       referenceDate:
         format: date-time
         type: string
@@ -5494,6 +6204,7 @@ definitions:
         type: string
       status:
         enum:
+          - REQUESTED
           - PLANNED
           - COMPLETED
           - SIGNEDOFF
@@ -5523,6 +6234,8 @@ definitions:
         type: string
       isUnaccompanied:
         type: boolean
+      eEco:
+        $ref: '#/definitions/BookletData.EEco'
   BookletData.HistoricalEPpl:
     type: object
     properties:
@@ -5530,6 +6243,9 @@ definitions:
         format: uuid
         type: string
       createdOn:
+        format: date-time
+        type: string
+      lastStatusDate:
         format: date-time
         type: string
       reference:
@@ -5549,6 +6265,9 @@ definitions:
       ePplLoadCounter:
         format: int32
         type: integer
+      lastCleaningTime:
+        format: date-time
+        type: string
       referenceDate:
         format: date-time
         type: string
@@ -5603,9 +6322,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       fullName:
         type: string
@@ -5728,6 +6447,26 @@ definitions:
         type: boolean
       expired:
         type: boolean
+  BookletData.EEco:
+    type: object
+    properties:
+      reference:
+        type: string
+      estimatedTimeOfArrival:
+        format: date-time
+        type: string
+      estimatedTimeOfPickup:
+        format: date-time
+        type: string
+      safetyInfo:
+        $ref: '#/definitions/BookletData.SafetyInfo'
+      agentRequest:
+        type: string
+      otherRequests:
+        type: string
+      issueDate:
+        format: date-time
+        type: string
   BookletData.EPplLoad:
     type: object
     properties:
@@ -5743,12 +6482,12 @@ definitions:
       maxHoursPreviousLoad:
         format: int32
         type: integer
-      productReference:
+      articleNumber:
         type: string
       productId:
         format: uuid
         type: string
-      chemicalName:
+      productName:
         type: string
       loaderReference:
         type: string
@@ -5764,6 +6503,15 @@ definitions:
         type: string
       adrClass:
         type: string
+  BookletData.SafetyInfo:
+    type: object
+    properties:
+      tankUnderPressure:
+        type: boolean
+      nitrogenInTank:
+        type: boolean
+      solidNoPressure:
+        type: boolean
   CleaningLocation.CleaningLocationCreate:
     type: object
     properties:
@@ -5783,64 +6531,37 @@ definitions:
         type: string
       supervisor:
         type: string
-  CleaningLocationData.CleaningLocationUser:
+  CleaningLocation.CleaningLocationUpdate:
     type: object
     properties:
-      id:
-        format: uuid
+      name:
         type: string
-      fullName:
+      description:
         type: string
-  BookletData.CleaningAction:
+      addressLines:
+        type: object
+        additionalProperties:
+          type: string
+      phone:
+        type: string
+      fax:
+        type: string
+      website:
+        type: string
+      supervisor:
+        type: string
+  BookletData.CompartmentCleaning:
     type: object
     properties:
-      equipmentId:
-        format: uuid
+      key:
         type: string
-      comments:
-        type: array
-        items:
-          $ref: '#/definitions/BookletData.PostSignoffComment'
-      compartments:
-        type: array
-        items:
-          $ref: '#/definitions/BookletData.CompartmentCleaning'
-      id:
-        format: uuid
-        type: string
-      lastStatusDate:
-        format: date-time
-        type: string
-      status:
-        enum:
-          - PLANNED
-          - COMPLETED
-          - SIGNEDOFF
-          - CANCELLED
-          - INVALID
-        type: string
-      cleanedBy:
-        $ref: '#/definitions/BookletData.LocationData'
-      references:
-        $ref: '#/definitions/BookletData.Reference'
-      process:
-        $ref: '#/definitions/BookletData.CleaningProcess'
-      signoff:
-        $ref: '#/definitions/BookletData.CleaningSignoff'
-      eEcd:
-        $ref: '#/definitions/BookletData.EEcd'
-      attachments:
-        type: array
-        items:
-          $ref: '#/definitions/BookletData.Attachment'
-      cleanerComments:
-        type: string
-      type:
-        enum:
-          - STANDARD
-          - POLYMER
-        type: string
-      isUnaccompanied:
+      cleaning:
+        $ref: '#/definitions/BookletData.CleaningInfo'
+      previousLoad:
+        $ref: '#/definitions/BookletData.Product'
+      valid:
+        type: boolean
+      isPolymerComplete:
         type: boolean
   CleaningLocation:
     type: object
@@ -5890,25 +6611,109 @@ definitions:
       version:
         format: uuid
         type: string
-  CleaningLocation.CleaningLocationUpdate:
+  BookletData.CleaningActionCreateRequest:
     type: object
     properties:
-      name:
+      cleanerId:
+        format: uuid
         type: string
-      description:
+      estimatedTimeOfArrival:
+        format: date-time
         type: string
-      addressLines:
-        type: object
-        additionalProperties:
+      estimatedTimeOfPickup:
+        format: date-time
+        type: string
+      compartmentCleanings:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.CompartmentCleaning'
+      references:
+        $ref: '#/definitions/BookletData.Reference'
+      safetyInfo:
+        $ref: '#/definitions/BookletData.SafetyInfo'
+      agentRequest:
+        type: string
+      otherRequests:
+        type: string
+      locationId:
+        format: uuid
+        type: string
+      type:
+        enum:
+          - STANDARD
+          - POLYMER
+        type: string
+      isUnaccompanied:
+        type: boolean
+      compartments:
+        type: array
+        items:
           type: string
-      phone:
+      cleaningId:
+        format: uuid
         type: string
-      fax:
+  CleaningLocationData.CleaningLocationUser:
+    type: object
+    properties:
+      id:
+        format: uuid
         type: string
-      website:
+      fullName:
         type: string
-      supervisor:
+  BookletData.CleaningAction:
+    type: object
+    properties:
+      equipmentId:
+        format: uuid
         type: string
+      comments:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.PostSignoffComment'
+      compartments:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.CompartmentCleaning'
+      id:
+        format: uuid
+        type: string
+      lastStatusDate:
+        format: date-time
+        type: string
+      status:
+        enum:
+          - REQUESTED
+          - PLANNED
+          - COMPLETED
+          - SIGNEDOFF
+          - CANCELLED
+          - INVALID
+        type: string
+      cleanedBy:
+        $ref: '#/definitions/BookletData.LocationData'
+      references:
+        $ref: '#/definitions/BookletData.Reference'
+      process:
+        $ref: '#/definitions/BookletData.CleaningProcess'
+      signoff:
+        $ref: '#/definitions/BookletData.CleaningSignoff'
+      eEcd:
+        $ref: '#/definitions/BookletData.EEcd'
+      attachments:
+        type: array
+        items:
+          $ref: '#/definitions/BookletData.Attachment'
+      cleanerComments:
+        type: string
+      type:
+        enum:
+          - STANDARD
+          - POLYMER
+        type: string
+      isUnaccompanied:
+        type: boolean
+      eEco:
+        $ref: '#/definitions/BookletData.EEco'
   BookletData.CleaningActionCreate:
     type: object
     properties:
@@ -5926,19 +6731,9 @@ definitions:
         type: array
         items:
           type: string
-  BookletData.CompartmentCleaning:
-    type: object
-    properties:
-      key:
+      cleaningId:
+        format: uuid
         type: string
-      cleaning:
-        $ref: '#/definitions/BookletData.CleaningInfo'
-      previousLoad:
-        $ref: '#/definitions/BookletData.Product'
-      valid:
-        type: boolean
-      isPolymerComplete:
-        type: boolean
   BookletData.CleaningUpdate:
     required:
       - compartments
@@ -5982,6 +6777,7 @@ definitions:
           type: string
       status:
         enum:
+          - REQUESTED
           - PLANNED
           - COMPLETED
           - SIGNEDOFF
@@ -5993,6 +6789,9 @@ definitions:
         type: string
       references:
         $ref: '#/definitions/BookletData.Reference'
+      cleaningLocationId:
+        format: uuid
+        type: string
   BookletData.BasicEquipment:
     type: object
     properties:
@@ -6048,26 +6847,49 @@ definitions:
     properties:
       comment:
         type: string
-  CreditData.CreditTransactionContext:
+  CreditData.CreditPackOveralSummary:
     type: object
     properties:
-      reason:
-        enum:
-          - AddedCredits
-          - CompleteLoad
-          - CreateEecd
-          - SignOffCleaning
-          - CompleteLoadForPaperEecd
-          - InvalidateCleaningAction
-          - CompleteLoadWithEppl
-        type: string
-      bookletId:
-        format: uuid
-        type: string
-      eEcd:
-        type: string
-      comment:
-        type: string
+      depleted:
+        format: int32
+        type: integer
+      inUse:
+        format: int32
+        type: integer
+      untouched:
+        format: int32
+        type: integer
+      purchased:
+        format: int32
+        type: integer
+        readOnly: true
+      details:
+        type: array
+        items:
+          $ref: '#/definitions/CreditData.CreditPackSummary'
+  CreditData.CreditSummary:
+    type: object
+    properties:
+      purchased:
+        format: int32
+        type: integer
+      remaining:
+        format: int32
+        type: integer
+      spent:
+        format: int32
+        type: integer
+      spentYearToDate:
+        format: int32
+        type: integer
+      spentLastMonth:
+        format: int32
+        type: integer
+      spentPerMonth:
+        type: object
+        additionalProperties:
+          format: int32
+          type: integer
   CreditData.CreditWalletSummary:
     type: object
     properties:
@@ -6089,23 +6911,6 @@ definitions:
         $ref: '#/definitions/CreditData.CreditSummary'
       creditPacks:
         $ref: '#/definitions/CreditData.CreditPackOveralSummary'
-  CreditData.CreditTransaction:
-    type: object
-    properties:
-      id:
-        format: uuid
-        type: string
-      performedOn:
-        format: date-time
-        type: string
-      performedBy:
-        format: uuid
-        type: string
-      amount:
-        format: int32
-        type: integer
-      details:
-        $ref: '#/definitions/CreditData.CreditTransactionContext'
   CreditData.CreditPack:
     type: object
     properties:
@@ -6145,49 +6950,6 @@ definitions:
       version:
         format: uuid
         type: string
-  CreditData.CreditSummary:
-    type: object
-    properties:
-      purchased:
-        format: int32
-        type: integer
-      remaining:
-        format: int32
-        type: integer
-      spent:
-        format: int32
-        type: integer
-      spentYearToDate:
-        format: int32
-        type: integer
-      spentLastMonth:
-        format: int32
-        type: integer
-      spentPerMonth:
-        type: object
-        additionalProperties:
-          format: int32
-          type: integer
-  CreditData.CreditPackOveralSummary:
-    type: object
-    properties:
-      depleted:
-        format: int32
-        type: integer
-      inUse:
-        format: int32
-        type: integer
-      untouched:
-        format: int32
-        type: integer
-      purchased:
-        format: int32
-        type: integer
-        readOnly: true
-      details:
-        type: array
-        items:
-          $ref: '#/definitions/CreditData.CreditPackSummary'
   CreditData.CreditPackSummary:
     type: object
     properties:
@@ -6206,71 +6968,6 @@ definitions:
       initialCredits:
         format: int32
         type: integer
-  CreditData.WalletSummary:
-    type: object
-    properties:
-      walletId:
-        format: uuid
-        type: string
-      organisations:
-        type: array
-        items:
-          format: uuid
-          type: string
-      warningThreshold:
-        format: int32
-        type: integer
-      creditsPurchased:
-        format: int32
-        type: integer
-      creditsRemaining:
-        format: int32
-        type: integer
-      packsPurchased:
-        format: int32
-        type: integer
-      packsActive:
-        format: int32
-        type: integer
-      packIds:
-        type: array
-        items:
-          format: uuid
-          type: string
-  CreditData.CreditWallet:
-    type: object
-    properties:
-      owners:
-        type: array
-        items:
-          format: uuid
-          type: string
-      warningThreshold:
-        format: int32
-        type: integer
-      spentEPplCredits:
-        format: int32
-        type: integer
-      id:
-        format: uuid
-        type: string
-      createdOn:
-        format: date-time
-        type: string
-      createdByUser:
-        format: uuid
-        type: string
-      lastUpdatedOn:
-        format: date-time
-        type: string
-      lastUpdatedByUser:
-        format: uuid
-        type: string
-      isDeleted:
-        type: boolean
-      version:
-        format: uuid
-        type: string
   EftcoCleaningCode:
     type: object
     properties:
@@ -6307,6 +7004,112 @@ definitions:
       version:
         format: uuid
         type: string
+  CreditData.CreditWallet:
+    type: object
+    properties:
+      owners:
+        type: array
+        items:
+          format: uuid
+          type: string
+      warningThreshold:
+        format: int32
+        type: integer
+      spentEPplCredits:
+        format: int32
+        type: integer
+      spentEEcoCredits:
+        format: int32
+        type: integer
+      id:
+        format: uuid
+        type: string
+      createdOn:
+        format: date-time
+        type: string
+      createdByUser:
+        format: uuid
+        type: string
+      lastUpdatedOn:
+        format: date-time
+        type: string
+      lastUpdatedByUser:
+        format: uuid
+        type: string
+      isDeleted:
+        type: boolean
+      version:
+        format: uuid
+        type: string
+  CreditData.CreditTransactionContext:
+    type: object
+    properties:
+      reason:
+        enum:
+          - AddedCredits
+          - CompleteLoad
+          - CreateEecd
+          - SignOffCleaning
+          - CompleteLoadForPaperEecd
+          - InvalidateCleaningAction
+          - CompleteLoadWithEppl
+          - StartCleaningWithEeco
+        type: string
+      bookletId:
+        format: uuid
+        type: string
+      eEcd:
+        type: string
+      comment:
+        type: string
+  CreditData.CreditTransaction:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      performedOn:
+        format: date-time
+        type: string
+      performedBy:
+        format: uuid
+        type: string
+      amount:
+        format: int32
+        type: integer
+      details:
+        $ref: '#/definitions/CreditData.CreditTransactionContext'
+  CreditData.WalletSummary:
+    type: object
+    properties:
+      walletId:
+        format: uuid
+        type: string
+      organisations:
+        type: array
+        items:
+          format: uuid
+          type: string
+      warningThreshold:
+        format: int32
+        type: integer
+      creditsPurchased:
+        format: int32
+        type: integer
+      creditsRemaining:
+        format: int32
+        type: integer
+      packsPurchased:
+        format: int32
+        type: integer
+      packsActive:
+        format: int32
+        type: integer
+      packIds:
+        type: array
+        items:
+          format: uuid
+          type: string
   ResultsPage.CreditData.WalletSummary:
     type: object
     properties:
@@ -6412,6 +7215,8 @@ definitions:
         type: string
       cleaningLocationId:
         format: uuid
+        type: string
+      cleaningLocationName:
         type: string
       cleaningCompanyName:
         type: string
@@ -6531,6 +7336,11 @@ definitions:
     properties:
       key:
         type: string
+      epplCounter:
+        format: int32
+        type: integer
+      lastCleaningTime:
+        type: string
       loads:
         type: array
         items:
@@ -6542,6 +7352,9 @@ definitions:
         format: uuid
         type: string
       createdOn:
+        format: date-time
+        type: string
+      lastStatusDate:
         format: date-time
         type: string
       reference:
@@ -6557,6 +7370,8 @@ definitions:
           $ref: '#/definitions/Document.EpplCompartmentLoadHistory'
       nextLoadId:
         format: uuid
+        type: string
+      warning:
         type: string
   EftcoCleaningCodes.EftcoCleaningCodeUpdate:
     type: object
@@ -6618,6 +7433,60 @@ definitions:
         type: string
       isIso6346Compliant:
         type: boolean
+      productType:
+        type: string
+      licensePlateCountry:
+        type: string
+      tareWeight:
+        format: double
+        type: number
+      netWeight:
+        format: double
+        type: number
+      maxWeight:
+        format: double
+        type: number
+      tankTypeAdr:
+        type: string
+      minPressureAdr:
+        type: string
+      openingsAdr:
+        type: string
+      valvesAdr:
+        type: string
+      lastInspectionAdr:
+        format: date-time
+        type: string
+      lastPressureTestAdr:
+        format: date-time
+        type: string
+      te:
+        type: string
+      tc:
+        type: string
+      fl:
+        format: date-time
+        type: string
+      at:
+        format: date-time
+        type: string
+      tankInstructionUn:
+        type: string
+      lastInspectionUn:
+        format: date-time
+        type: string
+      nextExaminationCsc:
+        format: date-time
+        type: string
+      lastInspectionCsc:
+        format: date-time
+        type: string
+      mainInspection:
+        format: date-time
+        type: string
+      validitySp:
+        format: date-time
+        type: string
   Document.ArchivedEpplMetadataDetail:
     type: object
     properties:
@@ -6640,6 +7509,11 @@ definitions:
         format: date-time
         type: string
       title:
+        type: string
+      state:
+        enum:
+          - SIGNEDOFF
+          - CANCELLED
         type: string
       loads:
         type: array
@@ -6693,31 +7567,6 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/Document.ArchivedEpplMetadataDetail'
-  Equipment.CompartmentCleanliness:
-    type: object
-    properties:
-      cleanliness:
-        enum:
-          - Clean
-          - Dirty
-          - Unknown
-        type: string
-      polymerCompleteness:
-        enum:
-          - PolymerComplete
-          - PolymerIncomplete
-        type: string
-  MasterData.Compartment:
-    type: object
-    properties:
-      key:
-        type: string
-      volume:
-        format: int32
-        type: integer
-      baffles:
-        format: int32
-        type: integer
   MasterData.EquipmentPut:
     type: object
     properties:
@@ -6751,6 +7600,85 @@ definitions:
       isIso6346Compliant:
         type: boolean
       internalEquipmentCode:
+        type: string
+      productType:
+        type: string
+      licensePlateCountry:
+        type: string
+      tareWeight:
+        format: double
+        type: number
+      netWeight:
+        format: double
+        type: number
+      maxWeight:
+        format: double
+        type: number
+      tankTypeAdr:
+        type: string
+      minPressureAdr:
+        type: string
+      openingsAdr:
+        type: string
+      valvesAdr:
+        type: string
+      lastInspectionAdr:
+        format: date-time
+        type: string
+      lastPressureTestAdr:
+        format: date-time
+        type: string
+      te:
+        type: string
+      tc:
+        type: string
+      fl:
+        format: date-time
+        type: string
+      at:
+        format: date-time
+        type: string
+      tankInstructionUn:
+        type: string
+      lastInspectionUn:
+        format: date-time
+        type: string
+      nextExaminationCsc:
+        format: date-time
+        type: string
+      lastInspectionCsc:
+        format: date-time
+        type: string
+      mainInspection:
+        format: date-time
+        type: string
+      validitySp:
+        format: date-time
+        type: string
+  MasterData.Compartment:
+    type: object
+    properties:
+      key:
+        type: string
+      volume:
+        format: int32
+        type: integer
+      baffles:
+        format: int32
+        type: integer
+  Equipment.CompartmentCleanliness:
+    type: object
+    properties:
+      cleanliness:
+        enum:
+          - Clean
+          - Dirty
+          - Unknown
+        type: string
+      polymerCompleteness:
+        enum:
+          - PolymerComplete
+          - PolymerIncomplete
         type: string
   Equipment.EquipmentCleanliness:
     type: object
@@ -6834,6 +7762,60 @@ definitions:
         type: string
       isIso6346Compliant:
         type: boolean
+      productType:
+        type: string
+      licensePlateCountry:
+        type: string
+      tareWeight:
+        format: double
+        type: number
+      netWeight:
+        format: double
+        type: number
+      maxWeight:
+        format: double
+        type: number
+      tankTypeAdr:
+        type: string
+      minPressureAdr:
+        type: string
+      openingsAdr:
+        type: string
+      valvesAdr:
+        type: string
+      lastInspectionAdr:
+        format: date-time
+        type: string
+      lastPressureTestAdr:
+        format: date-time
+        type: string
+      te:
+        type: string
+      tc:
+        type: string
+      fl:
+        format: date-time
+        type: string
+      at:
+        format: date-time
+        type: string
+      tankInstructionUn:
+        type: string
+      lastInspectionUn:
+        format: date-time
+        type: string
+      nextExaminationCsc:
+        format: date-time
+        type: string
+      lastInspectionCsc:
+        format: date-time
+        type: string
+      mainInspection:
+        format: date-time
+        type: string
+      validitySp:
+        format: date-time
+        type: string
   Common.BulkResult:
     type: object
     properties:
@@ -6887,6 +7869,76 @@ definitions:
         type: string
       containerId:
         type: string
+  MasterData.EquipmentField:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      name:
+        type: string
+      values:
+        type: array
+        items:
+          type: string
+  MasterData.EquipmentFieldPut:
+    type: object
+    properties:
+      name:
+        type: string
+      values:
+        type: array
+        items:
+          type: string
+  ResultsPage.MasterData.EquipmentField:
+    type: object
+    properties:
+      hitCountTotal:
+        format: int64
+        type: integer
+      hitCountPage:
+        format: int64
+        type: integer
+      pageCurrent:
+        format: int32
+        type: integer
+      pageSize:
+        format: int32
+        type: integer
+      pageTotal:
+        format: int32
+        type: integer
+      hasMorePages:
+        type: boolean
+      comment:
+        type: string
+      results:
+        type: array
+        items:
+          $ref: '#/definitions/MasterData.EquipmentField'
+  IdentificationCode.IdentificationCodeCreate:
+    required:
+      - organisationId
+      - type
+      - code
+      - name
+    type: object
+    properties:
+      organisationId:
+        format: uuid
+        type: string
+      type:
+        enum:
+          - Duns
+          - Vat
+          - Eori
+        type: string
+      code:
+        type: string
+      name:
+        type: string
+      isVerified:
+        type: boolean
   IdentificationCode.IdentificationCodeDetail:
     type: object
     properties:
@@ -6914,29 +7966,6 @@ definitions:
       lastUpdatedOn:
         format: date-time
         type: string
-  IdentificationCode.IdentificationCodeCreate:
-    required:
-      - organisationId
-      - type
-      - code
-      - name
-    type: object
-    properties:
-      organisationId:
-        format: uuid
-        type: string
-      type:
-        enum:
-          - Duns
-          - Vat
-          - Eori
-        type: string
-      code:
-        type: string
-      name:
-        type: string
-      isVerified:
-        type: boolean
   IntegratedLoadingLocation.Input.IntegratedLoadingLocationCreate:
     required:
       - description
@@ -7410,6 +8439,43 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/MasterData.ExigentLicenseSummary'
+  OrganisationSettings.OrganisationSettings:
+    type: object
+    properties:
+      id:
+        format: uuid
+        type: string
+      organisationId:
+        format: uuid
+        type: string
+      archivalDurationInDays:
+        format: int32
+        type: integer
+      archivalRecipients:
+        type: array
+        items:
+          type: string
+      sdsInformation:
+        $ref: '#/definitions/OrganisationSettings.Sds.SdsInformation'
+  OrganisationSettings.Sds.SdsInformation:
+    type: object
+    properties:
+      authorization:
+        $ref: '#/definitions/OrganisationSettings.Sds.BaseAuthorization'
+      url:
+        type: string
+      fallbackUrl:
+        type: string
+  OrganisationSettings.Sds.BaseAuthorization:
+    type: object
+    properties:
+      type:
+        enum:
+          - CERTIFICATE
+        type: string
+      expirationDate:
+        format: date-time
+        type: string
   LoadingLocation.LoadingLocationCreate:
     type: object
     properties:
@@ -7509,7 +8575,10 @@ definitions:
         enum:
           - NONE
           - ISSUEPPL
+          - ISSUEECO
         type: string
+      cleaningActionRequest:
+        $ref: '#/definitions/BookletData.CleaningActionCreateRequest'
   ResultsPage.LoadingLocation.LoadingLocation:
     type: object
     properties:
@@ -7554,9 +8623,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       product:
         $ref: '#/definitions/BookletData.Product'
@@ -7579,6 +8648,14 @@ definitions:
       ePplId:
         format: uuid
         type: string
+      extraTask:
+        enum:
+          - NONE
+          - ISSUEPPL
+          - ISSUEECO
+        type: string
+      extraTaskError:
+        $ref: '#/definitions/Common.ErrorResponse'
   BookletData.LoadAcceptation:
     type: object
     properties:
@@ -7597,7 +8674,10 @@ definitions:
         enum:
           - NONE
           - ISSUEPPL
+          - ISSUEECO
         type: string
+      cleaningActionRequest:
+        $ref: '#/definitions/BookletData.CleaningActionCreateRequest'
   BookletData.LoadRejection:
     type: object
     properties:
@@ -7663,9 +8743,9 @@ definitions:
           - COMPLETED
           - REJECTED
           - CANCELLED
-          - NONREGISTERED
           - MOVED
           - UPDATED
+          - NONREGISTERED
         type: string
       displayDate:
         format: date-time
@@ -7980,6 +9060,7 @@ definitions:
         enum:
           - D
           - L
+          - C
         type: string
       link:
         type: string
@@ -8090,6 +9171,7 @@ definitions:
         enum:
           - D
           - L
+          - C
         type: string
       link:
         type: string
@@ -8124,6 +9206,7 @@ definitions:
         enum:
           - D
           - L
+          - C
         type: string
       link:
         type: string
@@ -8134,6 +9217,72 @@ definitions:
         type: string
       fileSize:
         format: int64
+        type: integer
+  Reporting.RoyaltyReportDetail:
+    type: object
+    properties:
+      eecdReference:
+        type: string
+      cleanerOrganisationId:
+        format: uuid
+        type: string
+      cleanerOrganisationName:
+        type: string
+      cleanerMainCountry:
+        type: string
+      cleaningLocationName:
+        type: string
+      cleaningLocationCountry:
+        type: string
+      invalidationTime:
+        format: date-time
+        type: string
+      signoffTime:
+        format: date-time
+        type: string
+  Reporting.CreatedEecdsReportDetail:
+    type: object
+    properties:
+      organisationName:
+        type: string
+      eEcdsCreatedYearToDate:
+        format: int32
+        type: integer
+      eEcdsCreatedJan:
+        format: int32
+        type: integer
+      eEcdsCreatedFeb:
+        format: int32
+        type: integer
+      eEcdsCreatedMar:
+        format: int32
+        type: integer
+      eEcdsCreatedApr:
+        format: int32
+        type: integer
+      eEcdsCreatedMay:
+        format: int32
+        type: integer
+      eEcdsCreatedJun:
+        format: int32
+        type: integer
+      eEcdsCreatedJul:
+        format: int32
+        type: integer
+      eEcdsCreatedAug:
+        format: int32
+        type: integer
+      eEcdsCreatedSep:
+        format: int32
+        type: integer
+      eEcdsCreatedOct:
+        format: int32
+        type: integer
+      eEcdsCreatedNov:
+        format: int32
+        type: integer
+      eEcdsCreatedDec:
+        format: int32
         type: integer
   Users.Input.UserCreate:
     type: object
