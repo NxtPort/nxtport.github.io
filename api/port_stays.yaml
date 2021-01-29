@@ -1,0 +1,322 @@
+openapi: 3.0.1
+info:
+  title: PortStays API
+  version: '1.0'
+servers:
+  - url: 'https://api-uat.nxtport.com/portstays/v1/'
+    description: UAT Environment
+  - url: 'https://api.nxtport.com/portstays/v1/'
+    description: PRD Environment
+paths:
+  /stays:
+    get:
+      description: PortStays API
+      operationId: getPortStays
+      parameters:
+        - name: date
+          in: query
+          description: Datetime in UTC. This time can be up to 6 hours earlier than the time of the API call. (e.g. 2021-01-08T09:21:00Z)
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A valid response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PortStayResponseDTO'
+        '403':
+          description: Forbidden
+        '429':
+          description: Too many requests
+        default:
+          description: Unexpected Problem
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortOfAntwerpProblem'
+security:
+  - bearerAuth: []
+  - ApiKeyAuth: []
+components:
+  securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    
+      description: JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word \"Bearer\" and then a space in front of the access token. For example \"Bearer f8e6d39a81fc4d31957086fe03630858\"."
+    ApiKeyAuth:        
+      type: apiKey
+      in: header       
+      name: Ocp-Apim-Subscription-Key
+      description: API subscription key. Assigned by NxtPort to your organization.
+  schemas:
+    PortVoyageShipResponseDTO:
+      type: object
+      properties:
+        imo_number:
+          type: string
+          description: IMO number
+        mmsi_number:
+          type: string
+          description: MMSI number
+        call_sign:
+          type: string
+          description: Callsign
+        ship_type:
+          type: string
+          description: Ship type
+        flag_code:
+          type: string
+          description: Flag code
+        ship_name:
+          type: string
+          description: Ship name
+        gross_tonnage:
+          type: integer
+          description: Gros tonnage
+          format: int64
+    LockResponseDTO:
+      type: object
+      properties:
+        lock_code:
+          type: string
+        direction:
+          type: string
+    PortStayResponseDTO:
+      type: object
+      properties:
+        stay_end:
+          type: string
+          description: Date/Time end of stay
+          format: date-time
+        next_port_of_call:
+          type: string
+          description: Next port of call
+        etd:
+          type: string
+          description: ETD
+          format: date-time
+        stay_number:
+          type: string
+          description: Stay number
+        stay_start:
+          type: string
+          description: Date/Time start of stay
+          format: date-time
+        cbs_entry_point_eta:
+          type: string
+          description: Estimated time of arrival CBS Entrypoint
+          format: date-time
+        ship:
+          description: Schip
+          $ref: '#/components/schemas/PortStayShipResponseDTO'
+        previous_port_of_call:
+          type: string
+          description: Previous port of call
+        berth_at_departure:
+          type: string
+          description: Berth at departure
+        cbs_entry_point:
+          type: string
+          description: CBS Entrypoint
+        berth_at_arrival:
+          type: string
+          description: Berth at arrival
+    PtaResponseDTO:
+      type: object
+      properties:
+        pt:
+          type: string
+          format: date-time
+        location:
+          type: string
+    TravelPlanResponseDTO:
+      type: object
+      properties:
+        time_type:
+          type: string
+        location:
+          type: string
+        time:
+          type: string
+          format: date-time
+    PortVoyageResponseDTO:
+      type: object
+      properties:
+        agent:
+          type: string
+          description: Shipping agent
+        mooring_side:
+          type: string
+          description: Mooring side
+        passage_point_ata:
+          type: string
+          description: Passage point actual time of arrival
+        stay_number:
+          type: string
+          description: Stay number
+        voyage_start:
+          type: string
+          description: Date/Time start of voyage
+          format: date-time
+        voyage_cancelled:
+          type: string
+          description: Datum/Time cancelling of voyage
+          format: date-time
+        ship:
+          description: Schip
+          $ref: '#/components/schemas/PortVoyageShipResponseDTO'
+        previous_port_of_call:
+          type: string
+          description: Previous port of call
+        voyage_end:
+          type: string
+          description: Date/Time end of voyage
+          format: date-time
+        mooring_position:
+          type: string
+          description: Mooring position
+        terminal_of_origin:
+          type: string
+          description: Terminal of origin
+        locks:
+          type: array
+          items:
+            $ref: '#/components/schemas/LockResponseDTO'
+        operational_length:
+          type: number
+          description: Operational length
+          format: double
+        ata:
+          type: string
+          description: Date/Time most recent actual time of arrival
+          format: date-time
+        berth_of_destination_to:
+          type: string
+          description: Berth of destination to
+        eta:
+          type: string
+          description: Date/Time most recent estimated time of arrival
+          format: date-time
+        etd:
+          type: string
+          description: Date/Time estimated time of departure
+          format: date-time
+        cbs_exit_point:
+          type: string
+          description: CBS Exitpoint
+        passage_point_eta:
+          type: string
+          description: Location most recent estimated time of arrival
+        port_of_origin:
+          type: string
+          description: Port of origin
+        operational_draught_bow:
+          type: number
+          description: Operational draught bow
+          format: double
+        cbs_entry_point:
+          type: string
+          description: CBS Entrypoint
+        stay_end:
+          type: string
+          description: Date/Time end of stay
+          format: date-time
+        next_port_of_call:
+          type: string
+          description: Next port of call
+        port_of_destination:
+          type: string
+          description: Port of destination
+        travel_plans:
+          type: array
+          items:
+            $ref: '#/components/schemas/TravelPlanResponseDTO'
+        berth_of_origin:
+          type: string
+          description: Berth of origin
+        incoming_mode:
+          type: string
+          description: Incoming mode
+        cbs_entry_point_eta:
+          type: string
+          description: Estimated time of arrival CBS Entrypoint
+          format: date-time
+        voyage_number:
+          type: string
+          description: Voyage number
+        operational_draught_stern:
+          type: number
+          description: Operationele draught stern
+          format: double
+        pts:
+          type: array
+          items:
+            $ref: '#/components/schemas/PtaResponseDTO'
+        sequence_in_stay:
+          type: integer
+          description: Sequence in stay
+          format: int32
+        route_category:
+          type: string
+          description: Category of route
+        voyage_state:
+          type: string
+          description: State of voyage
+        stay_start:
+          type: string
+          description: Date/Time start of stay
+          format: date-time
+        stay_cancelled:
+          type: string
+          description: Date/Time cancellation of stay
+          format: date-time
+        operational_breadth:
+          type: number
+          description: Operational breadth
+          format: double
+        cbs_exit_point_ata:
+          type: string
+          description: Actual time of arrival CBS Exitpoint
+          format: date-time
+        terminal_of_destination:
+          type: string
+          description: Terminal of destination
+        berth_of_destination_from:
+          type: string
+          description: Berth of destination from
+    PortStayShipResponseDTO:
+      type: object
+      properties:
+        imo_number:
+          type: string
+          description: IMO nummer
+        call_sign:
+          type: string
+          description: Callsign
+        ship_type:
+          type: string
+          description: Ship type
+        ship_name:
+          type: string
+          description: Ship name
+    Problem:
+      type: object
+      properties:
+        detail:
+          type: string
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+    PortOfAntwerpProblem:
+      type: object
+      properties:
+        stacktrace:
+          type: string
+        message:
+          type: string
