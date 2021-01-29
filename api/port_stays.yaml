@@ -1,7 +1,10 @@
 openapi: 3.0.1
 info:
-  title: PortStays API
+  title: NxtPort PortStays API
+  termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
   version: '1.0'
+  contact:
+    email: support@nxtport.com
 servers:
   - url: 'https://api-uat.nxtport.com/portstays/v1/'
     description: UAT Environment
