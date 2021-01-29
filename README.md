@@ -13,6 +13,8 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [Ocean Schedules](https://nxtport.github.io/?api=ocean_schedules) by INTTRA
 * [Portcall+](https://nxtport.github.io/?api=port_call_plus) by Port+ 
 * [Port Directory](https://nxtport.github.io/?api=port_directory) by Port+
+* [Port Stays](https://nxtport.github.io/?api=port_stays) by APICS
+* [Port Voyages](https://nxtport.github.io/?api=port_voyages) by APICS
 * [Push Barges Staging](https://nxtport.github.io/?api=stg.push_barges)
 * [Tresco Location](https://nxtport.github.io/?api=tresco_location) by Tresco
 * [UNLocode](https://nxtport.github.io/?api=unlocode)
