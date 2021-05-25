@@ -2,179 +2,25 @@ openapi: 3.0.1
 info:
   title: NxtPort Liquid Bulk API
   description: NxtPort Liquid Bulk API.
-  version: v1
-host: "api.nxtport.eu"
-basePath: /
-schemes:
-  - http
-  - https
+  termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
+  version: '1.0'
+  contact:
+    email: support@nxtport.com
+servers:
+  - url: 'https://api-uat.nxtport.com/liquid-bulk/v1/'
+    description: UAT Environment
+  - url: 'https://api.nxtport.com/liquid-bulk/v1/'
+    description: PRD Environment
 paths:
-  /activities:
+  '/dossiers/{id}':
     get:
       tags:
-        - ActivityEngineQuery
-      summary: "Get a list of activities that match the query parameters.\r\nOrdered by estimated start datetime DESC."
-      parameters:
-        - name: terminal
-          in: query
-          description: Terminal code as exposed by NxtPort.
-          schema:
-            type: string
-        - name: berth
-          in: query
-          description: Berth code as exposed by NxtPort.
-          schema:
-            type: string
-        - name: stay
-          in: query
-          description: Port-assigned stay number. Limits scope to activities directly related to a stay number.
-          schema:
-            type: string
-        - name: dossier
-          in: query
-          description: NxtPort dossier id. Limits scope to activities directly related to this dossier.
-          schema:
-            type: integer
-            format: int32
-        - name: vessel
-          in: query
-          description: NxtPort vessel id. Limits scope to activities directly related to this vessel.
-          schema:
-            type: integer
-            format: int32
-        - name: activity-stakeholder
-          in: query
-          description: NxtPort stakeholder id. Limits scope to activities directly related to this stakeholder.
-          schema:
-            type: integer
-            format: int32
-        - name: dossier-stakeholder
-          in: query
-          description: NxtPort stakeholder id. Limits scope to activities directly related to dossiers related to this stakeholder.
-          schema:
-            type: integer
-            format: int32
-        - name: start
-          in: query
-          description: 'Activity takes place in this datetime window, start inclusive'
-          schema:
-            type: string
-            format: date-time
-        - name: end
-          in: query
-          description: 'Activity takes place in this datetime window, end inclusive'
-          schema:
-            type: string
-            format: date-time
-        - name: page
-          in: query
-          description: Result set page.
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: page-size
-          in: query
-          description: Result set page size.
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Activity'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  /openactivities:
-    get:
-      tags:
-        - ActivityEngineQuery
-      summary: "Get a list of open activities that match the query parameters.\r\nOrdered by estimated start datetime DESC."
-      parameters:
-        - name: page
-          in: query
-          description: Result set page.
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: page-size
-          in: query
-          description: Result set page size.
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/OpenActivity'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  '/activities/{id}':
-    get:
-      tags:
-        - ActivityEngineQuery
-      summary: Get a specific activity.
+        - DossierEngineQuery
+      summary: "Get a specific dossier.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: id
           in: path
-          description: NxtPort activity id.
+          description: NxtPort dossier id.
           required: true
           schema:
             type: integer
@@ -189,7 +35,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Activity'
+                $ref: '#/components/schemas/Dossier'
         '400':
           description: Bad Request
           content:
@@ -219,8 +65,8 @@ paths:
   /dossiers:
     get:
       tags:
-        - EngineQuery
-      summary: "Get a list of dossiers that match the query parameters.\r\nOrdered by vessel ETA datetime DESC."
+        - DossierEngineQuery
+      summary: "Get a list of dossiers that match the query parameters.\r\nOrdered by vessel ETA datetime DESC.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: portLocode
           in: query
@@ -300,6 +146,11 @@ paths:
           schema:
             type: string
             format: date-time
+        - name: only-automated-inputs
+          in: query
+          description: 'when true, returns only dossiers that contain only automated inputs. When false, returns dossiers that have at least 1 manual input.'
+          schema:
+            type: boolean
         - name: order-by-field
           in: query
           description: Field name on which to order.
@@ -357,61 +208,11 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Server Error
-  '/dossiers/{id}':
-    get:
-      tags:
-        - EngineQuery
-      summary: Get a specific dossier.
-      parameters:
-        - name: id
-          in: path
-          description: NxtPort dossier id.
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dossier'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
   /extract/csv:
     post:
       tags:
         - Extract
-      summary: Gets a CSV extract of all activity in the Qronoport system (with security filtering applied)
+      summary: "Gets a CSV extract of all activity in the Qronoport system (with security filtering applied)\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: api-version
           in: query
@@ -462,7 +263,7 @@ paths:
     get:
       tags:
         - Input
-      summary: "Get a list of allowed input types.\r\nIncludes key-value property descriptions.\r\nOrdered by InputType ASC."
+      summary: "Get a list of allowed input types.\r\nIncludes key-value property descriptions.\r\nOrdered by InputType ASC.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: api-version
           in: query
@@ -498,115 +299,10 @@ paths:
         '500':
           description: Server Error
   /inputs:
-    get:
-      tags:
-        - Input
-      summary: "Get a list of inputs that match the query parameters.\r\nOrdered by creation datetime DESC."
-      parameters:
-        - name: dossier
-          in: query
-          description: NxtPort dossier id.
-          schema:
-            type: integer
-            format: int32
-        - name: activity
-          in: query
-          description: NxtPort activity id.
-          schema:
-            type: integer
-            format: int32
-        - name: type
-          in: query
-          description: NxtPort liquid bulk input type key.
-          schema:
-            $ref: '#/components/schemas/InputType'
-        - name: stakeholder
-          in: query
-          description: NxtPort stakeholder id.
-          schema:
-            type: integer
-            format: int32
-        - name: stakeholder-ref
-          in: query
-          description: Reference used by stakeholder company to refer to input context.
-          schema:
-            type: string
-        - name: start
-          in: query
-          description: 'Inputs for activities that take place in this datetime window, start inclusive'
-          schema:
-            type: string
-            format: date-time
-        - name: end
-          in: query
-          description: 'Inputs for activities that take place in this datetime window, end inclusive'
-          schema:
-            type: string
-            format: date-time
-        - name: source-types
-          in: query
-          description: 'List of source types filter inputs on, if null, don''t filter on source type.'
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/SourceType'
-        - name: is-linked
-          in: query
-          description: Is this input linked to a dossier?
-          schema:
-            type: boolean
-            default: true
-        - name: page
-          in: query
-          description: Result set page.
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: page-size
-          in: query
-          description: Result set page size.
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Input'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
     post:
       tags:
         - Input
-      summary: Create a new input.
+      summary: "Create a new input.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk, PortEngineNauticalDataUser)"
       parameters:
         - name: api-version
           in: query
@@ -651,356 +347,11 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Server Error
-  '/inputs/{id}':
-    get:
-      tags:
-        - Input
-      summary: Get a specific input.
-      parameters:
-        - name: id
-          in: path
-          description: NxtPort input id.
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Input'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  /input-link-suggestions:
-    post:
-      tags:
-        - Input
-      summary: "Get a list of link suggestions for an input object.\r\nOrdered by dossier number, activity id DESC.\r\n\r\nTaken into account:\r\n- Source (maar niet als source specifiek naar zoek, meer als stakeholder algemeen)\r\n- Source ref\r\n- Assignee\r\n- Assignee ref\r\n- Type\r\n- Client\r\n- Vessel\r\n- Terminal\r\n- Berth\r\n- Cargo\r\n- Estimated start\r\n- Start\r\n- Estimated end\r\n- End"
-      parameters:
-        - name: page
-          in: query
-          description: Result set page.
-          schema:
-            type: integer
-            format: int32
-            default: 1
-        - name: page-size
-          in: query
-          description: Result set page size.
-          schema:
-            type: integer
-            format: int32
-            default: 10
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      requestBody:
-        description: (in)complete input object for which you would like to receive link suggestions.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Input'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/LinkSuggestion'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  /hints:
-    post:
-      tags:
-        - Input
-      summary: 'Create a new Hint for the Liquid Engine, connecting an input with a dossier.'
-      parameters:
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Hint'
-      responses:
-        '201':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Hint'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-    get:
-      tags:
-        - Input
-      summary: Query hints.
-      parameters:
-        - name: input-id
-          in: query
-          schema:
-            type: integer
-            format: int32
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Hint'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  '/hints/{id}':
-    get:
-      tags:
-        - Input
-      summary: Get a user created Hint by id.
-      parameters:
-        - name: id
-          in: path
-          description: NxtPort hint id.
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Hint'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-    delete:
-      tags:
-        - Input
-      summary: Delete a user created Hint based on id.
-      parameters:
-        - name: id
-          in: path
-          description: NxtPort hint id.
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  /links:
-    get:
-      tags:
-        - Input
-      summary: "Links between input and model as they currently exist.\r\nLinks are created based on hints or inference."
-      parameters:
-        - name: input-id
-          in: query
-          schema:
-            type: integer
-            format: int32
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Link'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
   /logs:
     get:
       tags:
         - Log
-      summary: "Get a list of logs that match the query parameters.\r\nOrdered by creation datetime DESC."
+      summary: "Get a list of logs that match the query parameters.\r\nOrdered by creation datetime DESC.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: dossier
           in: query
@@ -1018,11 +369,6 @@ paths:
           description: Reduce scope to a single log category.
           schema:
             $ref: '#/components/schemas/DossierLogTypeCategory'
-        - name: alert
-          in: query
-          description: Limit scope to regular log entries or alerts. Both are included when this param is omitted.
-          schema:
-            type: boolean
         - name: stakeholder
           in: query
           description: NxtPort stakeholder id. Log relates to an activity in which the entity is a stakeholder.
@@ -1086,7 +432,7 @@ paths:
     post:
       tags:
         - Log
-      summary: Marks a list of log entries as read.
+      summary: "Marks a list of log entries as read.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: api-version
           in: query
@@ -1129,7 +475,7 @@ paths:
     get:
       tags:
         - Referential
-      summary: Get a list of known ports as United Nations Code for Trade and Transport Locations.
+      summary: "Get a list of known ports as United Nations Code for Trade and Transport Locations.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: api-version
           in: query
@@ -1168,7 +514,7 @@ paths:
     get:
       tags:
         - Referential
-      summary: "Get hierarchy of known terminals and berths within the desired port by United Nations Code for Trade and Transport Locations.\r\nOrdered by terminal code ASC."
+      summary: "Get hierarchy of known terminals and berths within the desired port by United Nations Code for Trade and Transport Locations.\r\nOrdered by terminal code ASC.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: locode
           in: path
@@ -1217,7 +563,7 @@ paths:
     get:
       tags:
         - Referential
-      summary: "Get a list of vessels matching the available query parameters.\r\nOrdered by vessel name ASC."
+      summary: "Get a list of vessels matching the available query parameters.\r\nOrdered by vessel name ASC.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: name
           in: query
@@ -1271,59 +617,11 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Server Error
-    post:
-      tags:
-        - Referential
-      summary: Create a new vessel.
-      parameters:
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      requestBody:
-        description: Desired representation.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Vessel'
-      responses:
-        '201':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vessel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
   '/vessels/{id}':
     get:
       tags:
         - Referential
-      summary: Get a specific vessel.
+      summary: "Get a specific vessel.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: id
           in: path
@@ -1369,66 +667,11 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Server Error
-    put:
-      tags:
-        - Referential
-      summary: Update an existing vessel.
-      parameters:
-        - name: id
-          in: path
-          description: NxtPort id.
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      requestBody:
-        description: Desired representation.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Vessel'
-      responses:
-        '201':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vessel'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
   /stakeholders:
     get:
       tags:
         - Referential
-      summary: "Get a list of stakeholders matching the available query parameters.\r\nOrdered by stakeholder name ASC."
+      summary: "Get a list of stakeholders matching the available query parameters.\r\nOrdered by stakeholder name ASC.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: name
           in: query
@@ -1482,59 +725,11 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Server Error
-    post:
-      tags:
-        - Referential
-      summary: Create a new stakeholder.
-      parameters:
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      requestBody:
-        description: Desired representation.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Stakeholder'
-      responses:
-        '201':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Stakeholder'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '409':
-          description: Conflict
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
   '/stakeholders/{id}':
     get:
       tags:
         - Referential
-      summary: Get a specific stakeholder.
+      summary: "Get a specific stakeholder.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: id
           in: path
@@ -1580,66 +775,11 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Server Error
-    put:
-      tags:
-        - Referential
-      summary: Update an existing stakeholder.
-      parameters:
-        - name: id
-          in: path
-          description: Human-readable unique public identifier assigned to "entities" by NxtPort.
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      requestBody:
-        description: Desired representation.
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Stakeholder'
-      responses:
-        '201':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Stakeholder'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
   /products:
     get:
       tags:
         - Referential
-      summary: Get a list of known ports product types.
+      summary: "Get a list of known ports product types.\r\n(Authorized entity roles: LB_Admin, LB_Agent, LB_Cargo, LB_Ship, LB_Surveyor, LB_Terminal)\r\n(Authorized user roles: LiquidBulk)"
       parameters:
         - name: code
           in: query
@@ -1682,231 +822,108 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Server Error
-    post:
-      tags:
-        - Referential
-      summary: Creates a product type.
-      parameters:
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Product'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '201':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  '/products/{id}':
-    put:
-      tags:
-        - Referential
-      summary: 'Updates a known product type, if it does not exist, inserts.'
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Product'
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '201':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Product'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-    delete:
-      tags:
-        - Referential
-      summary: Deletes a known product type.
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/IActionResult'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  /enums:
-    get:
-      tags:
-        - Referential
-      summary: Get a list of all NxtPort Liquid Bulk enums and their possible values. Ordered by name ASC.
-      parameters:
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/EnumDescriptor'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
-  /status/dashboard:
-    get:
-      tags:
-        - Status
-      summary: "Get a real-time update of the status of the NxtPort Liquid Bulk system, usable in dashboards\r\nOrdered by estimated start datetime DESC."
-      parameters:
-        - name: api-version
-          in: query
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StatusDashboard'
-        '400':
-          description: Bad Request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: Unauthorized
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '403':
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Server Error
+security:
+  - bearerAuth: []
+  - ApiKeyAuth: []
 components:
+  securitySchemes:
+    bearerAuth:            
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    
+      description: JWT authorization token using the Bearer scheme. Different for each user of the API. Keep in mind that you have to put the word \"Bearer\" and then a space in front of the access token. For example \"Bearer f8e6d39a81fc4d31957086fe03630858\"."
+    ApiKeyAuth:        
+      type: apiKey
+      in: header       
+      name: Ocp-Apim-Subscription-Key
+      description: API subscription key. Assigned by NxtPort to your organization.
   schemas:
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties:
+        type: object
+        additionalProperties: false
+    VoyageType:
+      enum:
+        - In
+        - Out
+        - Shift
+      type: string
+    Vessel:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "NxtPort id. Automatically assigned during creation.\r\nPreferred means of vessel identification."
+          format: int32
+          nullable: true
+        imo:
+          type: string
+          description: International Maritime Organization vessel identifier.
+          nullable: true
+        eni:
+          type: string
+          description: European Number of Identification vessel identifier.
+          nullable: true
+        callSign:
+          type: string
+          description: Vessel call sign.
+          nullable: true
+        msi:
+          type: string
+          description: Marine Service International
+          nullable: true
+        name:
+          type: string
+          description: Human readable name.
+          nullable: true
+        lengthMeters:
+          type: number
+          description: Length in meters.
+          format: double
+        widthMeters:
+          type: number
+          description: Width in meters.
+          format: double
+        depthMeters:
+          type: number
+          description: Depth in meters.
+          format: double
+        actualDraughtMeters:
+          type: number
+          description: How low the ship sits in the water.
+          format: double
+        maximumDraughtMeters:
+          type: number
+          description: How low the ship could theoretically sit in the water.
+          format: double
+        deadWeightTonnage:
+          type: number
+          description: "Total contents of a ship including cargo, fuel, crew, passengers, food, and water aside from boiler water.\r\nIt is expressed in long tons of 1.016,0469088 kilograms."
+          format: double
+        vesselTypeCode:
+          type: string
+          description: 'Discriminator, mainly used differentiate between ocean carrier and barge.'
+          nullable: true
+      additionalProperties: false
+      description: Represents a vessel.
     InputReference:
       type: object
       properties:
@@ -1917,6 +934,12 @@ components:
           type: string
           format: date-time
       additionalProperties: false
+    CargoOperation:
+      enum:
+        - Loading
+        - Discharging
+        - Transhipment
+      type: string
     ActivityType:
       enum:
         - LoadingLaycan
@@ -1966,7 +989,7 @@ components:
       properties:
         id:
           type: integer
-          description: "NxtPort id. Automatically assigned during creation.\r\nScoped to specific input, not global!"
+          description: LiquidBulk stakeholder id.
           format: int32
           nullable: true
         name:
@@ -1985,9 +1008,13 @@ components:
           type: string
           description: Btw
           nullable: true
+        apicsCode:
+          type: string
+          description: Apics Code.
+          nullable: true
         nxtEntityId:
           type: string
-          description: Btw
+          description: "Human-readable unique public identifier assigned to \"entities\" by NxtPort.\r\nThis carries over between use cases."
           nullable: true
       additionalProperties: false
       description: Represents a company acting as a stakeholder in the context of an input or activity.
@@ -2068,6 +1095,20 @@ components:
           type: integer
           description: NxtPort dossier id.
           format: int32
+        cargoId:
+          type: integer
+          description: Cargo id.
+          format: int32
+          nullable: true
+        cargoOperationCode:
+          allOf:
+            - $ref: '#/components/schemas/CargoOperation'
+          description: Cargo is either loaded or discharged.
+          nullable: true
+        productCode:
+          type: string
+          description: Content code.
+          nullable: true
         activityType:
           allOf:
             - $ref: '#/components/schemas/ActivityType'
@@ -2108,34 +1149,17 @@ components:
           nullable: true
       additionalProperties: false
       description: Represents an activity
-    ProblemDetails:
-      type: object
-      properties:
-        type:
-          type: string
-          nullable: true
-        title:
-          type: string
-          nullable: true
-        status:
-          type: integer
-          format: int32
-          nullable: true
-        detail:
-          type: string
-          nullable: true
-        instance:
-          type: string
-          nullable: true
-      additionalProperties:
-        type: object
-        additionalProperties: false
-    ActualTimeWarning:
+    CargoUnit:
       enum:
-        - NoActualTimeStartRegistered
-        - NoActualTimeEndRegistered
+        - Mtvac
+        - Mtair
       type: string
-    OpenActivity:
+    AnalysisType:
+      enum:
+        - Mini
+        - Full
+      type: string
+    CargoView:
       type: object
       properties:
         id:
@@ -2143,75 +1167,31 @@ components:
           description: NxtPort id. Automatically assigned during creation.
           format: int32
           nullable: true
-        dossierNumber:
+        sequence:
+          type: integer
+          description: Sequence number for cargo within the same dossier.
+          format: int32
+        reference:
           type: string
-          description: A unique human readable number created by NxtPort.
+          description: Non-unique reference assigned to cargo object.
           nullable: true
-        clientStakeholderName:
+        remarks:
           type: string
-          description: Name of the client stakeholder.
+          description: Free text.
           nullable: true
-        activityType:
+        operation:
           allOf:
-            - $ref: '#/components/schemas/ActivityType'
-          description: Activity type key.
-        dateTimeWindow:
-          allOf:
-            - $ref: '#/components/schemas/DateTimeWindow'
-          description: Datetime window during which the activity takes place.
+            - $ref: '#/components/schemas/CargoOperation'
+          description: Cargo is either loaded or discharged.
+        portOfLoading:
+          type: string
+          description: United Nations Code for Trade and Transport Locations for port at which cargo is loaded.
           nullable: true
-        warnings:
-          type: array
-          items:
-            $ref: '#/components/schemas/ActualTimeWarning'
-          description: Warnings concerning actual time registrations.
+        portOfDischarge:
+          type: string
+          description: United Nations Code for Trade and Transport Locations for port at which cargo is discharged.
           nullable: true
-      additionalProperties: false
-    GetDossiersSortField:
-      enum:
-        - ClientReference
-        - DossierNumber
-        - StayNumber
-        - VoyageNumber
-        - VesselEta
-        - VesselEtd
-        - NextActivityEstimatedStart
-      type: string
-    SortOrder:
-      enum:
-        - Ascending
-        - Descending
-      type: string
-    VoyageType:
-      enum:
-        - In
-        - Out
-        - Shift
-      type: string
-    CargoUnit:
-      enum:
-        - Mtvac
-        - Mtair
-      type: string
-    CargoOperation:
-      enum:
-        - Loading
-        - Discharging
-      type: string
-    CargoOverview:
-      type: object
-      properties:
-        cargoQuantity:
-          type: number
-          description: Total cargo quantity per unit.
-          format: double
-          nullable: true
-        cargoUnit:
-          allOf:
-            - $ref: '#/components/schemas/CargoUnit'
-          description: Cargo quantity unit of measurement.
-          nullable: true
-        cargoContents:
+        content:
           type: string
           description: Content code.
           nullable: true
@@ -2219,12 +1199,80 @@ components:
           type: string
           description: Content name.
           nullable: true
-        cargoOperation:
+        quantity:
+          type: number
+          description: Cargo quantity.
+          format: double
+          nullable: true
+        quantityUnit:
           allOf:
-            - $ref: '#/components/schemas/CargoOperation'
-          description: Cargo is either loaded or discharged.
+            - $ref: '#/components/schemas/CargoUnit'
+          description: Unit of measurement in which quantity is expressed.
+          nullable: true
+        loadingWindow:
+          allOf:
+            - $ref: '#/components/schemas/DateTimeWindow'
+          description: DateTime window during which loading takes place.
+          nullable: true
+        dischargeWindow:
+          allOf:
+            - $ref: '#/components/schemas/DateTimeWindow'
+          description: DateTime window during which discharging takes place.
+          nullable: true
+        vaporsWindow:
+          allOf:
+            - $ref: '#/components/schemas/DateTimeWindow'
+          description: DateTime window during which vapors takes place.
+          nullable: true
+        isHeated:
+          type: boolean
+          description: Cargo is heated.
+          nullable: true
+        temperatureCelcius:
+          type: number
+          description: Cargo temperature in Celcius.
+          format: double
+          nullable: true
+        tankCount:
+          type: integer
+          description: Number of tanks
+          format: int32
+          nullable: true
+        requiredConnectionType:
+          type: string
+          description: The connection type required to load or discharge product
+          nullable: true
+        doVapors:
+          type: boolean
+          description: Should vapors circulation be done
+          nullable: true
+        vaporsDurationHours:
+          type: integer
+          description: Duration for which vapors should be circulated
+          format: int32
+          nullable: true
+        numberOfSamples:
+          type: integer
+          description: Number of samples of the related Sampling activity.
+          format: int32
+          nullable: true
+        circulationMinutes:
+          type: integer
+          description: Circulation minutes of the related Sampling activity.
+          format: int32
+          nullable: true
+        analysisTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnalysisType'
+          description: Analysis-types of the related Analysis activity.
+          nullable: true
+        connectionResponsibleName:
+          type: string
+          description: Name of the connection responsible.
+          nullable: true
       additionalProperties: false
-      description: Represents overview of a cargo.
+      description: Represents a cargo.
     AlertType:
       enum:
         - Conflict
@@ -2272,8 +1320,252 @@ components:
           type: string
           description: Human-readable information regarding this entry.
           nullable: true
+        begin:
+          type: string
+          description: Begin of the alert time period.
+          format: date-time
+          nullable: true
+        end:
+          type: string
+          description: End of the alert time period.
+          format: date-time
+          nullable: true
       additionalProperties: false
       description: Represents a flattened alert entry.
+    DossierProduct:
+      type: object
+      properties:
+        productCode:
+          type: string
+          nullable: true
+        productName:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Dossier:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: NxtPort id. Automatically assigned during creation.
+          format: int32
+          nullable: true
+        createdOn:
+          type: string
+          description: Moment at which the dossier was created.
+          format: date-time
+          nullable: true
+        dossierNumber:
+          type: string
+          description: A unique human readable number created by NxtPort.
+          nullable: true
+        creatorStakeholderId:
+          type: integer
+          description: NxtPort stakeholder id.
+          format: int32
+        clientStakeholderId:
+          type: integer
+          format: int32
+          nullable: true
+        requestingStakeholderReference:
+          type: array
+          items:
+            type: string
+          description: A list of references used by the stakeholder to refer to this document.
+          nullable: true
+        portLocode:
+          type: string
+          description: United Nations Code for Trade and Transport Locations.
+          nullable: true
+        terminal:
+          type: string
+          description: Terminal code as exposed by NxtPort.
+          nullable: true
+        berth:
+          type: string
+          description: Berth code as exposed by NxtPort.
+          nullable: true
+        voyageType:
+          allOf:
+            - $ref: '#/components/schemas/VoyageType'
+          description: Type of voyage within the port.
+          nullable: true
+        voyageNumber:
+          type: string
+          description: VoyageNumber within the port.
+          nullable: true
+        stayNumber:
+          type: string
+          description: StayNumber within the port.
+          nullable: true
+        originPortName:
+          type: string
+          description: Origin port name.
+          nullable: true
+        destinationPortName:
+          type: string
+          description: Destination port name.
+          nullable: true
+        voyageEstimateArrivalDateTime:
+          type: string
+          description: Current estimated arrival time for the relevant vessel voyage.
+          format: date-time
+          nullable: true
+        voyageActualArrivalDateTime:
+          type: string
+          description: Actual arrival time for the relevant vessel voyage.
+          format: date-time
+          nullable: true
+        voyageEstimateDepartureDateTime:
+          type: string
+          description: Current estimated departure time for the relevant vessel voyage.
+          format: date-time
+          nullable: true
+        voyageActualDepartureDateTime:
+          type: string
+          description: Actual departure time for the relevant vessel voyage.
+          format: date-time
+          nullable: true
+        vessel:
+          allOf:
+            - $ref: '#/components/schemas/Vessel'
+          description: Vessel moving cargo for this dossier.
+          nullable: true
+        activities:
+          type: array
+          items:
+            $ref: '#/components/schemas/Activity'
+          description: Activities taking place around this dossier.
+          nullable: true
+        currentActivityId:
+          type: integer
+          description: Current activity id.
+          format: int32
+          nullable: true
+        currentActivityType:
+          allOf:
+            - $ref: '#/components/schemas/ActivityType'
+          description: Name of the activity type currently being done on the dossier.
+          nullable: true
+        currentActivityExpectedStartDateTime:
+          type: string
+          description: Expected start time of the currently ongoing activity.
+          format: date-time
+          nullable: true
+        currentActivityExpectedEndDateTime:
+          type: string
+          description: Expected completion time of the currently ongoing activity.
+          format: date-time
+          nullable: true
+        currentActivityActualStartDateTime:
+          type: string
+          description: Actual start time of the currently ongoing activity.
+          format: date-time
+          nullable: true
+        currentActivityActualEndDateTime:
+          type: string
+          description: Actual completion time of the currently ongoing activity.
+          format: date-time
+          nullable: true
+        nextStakeholderActivityId:
+          type: integer
+          description: Next stakeholder activity id.
+          format: int32
+          nullable: true
+        nextStakeholderActivityType:
+          allOf:
+            - $ref: '#/components/schemas/ActivityType'
+          description: Name of the next activity relevant to the stakeholder for which the overview was generated.
+          nullable: true
+        nextStakeholderActivityExpectedStartDateTime:
+          type: string
+          description: Expected start time of next activity relevant to the stakeholder for which the overview was generated.
+          format: date-time
+          nullable: true
+        nextStakeholderActivityExpectedEndDateTime:
+          type: string
+          description: Expected end time of next activity relevant to the stakeholder for which the overview was generated.
+          format: date-time
+          nullable: true
+        nextStakeholderActivityActualStartDateTime:
+          type: string
+          description: actual start time of next activity relevant to the stakeholder for which the overview was generated.
+          format: date-time
+          nullable: true
+        nextStakeholderActivityActualEndDateTime:
+          type: string
+          description: Actual end time of next activity relevant to the stakeholder for which the overview was generated.
+          format: date-time
+          nullable: true
+        cargo:
+          type: array
+          items:
+            $ref: '#/components/schemas/CargoView'
+          description: List of rich cargo objects.
+          nullable: true
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+          description: List of alerts
+          nullable: true
+        unreadLogCount:
+          type: integer
+          description: Count of unread logs for the currently logged in user.
+          format: int32
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/DossierProduct'
+          description: List of products.
+          nullable: true
+        containsOnlyAutomatedInputs:
+          type: boolean
+          description: Indicates whether all of the linked Inputs of a dossier are Automated Inputs.
+      additionalProperties: false
+      description: Represents a dossier.
+    GetDossiersSortField:
+      enum:
+        - ClientReference
+        - DossierNumber
+        - StayNumber
+        - VoyageNumber
+        - VesselEta
+        - VesselEtd
+        - NextActivityEstimatedStart
+      type: string
+    SortOrder:
+      enum:
+        - Ascending
+        - Descending
+      type: string
+    CargoOverview:
+      type: object
+      properties:
+        cargoQuantity:
+          type: number
+          description: Total cargo quantity per unit.
+          format: double
+          nullable: true
+        cargoUnit:
+          allOf:
+            - $ref: '#/components/schemas/CargoUnit'
+          description: Cargo quantity unit of measurement.
+          nullable: true
+        cargoContents:
+          type: string
+          description: Content code.
+          nullable: true
+        contentName:
+          type: string
+          description: Content name.
+          nullable: true
+        cargoOperation:
+          allOf:
+            - $ref: '#/components/schemas/CargoOperation'
+          description: Cargo is either loaded or discharged.
+      additionalProperties: false
+      description: Represents overview of a cargo.
     DossierOverview:
       type: object
       properties:
@@ -2281,7 +1573,6 @@ components:
           type: integer
           description: NxtPort stakeholder id for whom this overview was generated.
           format: int32
-          nullable: true
         id:
           type: integer
           description: NxtPort dossier id.
@@ -2459,360 +1750,20 @@ components:
           type: integer
           description: Count of unread logs for the currently logged in user.
           format: int32
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/DossierProduct'
+          description: All products mentioned in linked Inputs.
+          nullable: true
+        containsOnlyAutomatedInputs:
+          type: boolean
+          description: Indicates whether all of the linked Inputs of a dossier are Automated Inputs.
       additionalProperties: false
       description: 'A flat high level overview of a dossier at a certain point in time, from the perspective of a particular stakeholder.'
-    Vessel:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: "NxtPort id. Automatically assigned during creation.\r\nPreferred means of vessel identification."
-          format: int32
-          nullable: true
-        imo:
-          type: string
-          description: International Maritime Organization vessel identifier.
-          nullable: true
-        eni:
-          type: string
-          description: European Number of Identification vessel identifier.
-          nullable: true
-        callSign:
-          type: string
-          description: Vessel call sign.
-          nullable: true
-        msi:
-          type: string
-          description: Marine Service International
-          nullable: true
-        name:
-          type: string
-          description: Human readable name.
-          nullable: true
-        lengthMeters:
-          type: number
-          description: Length in meters.
-          format: double
-        widthMeters:
-          type: number
-          description: Width in meters.
-          format: double
-        depthMeters:
-          type: number
-          description: Depth in meters.
-          format: double
-        actualDraughtMeters:
-          type: number
-          description: How low the ship sits in the water.
-          format: double
-        maximumDraughtMeters:
-          type: number
-          description: How low the ship could theoretically sit in the water.
-          format: double
-        deadWeightTonnage:
-          type: number
-          description: "Total contents of a ship including cargo, fuel, crew, passengers, food, and water aside from boiler water.\r\nIt is expressed in long tons of 1.016,0469088 kilograms."
-          format: double
-        vesselTypeCode:
-          type: string
-          description: 'Discriminator, mainly used differentiate between ocean carrier and barge.'
-          nullable: true
-      additionalProperties: false
-      description: Represents a vessel.
-    AnalysisType:
-      enum:
-        - Mini
-        - Full
-      type: string
-    CargoView:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: NxtPort id. Automatically assigned during creation.
-          format: int32
-          nullable: true
-        sequence:
-          type: integer
-          description: Sequence number for cargo within the same dossier.
-          format: int32
-        reference:
-          type: string
-          description: Non-unique reference assigned to cargo object.
-          nullable: true
-        remarks:
-          type: string
-          description: Free text.
-          nullable: true
-        operation:
-          allOf:
-            - $ref: '#/components/schemas/CargoOperation'
-          description: Cargo is either loaded or discharged.
-        portOfLoading:
-          type: string
-          description: United Nations Code for Trade and Transport Locations for port at which cargo is loaded.
-          nullable: true
-        portOfDischarge:
-          type: string
-          description: United Nations Code for Trade and Transport Locations for port at which cargo is discharged.
-          nullable: true
-        content:
-          type: string
-          description: Content code.
-          nullable: true
-        contentName:
-          type: string
-          description: Content name.
-          nullable: true
-        quantity:
-          type: number
-          description: Cargo quantity.
-          format: double
-          nullable: true
-        quantityUnit:
-          allOf:
-            - $ref: '#/components/schemas/CargoUnit'
-          description: Unit of measurement in which quantity is expressed.
-          nullable: true
-        loadingWindow:
-          allOf:
-            - $ref: '#/components/schemas/DateTimeWindow'
-          description: DateTime window during which loading takes place.
-          nullable: true
-        dischargeWindow:
-          allOf:
-            - $ref: '#/components/schemas/DateTimeWindow'
-          description: DateTime window during which discharging takes place.
-          nullable: true
-        vaporsWindow:
-          allOf:
-            - $ref: '#/components/schemas/DateTimeWindow'
-          description: DateTime window during which vapors takes place.
-          nullable: true
-        isHeated:
-          type: boolean
-          description: Cargo is heated.
-          nullable: true
-        temperatureCelcius:
-          type: number
-          description: Cargo temperature in Celcius.
-          format: double
-          nullable: true
-        tankCount:
-          type: integer
-          description: Number of tanks
-          format: int32
-          nullable: true
-        requiredConnectionType:
-          type: string
-          description: The connection type required to load or discharge product
-          nullable: true
-        doVapors:
-          type: boolean
-          description: Should vapors circulation be done
-          nullable: true
-        vaporsDurationHours:
-          type: integer
-          description: Duration for which vapors should be circulated
-          format: int32
-          nullable: true
-        numberOfSamples:
-          type: integer
-          description: Number of samples of the related Sampling activity.
-          format: int32
-          nullable: true
-        circulationMinutes:
-          type: integer
-          description: Circulation minutes of the related Sampling activity.
-          format: int32
-          nullable: true
-        analysisTypes:
-          type: array
-          items:
-            $ref: '#/components/schemas/AnalysisType'
-          description: Analysis-types of the related Analysis activity.
-          nullable: true
-        connectionResponsibleName:
-          type: string
-          description: Name of the connection responsible.
-          nullable: true
-      additionalProperties: false
-      description: Represents a cargo.
-    Dossier:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: NxtPort id. Automatically assigned during creation.
-          format: int32
-          nullable: true
-        createdOn:
-          type: string
-          description: Moment at which the dossier was created.
-          format: date-time
-          nullable: true
-        dossierNumber:
-          type: string
-          description: A unique human readable number created by NxtPort.
-          nullable: true
-        creatorStakeholderId:
-          type: integer
-          description: NxtPort stakeholder id.
-          format: int32
-        clientStakeholderId:
-          type: integer
-          format: int32
-        requestingStakeholderReference:
-          type: array
-          items:
-            type: string
-          description: A list of references used by the stakeholder to refer to this document.
-          nullable: true
-        portLocode:
-          type: string
-          description: United Nations Code for Trade and Transport Locations.
-          nullable: true
-        terminal:
-          type: string
-          description: Terminal code as exposed by NxtPort.
-          nullable: true
-        berth:
-          type: string
-          description: Berth code as exposed by NxtPort.
-          nullable: true
-        voyageType:
-          allOf:
-            - $ref: '#/components/schemas/VoyageType'
-          description: Type of voyage within the port.
-          nullable: true
-        voyageNumber:
-          type: string
-          description: VoyageNumber within the port.
-          nullable: true
-        stayNumber:
-          type: string
-          description: StayNumber within the port.
-          nullable: true
-        originPortName:
-          type: string
-          description: Origin port name.
-          nullable: true
-        destinationPortName:
-          type: string
-          description: Destination port name.
-          nullable: true
-        voyageEstimateArrivalDateTime:
-          type: string
-          description: Current estimated arrival time for the relevant vessel voyage.
-          format: date-time
-          nullable: true
-        voyageActualArrivalDateTime:
-          type: string
-          description: Actual arrival time for the relevant vessel voyage.
-          format: date-time
-          nullable: true
-        voyageEstimateDepartureDateTime:
-          type: string
-          description: Current estimated departure time for the relevant vessel voyage.
-          format: date-time
-          nullable: true
-        voyageActualDepartureDateTime:
-          type: string
-          description: Actual departure time for the relevant vessel voyage.
-          format: date-time
-          nullable: true
-        vessel:
-          allOf:
-            - $ref: '#/components/schemas/Vessel'
-          description: Vessel moving cargo for this dossier.
-          nullable: true
-        activities:
-          type: array
-          items:
-            $ref: '#/components/schemas/Activity'
-          description: Activities taking place around this dossier.
-          nullable: true
-        currentActivityId:
-          type: integer
-          description: Current activity id.
-          format: int32
-          nullable: true
-        currentActivityType:
-          allOf:
-            - $ref: '#/components/schemas/ActivityType'
-          description: Name of the activity type currently being done on the dossier.
-          nullable: true
-        currentActivityExpectedStartDateTime:
-          type: string
-          description: Expected start time of the currently ongoing activity.
-          format: date-time
-          nullable: true
-        currentActivityExpectedEndDateTime:
-          type: string
-          description: Expected completion time of the currently ongoing activity.
-          format: date-time
-          nullable: true
-        currentActivityActualStartDateTime:
-          type: string
-          description: Actual start time of the currently ongoing activity.
-          format: date-time
-          nullable: true
-        currentActivityActualEndDateTime:
-          type: string
-          description: Actual completion time of the currently ongoing activity.
-          format: date-time
-          nullable: true
-        nextStakeholderActivityId:
-          type: integer
-          description: Next stakeholder activity id.
-          format: int32
-          nullable: true
-        nextStakeholderActivityType:
-          allOf:
-            - $ref: '#/components/schemas/ActivityType'
-          description: Name of the next activity relevant to the stakeholder for which the overview was generated.
-          nullable: true
-        nextStakeholderActivityExpectedStartDateTime:
-          type: string
-          description: Expected start time of next activity relevant to the stakeholder for which the overview was generated.
-          format: date-time
-          nullable: true
-        nextStakeholderActivityExpectedEndDateTime:
-          type: string
-          description: Expected end time of next activity relevant to the stakeholder for which the overview was generated.
-          format: date-time
-          nullable: true
-        nextStakeholderActivityActualStartDateTime:
-          type: string
-          description: actual start time of next activity relevant to the stakeholder for which the overview was generated.
-          format: date-time
-          nullable: true
-        nextStakeholderActivityActualEndDateTime:
-          type: string
-          description: Actual end time of next activity relevant to the stakeholder for which the overview was generated.
-          format: date-time
-          nullable: true
-        cargo:
-          type: array
-          items:
-            $ref: '#/components/schemas/CargoView'
-          description: List of rich cargo objects.
-          nullable: true
-        alerts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Alert'
-          description: List of alerts
-          nullable: true
-        unreadLogCount:
-          type: integer
-          description: Count of unread logs for the currently logged in user.
-          format: int32
-      additionalProperties: false
-      description: Represents a dossier.
     InputType:
       enum:
-        - Dossier
+        - Nomination
         - ShippingAgent
         - PortEngineArrival
         - PortEngineDeparture
@@ -2884,6 +1835,7 @@ components:
         - Excel
         - Pdf
         - PortEngine
+        - Api
       type: string
     VesselIdentification:
       type: object
@@ -3034,56 +1986,34 @@ components:
         dossierId:
           type: integer
           format: int32
-        activityId:
-          type: integer
-          format: int32
-          nullable: true
-        isEmpty:
+        isAntiHint:
           type: boolean
-          readOnly: true
         isMeaningful:
-          type: boolean
-          readOnly: true
-        isLinkInputWithDossier:
-          type: boolean
-          readOnly: true
-        isLinkInputWithSpecificExistingActivityWithinDossier:
           type: boolean
           readOnly: true
       additionalProperties: false
     Link:
       type: object
       properties:
-        activityId:
-          type: integer
-          description: NxtPort activity id.
-          format: int32
-          nullable: true
         dossierId:
           type: integer
           description: NxtPort dossier id.
           format: int32
           nullable: true
-        isEmpty:
-          type: boolean
-          readOnly: true
-        isMeaningful:
-          type: boolean
-          readOnly: true
-        isLinkInput:
-          type: boolean
-          readOnly: true
-        isLinkInputWithDossier:
-          type: boolean
-          readOnly: true
-        isLinkInputWithSpecificExistingActivityWithinDossier:
-          type: boolean
-          readOnly: true
-        isUnlinkInput:
-          type: boolean
-          readOnly: true
       additionalProperties: false
-      description: Represents a link between input and a activity or dossier.
+      description: Represents a link between input and dossier.
+    AdditionalStakeholderReference:
+      type: object
+      properties:
+        stakeholderId:
+          type: integer
+          format: int32
+        references:
+          type: array
+          items:
+            type: string
+          nullable: true
+      additionalProperties: false
     Input:
       type: object
       properties:
@@ -3169,6 +2099,11 @@ components:
             - $ref: '#/components/schemas/DateTimeWindow'
           description: Second dateTime window during which the activity occurs.
           nullable: true
+        cargoOperation:
+          allOf:
+            - $ref: '#/components/schemas/CargoOperation'
+          description: "Cargo is either loaded or discharged.\r\nAnalysis, Sampling, Inspection inputs can provide this information to attach the Activity to a Cargo."
+          nullable: true
         hints:
           type: array
           items:
@@ -3181,78 +2116,26 @@ components:
             $ref: '#/components/schemas/Link'
           description: "Link objects that relates input to an activity or dossier.\r\nIgnored when submitting an input to the system, this is read only."
           nullable: true
+        jobDate:
+          type: string
+          description: Job date.
+          format: date-time
+          nullable: true
+        additionalStakeholderReferences:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdditionalStakeholderReference'
+          description: List of additional stakeholder references.
+          nullable: true
       additionalProperties: false
       description: Represents a rich input.
-    DossierSuggestion:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        vesselImo:
-          type: string
-          nullable: true
-        clientName:
-          type: string
-          nullable: true
-        berth:
-          type: string
-          nullable: true
-        vesselArrivalEstimate:
-          type: string
-          format: date-time
-          nullable: true
-        vesselArrivalActual:
-          type: string
-          format: date-time
-          nullable: true
-        products:
-          type: array
-          items:
-            type: string
-          nullable: true
-        clientReference:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ActivitySuggestion:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int32
-        references:
-          type: array
-          items:
-            type: string
-          nullable: true
-        products:
-          type: array
-          items:
-            type: string
-          nullable: true
-        assigneeStakeholderName:
-          type: string
-          nullable: true
-      additionalProperties: false
-    LinkSuggestion:
-      type: object
-      properties:
-        dossier:
-          allOf:
-            - $ref: '#/components/schemas/DossierSuggestion'
-          nullable: true
-        activity:
-          allOf:
-            - $ref: '#/components/schemas/ActivitySuggestion'
-          nullable: true
-      additionalProperties: false
     DossierLogType:
       enum:
         - ActivityCreated
         - ActivityStartEstimateUpdated
         - ActivityEndEstimateUpdated
         - AlertCreated
+        - AlertUpdated
         - AlertRemoved
         - ActivityDeleted
         - ActivityEnded
@@ -3302,62 +2185,6 @@ components:
           allOf:
             - $ref: '#/components/schemas/DossierLogType'
           description: Discriminator.
-        stakeholderId:
-          type: integer
-          description: Optional stakeholder id
-          format: int32
-          nullable: true
-        stakeholderName:
-          type: string
-          description: Optional stakeholder name
-          nullable: true
-        stakeholderRoleCode:
-          type: string
-          description: Optional stakeholder role
-          nullable: true
-        activity1Id:
-          type: integer
-          description: NxtPort activity id.
-          format: int32
-          nullable: true
-        liquidBulkActivity1Type:
-          allOf:
-            - $ref: '#/components/schemas/ActivityType'
-          description: Activity type key.
-          nullable: true
-        activity2Id:
-          type: integer
-          description: NxtPort activity id.
-          format: int32
-          nullable: true
-        liquidBulkActivity2Type:
-          allOf:
-            - $ref: '#/components/schemas/ActivityType'
-          description: Activity type key.
-          nullable: true
-        vesselId:
-          type: integer
-          description: Optional vessel id
-          format: int32
-          nullable: true
-        vesselName:
-          type: string
-          description: Optional vessel name
-          nullable: true
-        valueDateTime:
-          type: string
-          description: Optional field value - DateTime
-          format: date-time
-          nullable: true
-        valueString:
-          type: string
-          description: Optional field value - string
-          nullable: true
-        valueInt:
-          type: integer
-          description: Optional field value - int
-          format: int32
-          nullable: true
         textMessage:
           type: string
           description: Human-readable information regarding this entry.
@@ -3462,6 +2289,7 @@ components:
           type: integer
           description: LiquidBulk stakeholder id
           format: int32
+          nullable: true
         nxtEntityId:
           type: string
           description: "Human-readable unique public identifier assigned to \"entities\" by NxtPort.\r\nThis carries over between use cases."
@@ -3473,6 +2301,10 @@ components:
         vat:
           type: string
           description: VAT Number.
+          nullable: true
+        apicsCode:
+          type: string
+          description: Apics Code.
           nullable: true
         roles:
           type: array
@@ -3503,52 +2335,4 @@ components:
           nullable: true
       additionalProperties: false
       description: Represents a product.
-    EnumDescriptor:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        values:
-          type: array
-          items:
-            type: string
-          nullable: true
-      additionalProperties: false
-    StatusDashboard:
-      type: object
-      properties:
-        openActivities:
-          type: integer
-          description: The number of open activities in the system (filtered on user rights).
-          format: int32
-        unlinkedInputs:
-          type: integer
-          description: The number of unlinked inputs in the system.
-          format: int32
-      additionalProperties: false
-  securitySchemes:
-    Bearer:
-      type: apiKey
-      description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
-      name: Authorization
-      in: header
-    Subscription:
-      type: apiKey
-      description: API subscription key. Assigned by NxtPort to your organization.
-      name: Ocp-Apim-Subscription-Key
-      in: header
-securityDefinitions:
-  Bearer:
-    name: Authorization
-    in: header
-    type: apiKey
-    description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization: Bearer {token}"'
-  Subscription:
-    name: Ocp-Apim-Subscription-Key
-    in: header
-    type: apiKey
-    description: API subscription key. Assigned by NxtPort to your organization.
-security:
-  - Bearer: []
-    Subscription: []
+ 
