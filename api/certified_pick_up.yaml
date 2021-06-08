@@ -6,7 +6,7 @@ info:
     email: support@nxtport.eu
   version: v1
 servers:
-  - url: 'https://api-uat.nxtport.eu/certified-pickup/v1'
+  - url: 'https://api-uat.nxtport.com/certified-pickup/v1'
 security:
 - Authorization: []
 - Subscription: []  
