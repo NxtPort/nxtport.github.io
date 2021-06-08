@@ -6,675 +6,855 @@ info:
     email: support@nxtport.eu
   version: v1
 servers:
-  - url: 'https://api-uat.nxtport.eu/certified-pickup/v1'
+  - url: 'https://api-uat.nxtport.com/certified-pickup/v1'
 security:
 - Authorization: []
 - Subscription: []  
 paths:
+  /nmot:
+    post:
+      tags:
+      - NextModeOfTransport
+      summary: NMoT Next Mode Of Transport
+      requestBody:
+        description: NxtPort.Equipment.Import.CRP.Contracts.Lib.Models.NextModeOfTransportRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NextModeOfTransportRequest'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/NextModeOfTransportRequest'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/NextModeOfTransportRequest'
+        required: false
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/containers/{equipment-number}/import/pickup-rights:
+    put:
+      tags:
+      - pickup-rights
+      summary: Submit a pickup right.
+      parameters:
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: M:NxtPort.Equipment.Import.CRP.CertifiedRelease.API.Controllers.V1.PickupRightsController.SubmitPickupRight(NxtPort.Equipment.Import.CRP.Contracts.Lib.Models.BaseRequestParams,NxtPort.Equipment.Import.CRP.Contracts.Lib.Models.SubmitPickupRight)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubmitPickupRight'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/SubmitPickupRight'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/SubmitPickupRight'
+        required: false
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/preannouncements/codes:
+    post:
+      tags:
+      - pre-announcement
+      summary: Generate Pre Announcement Codes
+      parameters:
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+        required: false
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/validation/preannouncements:
+    post:
+      tags:
+      - pre-announcement
+      summary: Validates if a preannouncement request for a set of containers is valid
+        for the provided party (can only be performed by Terminals)
+      parameters:
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PreAnnouncementValidation'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PreAnnouncementValidation'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PreAnnouncementValidation'
+        required: false
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: boolean
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        403:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/containers/{equipment-number}/import/terminal-release:
+    put:
+      tags:
+      - release-lights
+      summary: Submit a terminal release.
+      parameters:
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: NxtPort.Equipment.Import.CRP.Contracts.Lib.Models.TerminalRelease
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerminalRelease'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TerminalRelease'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TerminalRelease'
+        required: false
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/containers/import/terminal-release:
+    put:
+      tags:
+      - release-lights
+      summary: Submit a terminal release in bulk.
+      parameters:
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TerminalReleaseBulkAction'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/TerminalReleaseBulkAction'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/TerminalReleaseBulkAction'
+        required: false
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        400:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/containers/{equipment-number}/import/release-rights:
+    put:
+      tags:
+      - release-rights
+      summary: Submit release right actions.
+      parameters:
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: NxtPort.Equipment.Import.CRP.Contracts.Lib.Models.ReleaseRightAction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRightAction'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRightAction'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRightAction'
+        required: false
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/containers/import/release-rights:
+    get:
+      tags:
+      - release-rights
+      summary: Get all commercial release rights.
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: pageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: status
+        in: query
+        schema: {}
+      - name: equipmentnumberfilter
+        in: query
+        schema:
+          type: string
+      - name: billofladingnumberfilter
+        in: query
+        schema:
+          type: string
+      - name: shippingagentnamefilter
+        in: query
+        schema:
+          type: string
+      - name: shippingagenttinfilter
+        in: query
+        schema:
+          type: string
+      - name: terminalnamefilter
+        in: query
+        schema:
+          type: string
+      - name: currentstakeholdernamefilter
+        in: query
+        schema:
+          type: string
+      - name: currentstakeholdertinfilter
+        in: query
+        schema:
+          type: string
+      - name: releaserightstatusfilter
+        in: query
+        schema: {}
+      - name: actionStatusFilter
+        in: query
+        schema: {}
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        400:
+          description: Invalid or missing request header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+    put:
+      tags:
+      - release-rights
+      summary: Submit release right actions in Bulk.
+      parameters:
+      - name: port-locode
+        in: path
+        description: the port locode
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: NxtPort.Equipment.Import.CRP.Contracts.Lib.Models.ReleaseRightBulkAction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRightBulkAction'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRightBulkAction'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ReleaseRightBulkAction'
+        required: false
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        405:
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/containers/import/release-rights/{equipment-number}:
+    get:
+      tags:
+      - release-rights
+      summary: Get release right detail.
+      parameters:
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: equipment-number
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: billOfLadingNumbers
+        in: query
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      - name: releaseIdentification
+        in: query
+        schema:
+          type: string
+      responses:
+        202:
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        400:
+          description: Invalid or missing request header
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        404:
+          description: Resource not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
+          description: Error accessing API
+          content: {}
   /entities:
     get:
       tags:
-        - phone-book
+      - phone-book
+      summary: Get a list of companies by search criteria. This Api call gives immediately
+        a synchronous response.
       parameters:
-        - name: Eori
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: Duns
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: Vat
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: EntityName
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: ApcsCode
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: Page
-          in: query
-          schema:
-            type: integer
-            format: int32
-        - name: PageSize
-          in: query
-          schema:
-            type: integer
-            format: int32
+      - name: Eori
+        in: query
+        schema:
+          type: string
+      - name: Duns
+        in: query
+        schema:
+          type: string
+      - name: Vat
+        in: query
+        schema:
+          type: string
+      - name: EntityName
+        in: query
+        schema:
+          type: string
+      - name: ApcsCode
+        in: query
+        schema:
+          type: string
+      - name: Page
+        in: query
+        schema:
+          type: integer
+          format: int32
+      - name: PageSize
+        in: query
+        schema:
+          type: integer
+          format: int32
       responses:
-        '200':
+        200:
           description: Success
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/PhoneBookResponse'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '405':
+        405:
           description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        500:
           description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/pickup-rights':
-    put:
-      tags:
-        - pickup-rights
-      parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SubmitPickupRight'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/SubmitPickupRight'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/SubmitPickupRight'
-      responses:
-        '202':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Error accessing API
-  '/{port-locode}/preannouncements/codes':
+          content: {}
+
+  /{port-locode}/validation/pickup/identification:
     post:
       tags:
-        - pre-announcement
+      - pickup-rights
       parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+              $ref: '#/components/schemas/PickUpPartyIdentification'
           text/json:
             schema:
-              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+              $ref: '#/components/schemas/PickUpPartyIdentification'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/CreatePreAnnouncementCodes'
+              $ref: '#/components/schemas/PickUpPartyIdentification'
+        required: false
       responses:
-        '202':
-          description: Accepted
+        200:
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '400':
+                type: boolean
+        400:
           description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        403:
+          description: Unauthorized, role or scope forbids you from taking this action
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        500:
           description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/terminal-release':
-    put:
+          content: {}
+      x-codegen-request-body-name: body
+  /{port-locode}/validation/pickup/containers:
+    post:
       tags:
-        - release-lights
+      - pickup-rights
       parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
+      - name: port-locode
+        in: path
+        required: true
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TerminalRelease'
+              $ref: '#/components/schemas/AlfapassPickupValidation'
           text/json:
             schema:
-              $ref: '#/components/schemas/TerminalRelease'
+              $ref: '#/components/schemas/AlfapassPickupValidation'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/TerminalRelease'
+              $ref: '#/components/schemas/AlfapassPickupValidation'
+        required: false
       responses:
-        '202':
-          description: Accepted
+        200:
+          description: Success
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '400':
+                type: boolean
+        400:
           description: Invalid input
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
+        401:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '405':
-          description: Invalid input
+        403:
+          description: Unauthorized, role or scope forbids you from taking this action
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-        '500':
+        500:
           description: Error accessing API
-  '/{port-locode}/containers/import/terminal-release':
-    put:
-      tags:
-        - release-lights
-      parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TerminalReleaseBulkAction'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/TerminalReleaseBulkAction'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/TerminalReleaseBulkAction'
-      responses:
-        '202':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '400':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Error accessing API
-  '/{port-locode}/containers/{equipment-number}/import/release-rights':
-    put:
-      tags:
-        - release-rights
-      parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReleaseRightAction'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ReleaseRightAction'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ReleaseRightAction'
-      responses:
-        '202':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '405':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Error accessing API
-  '/{port-locode}/containers/import/release-rights':
-    put:
-      tags:
-        - release-rights
-      parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReleaseRightBulkAction'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/ReleaseRightBulkAction'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/ReleaseRightBulkAction'
-      responses:
-        '202':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '405':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Error accessing API
-    get:
-      tags:
-        - release-rights
-      parameters:
-        - name: page
-          in: query
-          schema:
-            type: integer
-            format: int32
-        - name: pageSize
-          in: query
-          schema:
-            type: integer
-            format: int32
-        - name: status
-          in: query
-          schema:
-            $ref: '#/components/schemas/ReleaseStatusFilter'
-        - name: equipmentnumberfilter
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: billofladingnumberfilter
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: shippingagentnamefilter
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: shippingagenttinfilter
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: terminalnamefilter
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: currentstakeholdernamefilter
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: currentstakeholdertinfilter
-          in: query
-          schema:
-            type: string
-            nullable: true
-        - name: releaserightstatusfilter
-          in: query
-          schema:
-            $ref: '#/components/schemas/ReleaseRightStatus'
-        - name: actionStatusFilter
-          in: query
-          schema:
-            $ref: '#/components/schemas/ActionStatusFilter'
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '202':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '400':
-          description: Invalid or missing request header
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
-          description: Resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Error accessing API
-  '/{port-locode}/containers/import/release-rights/{equipment-number}':
-    get:
-      tags:
-        - release-rights
-      parameters:
-        - name: port-locode
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-        - name: equipment-number
-          in: path
-          required: true
-          schema:
-            type: string
-            nullable: true
-        - name: billOfLadingNumbers
-          in: query
-          schema:
-            type: array
-            items:
-              type: string
-            nullable: true
-        - name: releaseIdentification
-          in: query
-          schema:
-            type: string
-            nullable: true
-      responses:
-        '202':
-          description: Accepted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/BaseApiResponse'
-        '400':
-          description: Invalid or missing request header
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '401':
-          description: 'Unauthorized, role or scope forbids you from taking this action'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '404':
-          description: Resource not found
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '500':
-          description: Error accessing API
+          content: {}
+      x-codegen-request-body-name: body
 components:
   schemas:
-    ProblemDetails:
+    EquipmentSlot:
       type: object
       properties:
-        type:
+        equipmentNumber:
           type: string
-          nullable: true
-        title:
+        slotIdentification:
           type: string
-          nullable: true
-        status:
-          type: integer
-          format: int32
-          nullable: true
-        detail:
+    ModeOfTransportType:
+      type: string
+      enum:
+      - Unknown
+      - Truck
+      - Rail
+      - Barge
+    IdentificationType:
+      type: string
+      enum:
+      - NxtEntityId
+      - Tin
+      - Eori
+      - Duns
+      - SCAC
+      - Apcs
+    QueryRoleDto:
+      type: object
+      properties:
+        roleCode:
           type: string
-          nullable: true
-        instance:
+        assetCode:
           type: string
-          nullable: true
-      additionalProperties:
-        type: object
-        additionalProperties: false
+    Identification:
+      type: object
+      properties:
+        identificationType:
+          $ref: '#/components/schemas/IdentificationType'
+        identificationCode:
+          type: string
+        supplyChainRole:
+          $ref: '#/components/schemas/QueryRoleDto'
+    TransportStageType:
+      type: string
+      enum:
+      - Unknown
+      - Import
+      - Export
+      - Transhipment
+      - Other
+    NextModeOfTransportRequest:
+      type: object
+      properties:
+        portLoCode:
+          type: string
+        terminalCode:
+          type: string
+        equipmentSlots:
+          type: array
+          items:
+            $ref: '#/components/schemas/EquipmentSlot'
+        modeOfTransport:
+          $ref: '#/components/schemas/ModeOfTransportType'
+        transportCompanyName:
+          type: string
+        transportCompany:
+          $ref: '#/components/schemas/Identification'
+        alfaPassIdentification:
+          type: string
+        estimatedTimeOfPickup:
+          type: string
+          format: date-time
+        transportIdentification:
+          type: string
+        transportName:
+          type: string
+        transportStage:
+          $ref: '#/components/schemas/TransportStageType'
+        remarks:
+          type: string
+        billOfLading:
+          type: string
+        releaseIdentification:
+          type: string
     BaseApiResponse:
       type: object
       properties:
         publicReferenceId:
           type: string
-          nullable: true
         externalReferenceId:
           type: string
-          nullable: true
-      additionalProperties: false
-    SearchEntityFilter:
+    ProblemDetails:
       type: object
       properties:
-        eori:
+        type:
           type: string
-          nullable: true
-        duns:
+        title:
           type: string
-          nullable: true
-        vat:
-          type: string
-          nullable: true
-        entityName:
-          type: string
-          nullable: true
-        apcsCode:
-          type: string
-          nullable: true
-        page:
+        status:
           type: integer
           format: int32
-        pageSize:
-          type: integer
-          format: int32
-      additionalProperties: false
-    EntityAddressDto:
-      type: object
-      properties:
-        addressTypeCode:
+        detail:
           type: string
-          nullable: true
-        street:
+        instance:
           type: string
-          nullable: true
-        postalCode:
-          type: string
-          nullable: true
-        city:
-          type: string
-          nullable: true
-        country:
-          type: string
-          nullable: true
-        contactName:
-          type: string
-          nullable: true
-        contactEmail:
-          type: string
-          nullable: true
-      additionalProperties: false
-    PhoneBookItem:
-      type: object
-      properties:
-        apcsCode:
-          type: string
-          nullable: true
-        addresses:
-          type: array
-          items:
-            $ref: '#/components/schemas/EntityAddressDto'
-          nullable: true
-        nxtEntityId:
-          type: string
-          nullable: true
-        name:
-          type: string
-          nullable: true
-        vat:
-          type: string
-          nullable: true
-        duns:
-          type: string
-          nullable: true
-        eori:
-          type: string
-          nullable: true
-        scac:
-          type: string
-          nullable: true
-      additionalProperties: false
-    PhoneBookResponse:
-      type: object
-      properties:
-        searchFilter:
-          $ref: '#/components/schemas/SearchEntityFilter'
-        phoneBookItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneBookItem'
-          nullable: true
-        totalRows:
-          type: integer
-          format: int32
-        totalPages:
-          type: integer
-          format: int32
-        publicReferenceId:
-          type: string
-          nullable: true
-        externalReferenceId:
-          type: string
-          nullable: true
-      additionalProperties: false
+      additionalProperties:
+        type: object
+        properties: {}
     PartyType:
-      enum:
-        - Truck
-        - Rail
-        - Barge
       type: string
+      enum:
+      - Truck
+      - Rail
+      - Barge
     PickupParty:
       type: object
       properties:
         partyType:
           $ref: '#/components/schemas/PartyType'
-        mobilePhoneNumber:
+        identificationType:
           type: string
-          nullable: true
-      additionalProperties: false
+        identificationCode:
+          type: string
     PickupRightActionType:
-      enum:
-        - Assign
-        - Update
-        - Revoke
       type: string
+      enum:
+      - Assign
+      - Update
+      - Revoke
     SubmitPickupRight:
       type: object
       properties:
         terminalCode:
           type: string
-          nullable: true
         billOfLadingNumbers:
           type: array
           items:
             type: string
-          nullable: true
         releaseIdentification:
           type: string
-          nullable: true
         pickupParty:
           $ref: '#/components/schemas/PickupParty'
         timestamp:
@@ -684,11 +864,8 @@ components:
           $ref: '#/components/schemas/PickupRightActionType'
         equipmentNumber:
           type: string
-          nullable: true
         portLoCode:
           type: string
-          nullable: true
-      additionalProperties: false
     ReleaseRightIdentifier:
       type: object
       properties:
@@ -696,131 +873,101 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         equipmentNumber:
           type: string
-          nullable: true
         releaseIdentification:
           type: string
-          nullable: true
-      additionalProperties: false
     CreatePreAnnouncementCodes:
       type: object
       properties:
         portLoCode:
           type: string
-          nullable: true
         releaseRights:
           type: array
           items:
             $ref: '#/components/schemas/ReleaseRightIdentifier'
-          nullable: true
         modeOfTransport:
           type: string
-          nullable: true
-      additionalProperties: false
+    ReleaseRightPreAnnouncementIdentifier:
+      type: object
+      properties:
+        equipmentNumber:
+          type: string
+        billOfLadingNumbers:
+          type: array
+          items:
+            type: string
+    PreAnnouncementValidation:
+      type: object
+      properties:
+        portLoCode:
+          type: string
+        requestingParty:
+          $ref: '#/components/schemas/Identification'
+        releaseIdentification:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReleaseRightPreAnnouncementIdentifier'
     TerminalReleaseActionType:
-      enum:
-        - Release
-        - Scanning
-        - Block
       type: string
+      enum:
+      - Release
+      - Scanning
+      - Block
     TerminalRelease:
       type: object
       properties:
         terminalCode:
           type: string
-          nullable: true
         actionType:
           $ref: '#/components/schemas/TerminalReleaseActionType'
         releaseDateTimeUtc:
           type: string
           format: date-time
-          nullable: true
         equipmentNumber:
           type: string
-          nullable: true
         portLoCode:
           type: string
-          nullable: true
-      additionalProperties: false
     TerminalReleaseBulkAction:
       type: object
       properties:
         portLoCode:
           type: string
-          nullable: true
         terminalCode:
           type: string
-          nullable: true
         actionType:
           $ref: '#/components/schemas/TerminalReleaseActionType'
         releaseRights:
           type: array
           items:
             $ref: '#/components/schemas/ReleaseRightIdentifier'
-          nullable: true
-      additionalProperties: false
     ActionType:
-      enum:
-        - Transfer
-        - Accept
-        - Decline
-        - Revoke
-        - Release
-        - Update
-        - Block
-        - Unblock
-        - Delete
       type: string
-    IdentificationType:
       enum:
-        - NxtEntityId
-        - Tin
-        - Eori
-        - Duns
-        - SCAC
-      type: string
-    QueryRoleDto:
-      type: object
-      properties:
-        roleCode:
-          type: string
-          nullable: true
-        assetCode:
-          type: string
-          nullable: true
-      additionalProperties: false
-    Identification:
-      type: object
-      properties:
-        identificationType:
-          $ref: '#/components/schemas/IdentificationType'
-        identificationCode:
-          type: string
-          nullable: true
-        supplyChainRole:
-          $ref: '#/components/schemas/QueryRoleDto'
-      additionalProperties: false
+      - Transfer
+      - Accept
+      - Decline
+      - Revoke
+      - Release
+      - Update
+      - Block
+      - Unblock
+      - Delete
     ReleaseRightAction:
       type: object
       properties:
         releaseIdentification:
           type: string
-          nullable: true
         terminalCode:
           type: string
-          nullable: true
         actionType:
           $ref: '#/components/schemas/ActionType'
         reasonForAction:
           type: string
-          nullable: true
         billOfLadingNumbers:
           type: array
           items:
             type: string
-          nullable: true
         releaseFrom:
           $ref: '#/components/schemas/Identification'
         releaseTo:
@@ -836,14 +983,10 @@ components:
         validFrom:
           type: string
           format: date-time
-          nullable: true
         equipmentNumber:
           type: string
-          nullable: true
         portLoCode:
           type: string
-          nullable: true
-      additionalProperties: false
     ReleaseRightBulkIdentifier:
       type: object
       properties:
@@ -853,74 +996,140 @@ components:
           $ref: '#/components/schemas/Identification'
         terminalCode:
           type: string
-          nullable: true
         billOfLadingNumbers:
           type: array
           items:
             type: string
-          nullable: true
         equipmentNumber:
           type: string
-          nullable: true
         releaseIdentification:
           type: string
-          nullable: true
-      additionalProperties: false
     ReleaseRightBulkAction:
       type: object
       properties:
         portLoCode:
           type: string
-          nullable: true
         releaseRights:
           type: array
           items:
             $ref: '#/components/schemas/ReleaseRightBulkIdentifier'
-          nullable: true
         actionType:
           $ref: '#/components/schemas/ActionType'
-      additionalProperties: false
     ReleaseStatusFilter:
-      enum:
-        - Active
-        - Pending
-        - Police
-        - Terminal
-        - Shipping
       type: string
+      enum:
+      - Active
+      - Pending
+      - Police
+      - Terminal
+      - Shipping
     ReleaseRightStatus:
-      enum:
-        - Unknown
-        - Assigned
-        - Pending
-        - Accepted
-        - Declined
-        - Revoked
-        - Archived
-        - Blocked
-        - Expired
-        - Unblocked
       type: string
+      enum:
+      - Unknown
+      - Assigned
+      - Pending
+      - Accepted
+      - Declined
+      - Revoked
+      - Archived
+      - Blocked
+      - Expired
+      - Unblocked
     ActionStatusFilter:
-      enum:
-        - Undefined
-        - Pending
-        - Revoke
-        - Transfer
       type: string
+      enum:
+      - Undefined
+      - Pending
+      - Revoke
+      - Transfer
     RoleDto:
       type: object
       properties:
         code:
           type: string
-          nullable: true
         name:
           type: string
-          nullable: true
         description:
           type: string
-          nullable: true
-      additionalProperties: false
+    SearchEntityFilter:
+      type: object
+      properties:
+        eori:
+          type: string
+        duns:
+          type: string
+        vat:
+          type: string
+        entityName:
+          type: string
+        apcsCode:
+          type: string
+        page:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+    EntityAddressDto:
+      type: object
+      properties:
+        addressTypeCode:
+          type: string
+        street:
+          type: string
+        postalCode:
+          type: string
+        city:
+          type: string
+        country:
+          type: string
+        contactName:
+          type: string
+        contactEmail:
+          type: string
+    PhoneBookItem:
+      type: object
+      properties:
+        apcsCode:
+          type: string
+        addresses:
+          type: array
+          items:
+            $ref: '#/components/schemas/EntityAddressDto'
+        nxtEntityId:
+          type: string
+        name:
+          type: string
+        vat:
+          type: string
+        duns:
+          type: string
+        eori:
+          type: string
+        scac:
+          type: string
+        apcs:
+          type: string
+    PhoneBookResponse:
+      type: object
+      properties:
+        searchFilter:
+          $ref: '#/components/schemas/SearchEntityFilter'
+        phoneBookItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneBookItem'
+        totalRows:
+          type: integer
+          format: int32
+        totalPages:
+          type: integer
+          format: int32
+        publicReferenceId:
+          type: string
+        externalReferenceId:
+          type: string
     TokenExchangeState:
       type: object
       properties:
@@ -929,12 +1138,37 @@ components:
           format: uuid
         nxtPortId:
           type: string
-          nullable: true
         terminalAck:
           type: boolean
         pickupPartyAck:
           type: boolean
-      additionalProperties: false
+    PickUpPartyIdentification:
+      type: object
+      properties:
+        identificationType:
+          type: string
+        identificationCode:
+          type: string
+    ReleaseRightPickupIdentifier:
+      type: object
+      properties:
+        equipmentNumber:
+          type: string
+        billOfLadingNumbers:
+          type: array
+          items:
+            type: string
+    AlfapassPickupValidation:
+      type: object
+      properties:
+        portLoCode:
+          type: string
+        alfapassNumber:
+          type: string
+        releaseRightPickupIdentifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReleaseRightPickupIdentifier'
   securitySchemes:
     Authorization:
       type: apiKey
