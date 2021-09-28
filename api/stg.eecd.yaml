@@ -25,7 +25,7 @@ securityDefinitions:
     name: Ocp-Apim-Subscription-Key
     description: 'API subscription key. Assigned by NxtPort to your organization.'
 paths:
-  '/v1/equipment/{equipmentId}/history':
+  /v1/equipment/{equipmentId}/history:
     get:
       tags:
         - Booklets
@@ -94,7 +94,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/CleaningLocation'
-  '/v1/cleanings/locations/{id}':
+  /v1/cleanings/locations/{id}:
     get:
       tags:
         - CleaningLocations
@@ -248,7 +248,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CleaningLocation'
-  '/v1/cleanings/locations/{locationId}/users':
+  /v1/cleanings/locations/{locationId}/users:
     post:
       tags:
         - CleaningLocations
@@ -351,7 +351,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/CleaningLocation'
-  '/v1/cleanings/locations/{locationId}/users/bulk':
+  /v1/cleanings/locations/{locationId}/users/bulk:
     post:
       tags:
         - CleaningLocations
@@ -541,7 +541,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CleaningLocation'
-  '/v1/equipment/{equipmentId}/cleaningactions/request':
+  /v1/equipment/{equipmentId}/cleaningactions/request:
     post:
       tags:
         - Cleanings
@@ -590,7 +590,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/request':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/request:
     put:
       tags:
         - Cleanings
@@ -647,7 +647,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions':
+  /v1/equipment/{equipmentId}/cleaningactions:
     post:
       tags:
         - Cleanings
@@ -699,12 +699,12 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}:
     put:
       tags:
         - Cleanings
       summary: Update a cleaning action.
-      description: "<br>\r\n            Updates a cleaning action. This can be done to any cleaning action that has not yet been signed off by\r\n            the driver.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n"
+      description: "<br>\r\n            Updates a cleaning action. This can be done to any cleaning action that has not yet been signed off by\r\n            the driver.\r\n                \r\n<br>\r\n            Process.RepresentativeName or Process.CreatedBy is the name of the representative of the cleaning company and will be shown on the eECD.\r\n            Process.CleaningPerformedBy is the name of the cleaning company.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n"
       parameters:
         - name: equipmentId
           in: path
@@ -967,12 +967,12 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ResultsPage.BookletData.CleaningSummary'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/complete':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/complete:
     put:
       tags:
         - Cleanings
       summary: Complete a cleaning.
-      description: "<br>\r\n            Completes a cleaning action. Similar to Update, with the main difference that this method alters the\r\n            state of the cleaning action. Only planned cleaning actions can be completed.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n"
+      description: "<br>\r\n            Completes a cleaning action. Similar to Update, with the main difference that this method alters the\r\n            state of the cleaning action. Only planned cleaning actions can be completed.\r\n                \r\n<br>\r\n            Process.RepresentativeName or Process.CreatedBy is the name of the representative of the cleaning company and will be shown on the eECD.\r\n            Process.CleaningPerformedBy is the name of the cleaning company.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n  </ul>\r\n"
       parameters:
         - name: equipmentId
           in: path
@@ -1024,7 +1024,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/signoff':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/signoff:
     put:
       tags:
         - Cleanings
@@ -1090,7 +1090,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/BookletData.CleaningSignoff'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/postsignoffcomment':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/postsignoffcomment:
     post:
       tags:
         - Cleanings
@@ -1162,7 +1162,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/signature':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/signature:
     get:
       tags:
         - Cleanings
@@ -1207,7 +1207,7 @@ paths:
             text/xml:
               schema:
                 type: string
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/attachment':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/attachment:
     post:
       tags:
         - Cleanings
@@ -1263,7 +1263,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/BookletData.Attachment'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/attachment/{attachmentId}':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/attachment/{attachmentId}:
     get:
       tags:
         - Cleanings
@@ -1301,7 +1301,7 @@ paths:
             application/octet-stream:
               schema:
                 type: file
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/cancel':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/cancel:
     put:
       tags:
         - Cleanings
@@ -1373,7 +1373,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/BookletData.CleaningAction'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/reject':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/reject:
     put:
       tags:
         - Cleanings
@@ -1491,7 +1491,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResultsPage.BookletData.CleaningSummary'
       deprecated: true
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/invalidate':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningActionId}/invalidate:
     put:
       tags:
         - Cleanings
@@ -1551,7 +1551,67 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/BookletData.CleaningAction'
-  '/v1/credits/add/{amount}':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/depotDeclaration:
+    post:
+      tags:
+        - Cleanings
+      summary: Create a depot declaration and attach to a cleaning.
+      description: "<br>\r\n            Create a depot declaration to a cleaning. A PDF file will be generated,\r\n            store in blobstorage and attach to a cleaning. \r\n            \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n"
+      parameters:
+        - name: equipmentId
+          in: path
+          description: The ID of the equipment.
+          required: true
+          schema:
+            type: string
+            description: The ID of the equipment.
+            format: uuid
+        - name: cleaningId
+          in: path
+          description: The ID of the cleaning action.
+          required: true
+          schema:
+            type: string
+            description: The ID of the cleaning action.
+            format: uuid
+      requestBody:
+        description: The body containing the information about the depot declaration.
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/BookletData.Cleaning.DepotDeclarationInfo'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/BookletData.Cleaning.DepotDeclarationInfo'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookletData.Cleaning.DepotDeclarationInfo'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/BookletData.Cleaning.DepotDeclarationInfo'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/BookletData.Cleaning.DepotDeclarationInfo'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/BookletData.Cleaning.DepotDeclarationInfo'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BookletData.CleaningAction'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookletData.CleaningAction'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/BookletData.CleaningAction'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/BookletData.CleaningAction'
+  /v1/credits/add/{amount}:
     post:
       tags:
         - Credits
@@ -1568,10 +1628,10 @@ paths:
             format: int32
         - name: organisationId
           in: query
-          description: 'The ID of the organisation that receives the credits. Optional. When omitted, the logged in user''s organisation is used.'
+          description: The ID of the organisation that receives the credits. Optional. When omitted, the logged in user's organisation is used.
           schema:
             type: string
-            description: 'The ID of the organisation that receives the credits. Optional. When omitted, the logged in user''s organisation is used.'
+            description: The ID of the organisation that receives the credits. Optional. When omitted, the logged in user's organisation is used.
             format: uuid
             nullable: true
       responses:
@@ -1620,7 +1680,7 @@ paths:
                 $ref: '#/components/schemas/CreditData.CreditWalletSummary'
         '404':
           description: Not Found
-  '/v1/credits/warningthreshold/{warningThreshold}':
+  /v1/credits/warningthreshold/{warningThreshold}:
     put:
       tags:
         - Credits
@@ -1714,7 +1774,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CreditData.CreditTransaction'
-  '/v1/organisations/{organisationId}/credits':
+  /v1/organisations/{organisationId}/credits:
     get:
       tags:
         - Credits
@@ -1843,7 +1903,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ResultsPage.EEcdLog.EEcdLog'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/document':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/document:
     get:
       tags:
         - EEcds
@@ -1873,7 +1933,7 @@ paths:
             application/octet-stream:
               schema:
                 type: file
-  '/v1/eecds/archives/{id}':
+  /v1/eecds/archives/{id}:
     get:
       tags:
         - EEcds
@@ -1893,7 +1953,7 @@ paths:
             application/octet-stream:
               schema:
                 type: file
-  '/v1/eecds/archives/{id}/attachments':
+  /v1/eecds/archives/{id}/attachments:
     get:
       tags:
         - EEcds
@@ -2086,7 +2146,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ResultsPage.EecdDocument.ArchivedEecdMetadataDetail'
-  '/v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/request/document':
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/request/document:
     get:
       tags:
         - EEcos
@@ -2125,7 +2185,7 @@ paths:
       parameters:
         - name: lang
           in: query
-          description: 'The language in which the descriptions need to be returned. Either NL, EN, FR or DE.'
+          description: The language in which the descriptions need to be returned. Either NL, EN, FR or DE.
           schema:
             $ref: '#/components/schemas/LanguageEnum'
         - name: code
@@ -2175,7 +2235,7 @@ paths:
       summary: Create an EFTCO code.
       description: "<br>\r\n            Creates an EFTCO cleaning code, including descriptions in all supported languages. The name of the\r\n            updated code may not already exist, and all descriptions must be filled in. We currently support\r\n            the following languages: NL, EN, FR and DE. At least all of these languages must be present in the\r\n            DTO, but additional ones may be given if desired.\r\n                \r\n<code><pre>\r\n            POST v1/eftcocleaningcodes\r\n            {\r\n                \"code\" : \"Hello World\",\r\n                \"descriptions\" : {\r\n                    \"EN\" : \"Hello world!\",\r\n                    \"NL\" : \"Hallo wereld!\",\r\n                    \"FR\" : \"Bonjour monde!\",\r\n                    \"DE\" : \"Gutentag Welt!\"\r\n                }\r\n            }\r\n            </pre></code>\r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n"
       requestBody:
-        description: 'The code, as well as descriptions in (at least) all supported languages.'
+        description: The code, as well as descriptions in (at least) all supported languages.
         content:
           application/xml:
             schema:
@@ -2302,7 +2362,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/BookletData.Cleaning.CodeValidationResult'
-  '/v1/eftcocleaningcodes/{id}':
+  /v1/eftcocleaningcodes/{id}:
     get:
       tags:
         - EftcoCleaningCodes
@@ -2485,11 +2545,11 @@ paths:
           description: Bad Request
         '404':
           description: Not Found
-  '/v1/equipment/{equipmentId}/eppls/{epplId}/document':
+  /v1/equipment/{equipmentId}/eppls/{epplId}/document:
     get:
       tags:
         - EPpls
-      summary: Generate an eppl document from an eppl in a booklet.
+      summary: Generate an eppl document from an eppl in a booklet (OBSOLETE).
       description: "<br>\r\n            Generates a downloadable Eppl document based on an eppl still in a booklet. \r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n    <li>Viewer</li>\r\n  </ul>\r\n"
       parameters:
         - name: equipmentId
@@ -2511,7 +2571,42 @@ paths:
             application/octet-stream:
               schema:
                 type: file
-  '/v1/equipment/{equipmentId}/eppls/{epplId}':
+      deprecated: true
+  /v1/equipment/{equipmentId}/eppls/{epplId}/language/{languageCode}/document:
+    get:
+      tags:
+        - EPpls
+      summary: Generate an eppl document from an eppl in a booklet by chosen language.
+      description: "<br>\r\n            Generates a downloadable Eppl document based on an eppl meta data in a chosen language. \r\n                \r\n<br>\r\n            Based on the chosen language, the translation in the language will be provided.\r\n            If a chosen language doesn't exists, default language \"EN\" will be given.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n    <li>Viewer</li>\r\n  </ul>\r\n"
+      parameters:
+        - name: equipmentId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: epplId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: languageCode
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/octet-stream:
+              schema:
+                type: file
+        '400':
+          description: Bad Request
+  /v1/equipment/{equipmentId}/eppls/{epplId}:
     get:
       tags:
         - EPpls
@@ -2540,27 +2635,27 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/BookletData.EPpl.EPpl'
+                $ref: '#/components/schemas/BookletData.EPpl.Eppl'
             application/json:
               schema:
-                $ref: '#/components/schemas/BookletData.EPpl.EPpl'
+                $ref: '#/components/schemas/BookletData.EPpl.Eppl'
             text/json:
               schema:
-                $ref: '#/components/schemas/BookletData.EPpl.EPpl'
+                $ref: '#/components/schemas/BookletData.EPpl.Eppl'
             text/csv:
               schema:
-                $ref: '#/components/schemas/BookletData.EPpl.EPpl'
+                $ref: '#/components/schemas/BookletData.EPpl.Eppl'
             application/xml:
               schema:
-                $ref: '#/components/schemas/BookletData.EPpl.EPpl'
+                $ref: '#/components/schemas/BookletData.EPpl.Eppl'
             text/xml:
               schema:
-                $ref: '#/components/schemas/BookletData.EPpl.EPpl'
-  '/v1/eppls/archives/{archiveId}':
+                $ref: '#/components/schemas/BookletData.EPpl.Eppl'
+  /v1/eppls/archives/{archiveId}:
     get:
       tags:
         - EPpls
-      summary: Download an archived ePPL.
+      summary: Download an archived ePPL (OBSOLETE).
       description: "<br>\r\n            Serves the archived ePPL as a downloadable pdf. \r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n"
       parameters:
         - name: archiveId
@@ -2569,6 +2664,33 @@ paths:
           schema:
             type: string
             format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/octet-stream:
+              schema:
+                type: file
+      deprecated: true
+  /v1/eppls/archives/{archiveId}/language/{languageCode}:
+    get:
+      tags:
+        - EPpls
+      summary: Download an archived ePPL by language.
+      description: "<br>\r\n            Serves the archived ePPL as a downloadable pdf. \r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n    <li>Seller</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n"
+      parameters:
+        - name: archiveId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: languageCode
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
       responses:
         '200':
           description: Success
@@ -2680,6 +2802,288 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ResultsPage.EecdDocument.ArchivedEpplMetadataDetail'
+  /V1/documents/eppl/translations:
+    post:
+      tags:
+        - EpplTranslations
+      summary: "Create a new translation for eppl document - only the first version will be provided.\r\nLanguage codes: EN | NL | DE | FR"
+      description: "<br>\r\n                In Translation.EpplConfirm it is necessary to define exactly 4 variables (ex. \" {0} {1} {2} {3}\"). \r\n                If this is not included, no translation can be valid and the eppl document will no longer be displayed.\r\n            "
+      requestBody:
+        description: LanguageCode, DocumentType and Translation will be required
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPost'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPost'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPost'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPost'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPost'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPost'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+        '400':
+          description: Bad Request
+    put:
+      tags:
+        - EpplTranslations
+      summary: "Update an existing translation of eppl document\r\nLanguage codes: EN | NL | DE | FR"
+      description: "<br>\r\n                In Translation.EpplConfirm it is necessary to define exactly 4 variables (ex. \" {0} {1} {2} {3}\"). \r\n                If this is not included, no translation can be valid and the eppl document will no longer be displayed.\r\n            "
+      requestBody:
+        description: LanguageCode and Translation will be required
+        content:
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPut'
+          text/xml:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPut'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPut'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPut'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPut'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/MasterData.EpplDocumentTranslationPut'
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+        '400':
+          description: Bad Request
+  /V1/documents/eppl/translations/{id}:
+    get:
+      tags:
+        - EpplTranslations
+      summary: Get a translation of eppl document by id
+      parameters:
+        - name: id
+          in: path
+          description: Guid of the translation entity
+          required: true
+          schema:
+            type: string
+            description: Guid of the translation entity
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+        '400':
+          description: Bad Request
+  /V1/documents/eppl/translations/{langCode}/{version}:
+    get:
+      tags:
+        - EpplTranslations
+      summary: Get an existing translation of eppl document by language code and version number
+      parameters:
+        - name: langCode
+          in: path
+          description: 'Language codes: EN | NL | DE | FR'
+          required: true
+          schema:
+            type: string
+            description: 'Language codes: EN | NL | DE | FR'
+            nullable: true
+        - name: version
+          in: path
+          description: Non-negative/non-zero value
+          required: true
+          schema:
+            type: integer
+            description: Non-negative/non-zero value
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+        '400':
+          description: Bad Request
+  /V1/documents/eppl/translations/{langCode}/date/{date}:
+    get:
+      tags:
+        - EpplTranslations
+      summary: Get translation of eppl document by language code and date
+      parameters:
+        - name: langCode
+          in: path
+          description: 'Language codes: EN | NL | DE | FR'
+          required: true
+          schema:
+            type: string
+            description: 'Language codes: EN | NL | DE | FR'
+            nullable: true
+        - name: date
+          in: path
+          description: Datetime type - Only Date specific
+          required: true
+          schema:
+            type: string
+            description: Datetime type - Only Date specific
+            format: date-time
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/xml:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/EpplDocumentTranslation'
+        '400':
+          description: Bad Request
+  /V1/documents/eppl/translations/{langCode}/latest:
+    get:
+      tags:
+        - EpplTranslations
+      summary: Get latest translation of eppl document by language code
+      parameters:
+        - name: langCode
+          in: path
+          description: 'Language codes: EN | NL | DE | FR'
+          required: true
+          schema:
+            type: string
+            description: 'Language codes: EN | NL | DE | FR'
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/EpplDocumentTranslation'
+        '400':
+          description: Bad Request
   /v1/equipment:
     get:
       tags:
@@ -2753,19 +3157,22 @@ paths:
         content:
           application/xml:
             schema:
-              $ref: '#/components/schemas/MasterData.Equipment'
+              $ref: '#/components/schemas/MasterData.EquipmentPost'
           text/xml:
             schema:
-              $ref: '#/components/schemas/MasterData.Equipment'
+              $ref: '#/components/schemas/MasterData.EquipmentPost'
           application/json:
             schema:
-              $ref: '#/components/schemas/MasterData.Equipment'
+              $ref: '#/components/schemas/MasterData.EquipmentPost'
           text/json:
             schema:
-              $ref: '#/components/schemas/MasterData.Equipment'
+              $ref: '#/components/schemas/MasterData.EquipmentPost'
           application/*+json:
             schema:
-              $ref: '#/components/schemas/MasterData.Equipment'
+              $ref: '#/components/schemas/MasterData.EquipmentPost'
+          application/*+xml:
+            schema:
+              $ref: '#/components/schemas/MasterData.EquipmentPost'
       responses:
         '200':
           description: Success
@@ -2838,7 +3245,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/ResultsPage.MasterData.Equipment'
-  '/v1/equipment/{id}':
+  /v1/equipment/{id}:
     get:
       tags:
         - Equipment
@@ -3139,7 +3546,7 @@ paths:
                   $ref: '#/components/schemas/Common.BulkResult'
         '400':
           description: Bad Request
-  '/v1/equipment/{equipmentId}/cleanliness':
+  /v1/equipment/{equipmentId}/cleanliness:
     get:
       tags:
         - Equipment
@@ -3291,7 +3698,7 @@ paths:
                 $ref: '#/components/schemas/MasterData.EquipmentField'
         '400':
           description: Bad Request
-  '/v1/equipmentfields/{id}':
+  /v1/equipmentfields/{id}:
     get:
       tags:
         - EquipmentField
@@ -3540,7 +3947,7 @@ paths:
             text/xml:
               schema:
                 type: string
-  '/v1/organisations/identification-codes/{id}':
+  /v1/organisations/identification-codes/{id}:
     get:
       tags:
         - IdentificationCode
@@ -3660,7 +4067,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/IdentificationCode.IdentificationCodeDetail'
-  '/v1/organisations/{organisationId}/identification-codes':
+  /v1/organisations/{organisationId}/identification-codes:
     get:
       tags:
         - IdentificationCode
@@ -3795,7 +4202,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/ResultsPage.IntegratedLoadingLocation.Output.IntegratedLoadingLocation'
-  '/v1/products/locations/integrated/{id}':
+  /v1/products/locations/integrated/{id}:
     get:
       tags:
         - IntegratedLoadingLocations
@@ -3856,7 +4263,7 @@ paths:
             description: The ID of the integrated loading location.
             format: uuid
       requestBody:
-        description: 'All information needed to update the integrated loading location. Currently, only the description can be modified.'
+        description: All information needed to update the integrated loading location. Currently, only the description can be modified.
         content:
           application/xml:
             schema:
@@ -3964,7 +4371,7 @@ paths:
             text/xml:
               schema:
                 type: boolean
-  '/v1/products/{productId}/locations/integrated/{uniqueReference}':
+  /v1/products/{productId}/locations/integrated/{uniqueReference}:
     get:
       tags:
         - IntegratedLoadingLocations
@@ -3981,11 +4388,11 @@ paths:
             format: uuid
         - name: uniqueReference
           in: path
-          description: 'The complete unique reference for the integrated loading location, based on the location specifiers.'
+          description: The complete unique reference for the integrated loading location, based on the location specifiers.
           required: true
           schema:
             type: string
-            description: 'The complete unique reference for the integrated loading location, based on the location specifiers.'
+            description: The complete unique reference for the integrated loading location, based on the location specifiers.
             nullable: true
       responses:
         '200':
@@ -4025,42 +4432,42 @@ paths:
       summary: Create or update a list of integrated loading locations.
       description: "<br>\r\n                    Creates or updates a list of integrated loading locations.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n"
       requestBody:
-        description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+        description: The list of product- and organisation references, combined with the list of location specifiers.
         content:
           application/xml:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
           text/xml:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
           application/json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
           text/json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
           application/*+json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
       responses:
         '200':
@@ -4102,42 +4509,42 @@ paths:
       summary: Delete a list of integrated loading locations.
       description: "<br>\r\n                    Deletes a list of integrated loading locations.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Location Manager</li>\r\n  </ul>\r\n"
       requestBody:
-        description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+        description: The list of product- and organisation references, combined with the list of location specifiers.
         content:
           application/xml:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationDelete'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
           text/xml:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationDelete'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
           application/json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationDelete'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
           text/json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationDelete'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
           application/*+json:
             schema:
               type: array
               items:
                 $ref: '#/components/schemas/IntegratedLoadingLocation.Input.IntegratedLoadingLocationDelete'
-              description: 'The list of product- and organisation references, combined with the list of location specifiers.'
+              description: The list of product- and organisation references, combined with the list of location specifiers.
               nullable: true
       responses:
         '200':
@@ -4195,7 +4602,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/ResultsPage.TransportOrders.Output.TransportOrder'
-  '/v1/organisations/{organisationId}/logs/integration/search':
+  /v1/organisations/{organisationId}/logs/integration/search:
     get:
       tags:
         - IntegrationLog
@@ -4365,7 +4772,7 @@ paths:
     get:
       tags:
         - Licenses
-      summary: 'Search for an organisation, based on a given license role.'
+      summary: Search for an organisation, based on a given license role.
       description: "<br>\r\n            Searches for organisations of a specific role. This is typically used to search for a specific\r\n            equipment operator, cleaner or loader.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Community Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Eecd Provisioning Admin</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n    <li>Location Manager</li>\r\n    <li>Product Manager</li>\r\n    <li>Viewer</li>\r\n  </ul>\r\n"
       parameters:
         - name: role
@@ -4414,7 +4821,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Organisations.Output.OrganisationMinimal'
-  '/v1/organisations/{organisationId}/license':
+  /v1/organisations/{organisationId}/license:
     get:
       tags:
         - Licenses
@@ -4500,7 +4907,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/MasterData.License'
-  '/v1/licenses/{id}':
+  /v1/licenses/{id}:
     put:
       tags:
         - Licenses
@@ -4647,7 +5054,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ResultsPage.MasterData.ExigentLicenseSummary'
-  '/v1/organisations/{organisationId}/licenses':
+  /v1/organisations/{organisationId}/licenses:
     get:
       tags:
         - Licenses
@@ -4696,7 +5103,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/MasterData.License'
-  '/v1/organisations/{organisationId}/settings':
+  /v1/organisations/{organisationId}/settings:
     put:
       tags:
         - Licenses
@@ -4834,7 +5241,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/LoadingLocation.LoadingLocation'
-  '/v1/products/locations/{id}':
+  /v1/products/locations/{id}:
     get:
       tags:
         - LoadingLocations
@@ -5077,7 +5484,7 @@ paths:
             text/xml:
               schema:
                 type: boolean
-  '/v1/products/{productId}/loaders/{loaderId}/locations':
+  /v1/products/{productId}/loaders/{loaderId}/locations:
     get:
       tags:
         - LoadingLocations
@@ -5206,7 +5613,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/ResultsPage.LoadingLocation.LoadingLocation'
-  '/v1/equipment/{equipmentId}/loads/assign':
+  /v1/equipment/{equipmentId}/loads/assign:
     post:
       tags:
         - Loads
@@ -5263,7 +5670,7 @@ paths:
                 $ref: '#/components/schemas/BookletData.Load'
         '400':
           description: Bad Request
-  '/v1/equipment/{equipmentId}/loads/{loadId}':
+  /v1/equipment/{equipmentId}/loads/{loadId}:
     get:
       tags:
         - Loads
@@ -5372,7 +5779,7 @@ paths:
                 $ref: '#/components/schemas/BookletData.Load'
         '400':
           description: Bad Request
-  '/v1/equipment/{equipmentId}/loads/{loadId}/cancel':
+  /v1/equipment/{equipmentId}/loads/{loadId}/cancel:
     put:
       tags:
         - Loads
@@ -5421,7 +5828,7 @@ paths:
           description: Bad Request
         '405':
           description: Method Not Allowed
-  '/v1/equipment/{equipmentId}/loads/{loadId}/accept':
+  /v1/equipment/{equipmentId}/loads/{loadId}/accept:
     put:
       tags:
         - Loads
@@ -5491,7 +5898,7 @@ paths:
           description: Bad Request
         '405':
           description: Method Not Allowed
-  '/v1/equipment/{equipmentId}/loads/{loadId}/move':
+  /v1/equipment/{equipmentId}/loads/{loadId}/move:
     put:
       tags:
         - Loads
@@ -5556,7 +5963,7 @@ paths:
                 $ref: '#/components/schemas/BookletData.Load'
         '400':
           description: Bad Request
-  '/v1/equipment/{equipmentId}/loads/{loadId}/reject':
+  /v1/equipment/{equipmentId}/loads/{loadId}/reject:
     put:
       tags:
         - Loads
@@ -5626,7 +6033,7 @@ paths:
           description: Bad Request
         '405':
           description: Method Not Allowed
-  '/v1/equipment/{equipmentId}/loads/{loadId}/complete':
+  /v1/equipment/{equipmentId}/loads/{loadId}/complete:
     put:
       tags:
         - Loads
@@ -5692,7 +6099,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/BookletData.Load'
-  '/v1/equipment/{equipmentId}/loads/assignunofficial':
+  /v1/equipment/{equipmentId}/loads/assignunofficial:
     post:
       tags:
         - Loads
@@ -5750,7 +6157,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/BookletData.Load'
-  '/v1/equipment/{equipmentId}/loads/addnonregistered':
+  /v1/equipment/{equipmentId}/loads/addnonregistered:
     post:
       tags:
         - Loads
@@ -5904,12 +6311,12 @@ paths:
                 $ref: '#/components/schemas/ResultsPage.BookletData.LoadSummary'
         '204':
           description: Success
-  '/v1/equipment/{equipmentId}/loads/{loadId}/unofficialproof':
+  /v1/equipment/{equipmentId}/loads/{loadId}/unofficialproof:
     post:
       tags:
         - Loads
-      summary: Upload a document to an non-registeredproof load.
-      description: "<br>\r\n            Uploads a document to an non-registeredproof load, to serve as proof. This could be a CMR, or any other type of\r\n            document that justifies the creation of the non-registeredproof load. A maximum of 5 documents per load is\r\n            allowed.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n"
+      summary: Upload a document to a non-registered- or planned load.
+      description: "<br>\r\n            Uploads a document to an non-registered- or planned load. This could be a CMR, or any other type of\r\n            document that justifies the creation of the non-registeredproof load. A maximum of 5 documents per load is\r\n            allowed.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n"
       parameters:
         - name: equipmentId
           in: path
@@ -5960,12 +6367,12 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/BookletData.Load'
-  '/v1/equipment/{equipmentId}/loads/{loadId}/attachments':
+  /v1/equipment/{equipmentId}/loads/{loadId}/attachments:
     post:
       tags:
         - Loads
-      summary: Upload a document to an non-registeredproof load.
-      description: "<br>\r\n            Uploads a document to an non-registeredproof load, to serve as proof. This could be a CMR, or any other type of\r\n            document that justifies the creation of the non-registeredproof load. A maximum of 5 documents per load is\r\n            allowed.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Equipment Operator</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n"
+      summary: Upload a document to a non-registered- or planned load.
+      description: "<br>\r\n            Uploads a document to an non-registered- or planned load. This could be a CMR, or any other type of\r\n            document that justifies the creation of the non-registeredproof load. A maximum of 5 documents per load is\r\n            allowed.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Despatcher</li>\r\n    <li>Loading Operator</li>\r\n  </ul>\r\n"
       parameters:
         - name: equipmentId
           in: path
@@ -6016,7 +6423,59 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/BookletData.Load'
-  '/v1/equipment/{equipmentId}/loads/{loadId}/unofficialproof/{attachmentId}':
+  /v1/equipment/{equipmentId}/loads/{loadId}/attachments/{attachmentId}:
+    delete:
+      tags:
+        - Loads
+      summary: Deletes an attachment from a planned load.
+      description: "<br>\r\n            Delete an attachment in a planned load and in blobstorage. Only the uploader can remove the attachment.\r\n            \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Equipment Operator</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n"
+      parameters:
+        - name: equipmentId
+          in: path
+          description: The ID of the equipment.
+          required: true
+          schema:
+            type: string
+            description: The ID of the equipment.
+            format: uuid
+        - name: loadId
+          in: path
+          description: The ID of the load.
+          required: true
+          schema:
+            type: string
+            description: The ID of the load.
+            format: uuid
+        - name: attachmentId
+          in: path
+          description: The ID of the attachment
+          required: true
+          schema:
+            type: string
+            description: The ID of the attachment
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/BookletData.Load'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookletData.Load'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/BookletData.Load'
+            text/csv:
+              schema:
+                $ref: '#/components/schemas/BookletData.Load'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/BookletData.Load'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/BookletData.Load'
     get:
       tags:
         - Loads
@@ -6049,10 +6508,10 @@ paths:
             format: uuid
         - name: downloadToDisk
           in: query
-          description: 'Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.'
+          description: Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.
           schema:
             type: boolean
-            description: 'Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.'
+            description: Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.
             default: false
       responses:
         '200':
@@ -6061,7 +6520,7 @@ paths:
             application/octet-stream:
               schema:
                 type: file
-  '/v1/equipment/{equipmentId}/loads/{loadId}/attachments/{attachmentId}':
+  /v1/equipment/{equipmentId}/loads/{loadId}/unofficialproof/{attachmentId}:
     get:
       tags:
         - Loads
@@ -6094,10 +6553,10 @@ paths:
             format: uuid
         - name: downloadToDisk
           in: query
-          description: 'Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.'
+          description: Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.
           schema:
             type: boolean
-            description: 'Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.'
+            description: Whether the file should be downloaded to the disk, or be opened in the browser. Optional; defaults to false.
             default: false
       responses:
         '200':
@@ -6106,7 +6565,7 @@ paths:
             application/octet-stream:
               schema:
                 type: file
-  '/v1/equipment/{equipmentId}/loads/{loadId}/acceptpaper':
+  /v1/equipment/{equipmentId}/loads/{loadId}/acceptpaper:
     put:
       tags:
         - Loads
@@ -6130,7 +6589,7 @@ paths:
             description: The ID of the load.
             format: uuid
       requestBody:
-        description: 'Contains all required info, such as the productId if it was not yet known, and'
+        description: Contains all required info, such as the productId if it was not yet known, and
         content:
           application/xml:
             schema:
@@ -6562,7 +7021,7 @@ paths:
                 type: array
                 items:
                   type: string
-  '/v1/masterdata/{masterDataStorageId}/file':
+  /v1/masterdata/{masterDataStorageId}/file:
     get:
       tags:
         - MasterData
@@ -6667,7 +7126,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/Organisations.Output.Organisation'
-  '/v1/organisations/{organisationId}':
+  /v1/organisations/{organisationId}:
     get:
       tags:
         - Organisations
@@ -6808,7 +7267,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/Organisations.Output.Organisation'
-  '/v1/organisations/{organisationId}/roles':
+  /v1/organisations/{organisationId}/roles:
     get:
       tags:
         - Organisations
@@ -6857,7 +7316,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Users.Output.UserRole'
-  '/v1/organisations/{type}/{code}':
+  /v1/organisations/{type}/{code}:
     get:
       tags:
         - Organisations
@@ -6894,7 +7353,7 @@ paths:
             text/csv:
               schema:
                 $ref: '#/components/schemas/Organisations.Output.Organisation'
-  '/v1/organisations/{organisationId}/users/roles':
+  /v1/organisations/{organisationId}/users/roles:
     get:
       tags:
         - Organisations
@@ -6943,7 +7402,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Users.Output.UserRole'
-  '/v1/organisationsettings/{id}':
+  /v1/organisationsettings/{id}:
     get:
       tags:
         - OrganisationSettings
@@ -7229,7 +7688,7 @@ paths:
                 $ref: '#/components/schemas/MasterData.Product'
         '400':
           description: Bad Request
-  '/v1/products/{productId}':
+  /v1/products/{productId}:
     put:
       tags:
         - Products
@@ -7563,7 +8022,7 @@ paths:
                   $ref: '#/components/schemas/Common.BulkResult'
         '400':
           description: Bad Request
-  '/v1/products/{productId}/sds':
+  /v1/products/{productId}/sds:
     get:
       tags:
         - Products
@@ -7650,7 +8109,7 @@ paths:
     delete:
       tags:
         - Products
-      summary: 'Delete an SDS, whether it''s a link or a file.'
+      summary: Delete an SDS, whether it's a link or a file.
       description: "<br>\r\n            Deletes an SDS info record for a given language from a product. If the info was a link, it is\r\n            just removed; if the info indicates that the SDS was a file, the file is made inaccessible. \r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Seller</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Product Manager</li>\r\n  </ul>\r\n"
       parameters:
         - name: productId
@@ -7688,7 +8147,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/MasterData.Product'
-  '/v1/products/{productId}/sds/cloud':
+  /v1/products/{productId}/sds/cloud:
     get:
       tags:
         - Products
@@ -7823,7 +8282,7 @@ paths:
             text/xml:
               schema:
                 type: boolean
-  '/v1/products/{productId}/sds/{language}/blob':
+  /v1/products/{productId}/sds/{language}/blob:
     put:
       tags:
         - Products
@@ -7877,7 +8336,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/MasterData.UploadSdsDocumentResult'
-  '/v1/products/sds/{uniqueReference}/{language}/blob':
+  /v1/products/sds/{uniqueReference}/{language}/blob:
     put:
       tags:
         - Products
@@ -7931,7 +8390,7 @@ paths:
             text/xml:
               schema:
                 $ref: '#/components/schemas/MasterData.UploadSdsDocumentResult'
-  '/v1/products/{productId}/sds/info':
+  /v1/products/{productId}/sds/info:
     get:
       tags:
         - Products
@@ -8040,6 +8499,46 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Reporting.CreatedEecdsReportDetail'
+  /v1/reports/eecos-overview:
+    get:
+      tags:
+        - Reporting
+      parameters:
+        - name: referenceDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reporting.CreatedEecosReportDetail'
+  /v1/reports/eppls-overview:
+    get:
+      tags:
+        - Reporting
+      parameters:
+        - name: referenceDate
+          in: query
+          schema:
+            type: string
+            format: date-time
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            text/csv:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Reporting.CreatedEpplsReportDetail'
   /v1/transportorders:
     post:
       tags:
@@ -8101,7 +8600,7 @@ paths:
           description: Not Acceptable
         '409':
           description: Conflict
-  '/v1/organisations/{sellerId}/transportorders/{transportReference}':
+  /v1/organisations/{sellerId}/transportorders/{transportReference}:
     get:
       tags:
         - TransportOrder
@@ -8118,11 +8617,11 @@ paths:
             format: uuid
         - name: transportReference
           in: path
-          description: 'The reference that uniquely defines the transport order. In the case of Elemica, this would be the shipment number.'
+          description: The reference that uniquely defines the transport order. In the case of Elemica, this would be the shipment number.
           required: true
           schema:
             type: string
-            description: 'The reference that uniquely defines the transport order. In the case of Elemica, this would be the shipment number.'
+            description: The reference that uniquely defines the transport order. In the case of Elemica, this would be the shipment number.
             nullable: true
       responses:
         '200':
@@ -8284,7 +8783,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Users.Output.User'
-  '/v1/users/{userId}':
+  /v1/users/{userId}:
     get:
       tags:
         - Users
@@ -8453,7 +8952,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Users.Output.UserRole'
-  '/v1/users/{userId}/roles':
+  /v1/users/{userId}/roles:
     get:
       tags:
         - Users
@@ -8571,7 +9070,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Users.Output.UserRole'
-  '/v1/organisations/{organisationId}/users':
+  /v1/organisations/{organisationId}/users:
     get:
       tags:
         - Users
@@ -9017,6 +9516,8 @@ components:
           $ref: '#/components/schemas/BookletData.CleaningSignoff'
         eEcd:
           $ref: '#/components/schemas/BookletData.EEcd'
+        depotDeclarationAttachment:
+          $ref: '#/components/schemas/BookletData.Attachment'
         attachments:
           type: array
           items:
@@ -9225,14 +9726,20 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    CleaningLocationData.CleaningLocationUser:
+    BookletData.CompartmentCleaning:
       type: object
       properties:
-        id:
+        key:
           type: string
-          format: uuid
-        fullName:
-          type: string
+          nullable: true
+        cleaning:
+          $ref: '#/components/schemas/BookletData.CleaningInfo'
+        previousLoad:
+          $ref: '#/components/schemas/BookletData.Product'
+        valid:
+          type: boolean
+        isPolymerComplete:
+          type: boolean
           nullable: true
       additionalProperties: false
     CleaningLocation:
@@ -9294,22 +9801,6 @@ components:
           type: string
           nullable: true
           deprecated: true
-      additionalProperties: false
-    BookletData.CompartmentCleaning:
-      type: object
-      properties:
-        key:
-          type: string
-          nullable: true
-        cleaning:
-          $ref: '#/components/schemas/BookletData.CleaningInfo'
-        previousLoad:
-          $ref: '#/components/schemas/BookletData.Product'
-        valid:
-          type: boolean
-        isPolymerComplete:
-          type: boolean
-          nullable: true
       additionalProperties: false
     BookletData.CleaningActionCreateRequest:
       required:
@@ -9381,6 +9872,8 @@ components:
           $ref: '#/components/schemas/BookletData.CleaningSignoff'
         eEcd:
           $ref: '#/components/schemas/BookletData.EEcd'
+        depotDeclarationAttachment:
+          $ref: '#/components/schemas/BookletData.Attachment'
         attachments:
           type: array
           items:
@@ -9450,20 +9943,13 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    BookletData.SignOffCleaning:
-      required:
-        - driverName
-        - signature
-      type: object
-      properties:
-        driverName:
-          type: string
-        signature:
-          type: string
-        driverComments:
-          type: string
-          nullable: true
-      additionalProperties: false
+    EquipmentTypeEnum:
+      enum:
+        - TANKCONTAINER
+        - TANKTRAILER
+        - IBC
+        - RAILTANK
+      type: string
     BookletData.BasicEquipment:
       type: object
       properties:
@@ -9511,13 +9997,20 @@ components:
           format: uuid
           nullable: true
       additionalProperties: false
-    EquipmentTypeEnum:
-      enum:
-        - TANKCONTAINER
-        - TANKTRAILER
-        - IBC
-        - RAILTANK
-      type: string
+    BookletData.SignOffCleaning:
+      required:
+        - driverName
+        - signature
+      type: object
+      properties:
+        driverName:
+          type: string
+        signature:
+          type: string
+        driverComments:
+          type: string
+          nullable: true
+      additionalProperties: false
     ResultsPage.BookletData.CleaningSummary:
       type: object
       properties:
@@ -9561,6 +10054,15 @@ components:
         comment:
           type: string
       additionalProperties: false
+    BookletData.Cleaning.DepotDeclarationInfo:
+      required:
+        - validityDate
+      type: object
+      properties:
+        validityDate:
+          type: string
+          format: date-time
+      additionalProperties: false
     CreditTransactionReasonEnum:
       enum:
         - AddedCredits
@@ -9572,23 +10074,24 @@ components:
         - CompleteLoadWithEppl
         - StartCleaningWithEeco
       type: string
-    CreditData.CreditTransaction:
+    CreditData.CreditPackSummary:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        performedOn:
+        createdOn:
           type: string
           format: date-time
-        performedBy:
+        lastUpdatedOn:
           type: string
-          format: uuid
-        amount:
+          format: date-time
+        remainingCredits:
           type: integer
           format: int32
-        details:
-          $ref: '#/components/schemas/CreditData.CreditTransactionContext'
+        initialCredits:
+          type: integer
+          format: int32
       additionalProperties: false
     CreditData.CreditSummary:
       type: object
@@ -9617,20 +10120,26 @@ components:
             format: int32
           nullable: true
       additionalProperties: false
-    CreditData.CreditTransactionContext:
+    CreditData.CreditPackOveralSummary:
       type: object
       properties:
-        reason:
-          $ref: '#/components/schemas/CreditTransactionReasonEnum'
-        bookletId:
-          type: string
-          format: uuid
-          nullable: true
-        eEcd:
-          type: string
-          nullable: true
-        comment:
-          type: string
+        depleted:
+          type: integer
+          format: int32
+        inUse:
+          type: integer
+          format: int32
+        untouched:
+          type: integer
+          format: int32
+        purchased:
+          type: integer
+          format: int32
+          readOnly: true
+        details:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreditData.CreditPackSummary'
           nullable: true
       additionalProperties: false
     CreditData.CreditPack:
@@ -9674,47 +10183,6 @@ components:
         walletId:
           type: string
           format: uuid
-      additionalProperties: false
-    CreditData.CreditPackSummary:
-      type: object
-      properties:
-        id:
-          type: string
-          format: uuid
-        createdOn:
-          type: string
-          format: date-time
-        lastUpdatedOn:
-          type: string
-          format: date-time
-        remainingCredits:
-          type: integer
-          format: int32
-        initialCredits:
-          type: integer
-          format: int32
-      additionalProperties: false
-    CreditData.CreditPackOveralSummary:
-      type: object
-      properties:
-        depleted:
-          type: integer
-          format: int32
-        inUse:
-          type: integer
-          format: int32
-        untouched:
-          type: integer
-          format: int32
-        purchased:
-          type: integer
-          format: int32
-          readOnly: true
-        details:
-          type: array
-          items:
-            $ref: '#/components/schemas/CreditData.CreditPackSummary'
-          nullable: true
       additionalProperties: false
     CreditData.CreditWalletSummary:
       type: object
@@ -10180,7 +10648,23 @@ components:
             type: string
           nullable: true
       additionalProperties: false
-    BookletData.EPpl.EPpl:
+    BookletData.LoadReference:
+      type: object
+      properties:
+        customerReference:
+          type: string
+          nullable: true
+        internalReference:
+          type: string
+          nullable: true
+        outboundDeliveryReference:
+          type: string
+          nullable: true
+        outboundDeliveryReferenceItemLine:
+          type: string
+          nullable: true
+      additionalProperties: false
+    BookletData.EPpl.Eppl:
       type: object
       properties:
         id:
@@ -10205,6 +10689,12 @@ components:
         nextLoadId:
           type: string
           format: uuid
+        loadDetails:
+          $ref: '#/components/schemas/BookletData.LoadDetail'
+        loadReference:
+          $ref: '#/components/schemas/BookletData.LoadReference'
+        loadProduct:
+          $ref: '#/components/schemas/BookletData.Product'
         warning:
           type: string
           nullable: true
@@ -10282,18 +10772,97 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    MasterData.Compartment:
+    Document.EpplTranslation:
+      required:
+        - compartimentAdr
+        - compartment
+        - compartmentArticle
+        - compartmentCarrierRef
+        - compartmentDateTime
+        - compartmentProduct
+        - compartmentTransportRef
+        - compartmentUn
+        - customerFaxCode
+        - customerPhoneCode
+        - epplConfirm
+        - epplCounter
+        - epplHighlight
+        - epplHighlightOn
+        - epplLastCleaning
+        - epplStatement
+        - epplTitle
+        - equipmentInfoType
+        - equipmentInfoUniqueId
+        - equipmentPrevLoadInfo
+        - loaderFaxCode
+        - loaderInfo
+        - loaderPhoneCode
+        - loadInfo
+        - loadInfoLoadingDate
+        - loadInfoProduct
+        - loadInfoTransportRef
+        - loadingLocation
+        - transportInfo
       type: object
       properties:
-        key:
+        epplTitle:
           type: string
-          nullable: true
-        volume:
-          type: integer
-          format: int32
-        baffles:
-          type: integer
-          format: int32
+        transportInfo:
+          type: string
+        customerPhoneCode:
+          type: string
+        customerFaxCode:
+          type: string
+        loaderInfo:
+          type: string
+        loaderPhoneCode:
+          type: string
+        loaderFaxCode:
+          type: string
+        loadingLocation:
+          type: string
+        loadInfo:
+          type: string
+        loadInfoProduct:
+          type: string
+        loadInfoTransportRef:
+          type: string
+        loadInfoLoadingDate:
+          type: string
+        equipmentPrevLoadInfo:
+          type: string
+        equipmentInfoType:
+          type: string
+        equipmentInfoUniqueId:
+          type: string
+        compartment:
+          type: string
+        epplCounter:
+          type: string
+        epplLastCleaning:
+          type: string
+        compartmentDateTime:
+          type: string
+        compartmentArticle:
+          type: string
+        compartmentProduct:
+          type: string
+        compartmentTransportRef:
+          type: string
+        compartmentCarrierRef:
+          type: string
+        compartmentUn:
+          type: string
+        compartimentAdr:
+          type: string
+        epplConfirm:
+          type: string
+        epplStatement:
+          type: string
+        epplHighlight:
+          type: string
+        epplHighlightOn:
+          type: string
       additionalProperties: false
     ResultsPage.EecdDocument.ArchivedEpplMetadataDetail:
       type: object
@@ -10330,6 +10899,82 @@ components:
             $ref: '#/components/schemas/Document.ArchivedEpplMetadataDetail'
           nullable: true
       additionalProperties: false
+    MasterData.EpplDocumentTranslationPost:
+      required:
+        - languageCode
+        - translation
+      type: object
+      properties:
+        languageCode:
+          type: string
+        translation:
+          $ref: '#/components/schemas/Document.EpplTranslation'
+      additionalProperties: false
+    TranslationDocumentTypeEnum:
+      enum:
+        - ECD
+        - EPPL
+        - ECO
+      type: string
+    MasterData.EpplDocumentTranslationPut:
+      required:
+        - languageCode
+        - translation
+      type: object
+      properties:
+        languageCode:
+          type: string
+        translation:
+          $ref: '#/components/schemas/Document.EpplTranslation'
+      additionalProperties: false
+    EpplDocumentTranslation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        createdOn:
+          type: string
+          format: date-time
+        createdByUser:
+          type: string
+          format: uuid
+        lastUpdatedOn:
+          type: string
+          format: date-time
+        lastUpdatedByUser:
+          type: string
+          format: uuid
+        isDeleted:
+          type: boolean
+        version:
+          type: string
+          format: uuid
+          nullable: true
+        versionTranslation:
+          type: integer
+          format: int32
+        languageCode:
+          type: string
+          nullable: true
+        documentType:
+          $ref: '#/components/schemas/TranslationDocumentTypeEnum'
+        translation:
+          $ref: '#/components/schemas/Document.EpplTranslation'
+      additionalProperties: false
+    MasterData.Compartment:
+      type: object
+      properties:
+        key:
+          type: string
+          nullable: true
+        volume:
+          type: integer
+          format: int32
+        baffles:
+          type: integer
+          format: int32
+      additionalProperties: false
     Equipment.CompartmentCleanliness:
       type: object
       properties:
@@ -10350,20 +10995,14 @@ components:
         - PolymerComplete
         - PolymerIncomplete
       type: string
-    Equipment.EquipmentCleanliness:
+    MasterData.EquipmentPost:
+      required:
+        - equipmentType
       type: object
       properties:
-        state:
-          $ref: '#/components/schemas/Equipment.EquipmentCleanlinessStateEnum'
-        compartments:
-          type: object
-          additionalProperties:
-            $ref: '#/components/schemas/Equipment.CompartmentCleanliness'
-          nullable: true
-      additionalProperties: false
-    MasterData.EquipmentPut:
-      type: object
-      properties:
+        operatorId:
+          type: string
+          format: uuid
         equipmentType:
           $ref: '#/components/schemas/EquipmentTypeEnum'
         subGroup:
@@ -10383,10 +11022,14 @@ components:
           nullable: true
         isSubContracted:
           type: boolean
+          nullable: true
         subContractor:
           type: string
           nullable: true
         licensePlate:
+          type: string
+          nullable: true
+        internalEquipmentCode:
           type: string
           nullable: true
         containerId:
@@ -10394,9 +11037,6 @@ components:
           nullable: true
         isIso6346Compliant:
           type: boolean
-          nullable: true
-        internalEquipmentCode:
-          type: string
           nullable: true
         productType:
           type: string
@@ -10472,6 +11112,17 @@ components:
         validitySp:
           type: string
           format: date-time
+          nullable: true
+      additionalProperties: false
+    Equipment.EquipmentCleanliness:
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/Equipment.EquipmentCleanlinessStateEnum'
+        compartments:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/Equipment.CompartmentCleanliness'
           nullable: true
       additionalProperties: false
     MasterData.Equipment:
@@ -10640,6 +11291,119 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MasterData.Equipment'
+          nullable: true
+      additionalProperties: false
+    MasterData.EquipmentPut:
+      type: object
+      properties:
+        equipmentType:
+          $ref: '#/components/schemas/EquipmentTypeEnum'
+        subGroup:
+          type: string
+          nullable: true
+        numberOfManholes:
+          type: integer
+          format: int32
+          nullable: true
+        numberOfCompartments:
+          type: integer
+          format: int32
+        compartments:
+          type: array
+          items:
+            $ref: '#/components/schemas/MasterData.Compartment'
+          nullable: true
+        isSubContracted:
+          type: boolean
+        subContractor:
+          type: string
+          nullable: true
+        licensePlate:
+          type: string
+          nullable: true
+        containerId:
+          type: string
+          nullable: true
+        isIso6346Compliant:
+          type: boolean
+          nullable: true
+        internalEquipmentCode:
+          type: string
+          nullable: true
+        productType:
+          type: string
+          nullable: true
+        licensePlateCountry:
+          type: string
+          nullable: true
+        tareWeight:
+          type: number
+          format: double
+          nullable: true
+        netWeight:
+          type: number
+          format: double
+          nullable: true
+        maxWeight:
+          type: number
+          format: double
+          nullable: true
+        tankTypeAdr:
+          type: string
+          nullable: true
+        minPressureAdr:
+          type: string
+          nullable: true
+        openingsAdr:
+          type: string
+          nullable: true
+        valvesAdr:
+          type: string
+          nullable: true
+        lastInspectionAdr:
+          type: string
+          format: date-time
+          nullable: true
+        lastPressureTestAdr:
+          type: string
+          format: date-time
+          nullable: true
+        te:
+          type: string
+          nullable: true
+        tc:
+          type: string
+          nullable: true
+        fl:
+          type: string
+          format: date-time
+          nullable: true
+        at:
+          type: string
+          format: date-time
+          nullable: true
+        tankInstructionUn:
+          type: string
+          nullable: true
+        lastInspectionUn:
+          type: string
+          format: date-time
+          nullable: true
+        nextExaminationCsc:
+          type: string
+          format: date-time
+          nullable: true
+        lastInspectionCsc:
+          type: string
+          format: date-time
+          nullable: true
+        mainInspection:
+          type: string
+          format: date-time
+          nullable: true
+        validitySp:
+          type: string
+          format: date-time
           nullable: true
       additionalProperties: false
     MasterData.EquipmentImport:
@@ -11654,21 +12418,30 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    BookletData.LoadReference:
+    BookletData.LoadAssignment:
       type: object
       properties:
-        customerReference:
+        productId:
           type: string
+          format: uuid
           nullable: true
-        internalReference:
+        sellerId:
           type: string
+          format: uuid
           nullable: true
-        outboundDeliveryReference:
-          type: string
+        loadDetails:
+          $ref: '#/components/schemas/BookletData.LoadDetail'
+        references:
+          $ref: '#/components/schemas/BookletData.LoadReference'
+        compartments:
+          type: array
+          items:
+            type: string
           nullable: true
-        outboundDeliveryReferenceItemLine:
-          type: string
-          nullable: true
+        extraTask:
+          $ref: '#/components/schemas/BookletData.LoadAssignmentExtraTaskEnum'
+        cleaningActionRequest:
+          $ref: '#/components/schemas/BookletData.CleaningActionCreateRequest'
       additionalProperties: false
     ResultsPage.LoadingLocation.LoadingLocation:
       type: object
@@ -11704,31 +12477,6 @@ components:
           items:
             $ref: '#/components/schemas/LoadingLocation.LoadingLocation'
           nullable: true
-      additionalProperties: false
-    BookletData.LoadAssignment:
-      type: object
-      properties:
-        productId:
-          type: string
-          format: uuid
-          nullable: true
-        sellerId:
-          type: string
-          format: uuid
-          nullable: true
-        loadDetails:
-          $ref: '#/components/schemas/BookletData.LoadDetail'
-        references:
-          $ref: '#/components/schemas/BookletData.LoadReference'
-        compartments:
-          type: array
-          items:
-            type: string
-          nullable: true
-        extraTask:
-          $ref: '#/components/schemas/BookletData.LoadAssignmentExtraTaskEnum'
-        cleaningActionRequest:
-          $ref: '#/components/schemas/BookletData.CleaningActionCreateRequest'
       additionalProperties: false
     BookletData.Load:
       type: object
@@ -12534,6 +13282,98 @@ components:
           type: integer
           format: int32
         eEcdsCreatedDec:
+          type: integer
+          format: int32
+      additionalProperties: false
+    Reporting.CreatedEecosReportDetail:
+      type: object
+      properties:
+        organisationName:
+          type: string
+          nullable: true
+        eEcosCreatedYearToDate:
+          type: integer
+          format: int32
+        eEcosCreatedJan:
+          type: integer
+          format: int32
+        eEcosCreatedFeb:
+          type: integer
+          format: int32
+        eEcosCreatedMar:
+          type: integer
+          format: int32
+        eEcosCreatedApr:
+          type: integer
+          format: int32
+        eEcosCreatedMay:
+          type: integer
+          format: int32
+        eEcosCreatedJun:
+          type: integer
+          format: int32
+        eEcosCreatedJul:
+          type: integer
+          format: int32
+        eEcosCreatedAug:
+          type: integer
+          format: int32
+        eEcosCreatedSep:
+          type: integer
+          format: int32
+        eEcosCreatedOct:
+          type: integer
+          format: int32
+        eEcosCreatedNov:
+          type: integer
+          format: int32
+        eEcosCreatedDec:
+          type: integer
+          format: int32
+      additionalProperties: false
+    Reporting.CreatedEpplsReportDetail:
+      type: object
+      properties:
+        organisationName:
+          type: string
+          nullable: true
+        ePplsCreatedYearToDate:
+          type: integer
+          format: int32
+        ePplsCreatedJan:
+          type: integer
+          format: int32
+        ePplsCreatedFeb:
+          type: integer
+          format: int32
+        ePplsCreatedMar:
+          type: integer
+          format: int32
+        ePplsCreatedApr:
+          type: integer
+          format: int32
+        ePplsCreatedMay:
+          type: integer
+          format: int32
+        ePplsCreatedJun:
+          type: integer
+          format: int32
+        ePplsCreatedJul:
+          type: integer
+          format: int32
+        ePplsCreatedAug:
+          type: integer
+          format: int32
+        ePplsCreatedSep:
+          type: integer
+          format: int32
+        ePplsCreatedOct:
+          type: integer
+          format: int32
+        ePplsCreatedNov:
+          type: integer
+          format: int32
+        ePplsCreatedDec:
           type: integer
           format: int32
       additionalProperties: false
