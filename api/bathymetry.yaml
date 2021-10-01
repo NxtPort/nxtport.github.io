@@ -1,0 +1,192 @@
+openapi: 3.0.1
+info:
+  title: Baythymetry WMS API
+  termsOfService: 'https://www.nxtport.eu/General-Terms-And-Conditions'
+  version: '1.0'
+  contact:
+    email: support@nxtport.com
+servers:
+  - url: 'https://api-uat.nxtport.com/bathymetry/v1/'
+    description: UAT Environment
+  - url: 'https://api.nxtport.com/bathymetry/v1/'
+    description: PRD Environment
+paths:
+  /bathymetry/wms:
+    get:
+      tags:
+        - Bathymetry WMS
+      operationId: wms
+      parameters:
+        - name: service
+          in: query
+          schema:
+            type: string
+            default: WMS
+            enum:
+              - WMS
+        - name: version
+          in: query
+          schema:
+            type: string
+            default: 1.3.0
+            enum:
+              - 1.3.0
+        - name: request
+          in: query
+          description: The type of WMS request
+          required: true
+          schema:
+            type: string
+            enum:
+              - GetCapabilities
+              - GetMap
+              - GetFeatureInfo
+              - GetLegendGraphic
+        - name: format
+          in: query
+          description: Required for GetMap and GetLegendGraphic. Format for the image tiles
+          schema:
+            type: string
+            enum:
+              - image/bmp
+              - image/jpeg
+              - image/tiff
+              - image/png
+              - image/png8
+              - image/png24
+              - image/png32
+              - image/gif
+              - image/svg+xml
+        - name: layers
+          in: query
+          description: Required for GetMap. Comma-separated list with name of the layers
+          schema:
+            type: string
+          example: 0,1
+        - name: width
+          in: query
+          description: Required for GetMap and GetFeatureInfo
+          schema:
+            maximum: 4096
+            minimum: 1
+            type: integer
+        - name: height
+          in: query
+          description: Required for GetMap and GetFeatureInfo
+          schema:
+            maximum: 4096
+            minimum: 1
+            type: integer
+        - name: styles
+          in: query
+          description: Style of the layers
+          schema:
+            type: string
+            default: default
+            enum:
+              - default
+        - name: bbox
+          in: query
+          description: Required for GetMap and GetFeatureInfo. Coordinates of the bounding box in the same reference system as defined in srs/crs.
+          schema:
+            type: string
+          example: 51.26100,4.24700,51.28100,4.26700
+        - name: transparent
+          in: query
+          description: The background of the image is transparent or white
+          schema:
+            type: boolean
+        - name: crs
+          in: query
+          description: Required for GetMap and GetFeatureInfo (or srs parameter). Coordinate reference system
+          schema:
+            type: string
+            enum:
+              - CRS:84
+              - EPSG:4326
+              - EPSG:31370
+        - name: srs
+          in: query
+          description: Required for GetMap and GetFeatureInfo (or crs parameter). Spatial reference system. Alias for crs parameter.
+          schema:
+            type: string
+            enum:
+              - CRS:84
+              - EPSG:4326
+              - EPSG:31370
+        - name: info_format
+          in: query
+          description: Required for GetFeatureInfo. Format of the information.
+          schema:
+            type: string
+            enum:
+              - application/vnd.esri.wms_raw_xml
+              - application/vnd.esri.wms_featureinfo_xml
+              - application/vnd.ogc.wms_xml
+              - application/geojson
+              - text/xml
+              - text/html
+              - text/plain
+        - name: query_layers
+          in: query
+          description: Required for GetFeatureInfo. Comma-separated list with name of the layers
+          schema:
+            type: string
+          example: 0,1
+        - name: x
+          in: query
+          description: Required for GetFeatureInfo (or i parameter). X coordinate of the point
+          schema:
+            type: number
+          example: 51.27
+        - name: i
+          in: query
+          description: Required for GetFeatureInfo (or x parameter). Alias for x paramter. X coordinate of the point
+          schema:
+            type: number
+          example: 51.27
+        - name: 'y'
+          in: query
+          description: Required for GetFeatureInfo (or j parameter). Y coordinate of the point
+          schema:
+            type: number
+          example: 4.25
+        - name: j
+          in: query
+          description: Required for GetFeatureInfo (or y parameter). Alias for y paramter. Y coordinate of the point
+          schema:
+            type: number
+          example: 4.25
+        - name: feature_count
+          in: query
+          description: Optional for GetFeatureInfo. Maximum number of returned features.
+          schema:
+            minimum: 1
+            type: integer
+        - name: layer
+          in: query
+          description: Required for GetLegendGraphic. The name of the layer for which the legend is asked.
+          schema:
+            type: string
+          example: 0
+      responses:
+        '200':
+          description: Following the WMS standard, the response status code is always 200, even on an error. The media type gives more information.
+        '400':
+          description: Bad Request
+        '429':
+          description: Too many requests
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    ApiKeyAuth:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+security:
+  - ApiKeyAuth: []
+    BearerAuth:
+      - read
+      - write
