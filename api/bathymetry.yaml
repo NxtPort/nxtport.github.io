@@ -6,9 +6,9 @@ info:
   contact:
     email: support@nxtport.com
 servers:
-  - url: 'https://api-uat.nxtport.com/bathymetry/v1/'
+  - url: 'https://api-uat.nxtport.com/opendata/bathymetry/v1/'
     description: UAT Environment
-  - url: 'https://api.nxtport.com/bathymetry/v1/'
+  - url: 'https://api.nxtport.com/opendata/bathymetry/v1/'
     description: PRD Environment
 paths:
   /bathymetry/wms:
