@@ -11,7 +11,7 @@ servers:
   - url: 'https://api.nxtport.com/opendata/bathymetry/v1/'
     description: PRD Environment
 paths:
-  /bathymetry/wms:
+  /wms:
     get:
       tags:
         - Bathymetry WMS
