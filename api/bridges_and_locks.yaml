@@ -1,0 +1,149 @@
+openapi: 3.0.1
+info:
+  version: v1
+  title: Bridges and Locks API
+servers:
+  - url: 'https://api-uat.nxtport.com/opendata/bridgesandlocks/v1/'
+    description: UAT Environment
+  - url: 'https://api.nxtport.com/opendata/bridgesandlocks/v1/'
+    description: PRD Environment
+paths:
+  /bridges/state:
+    get:
+      description: Get all available bridges with their current state.
+      operationId: findBridgesState
+      responses:
+        '200':
+          description: A valid response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BridgeCurrentStateResponseDTO'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortOfAntwerpProblem'
+        '429':
+          description: Too many requests
+  /locks/state:
+    get:
+      description: Get all available locks with their current state.
+      operationId: findLocksState
+      responses:
+        '200':
+          description: A valid response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LockCurrentStateResponseDTO'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortOfAntwerpProblem'
+        '429':
+          description: Too many requests
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    ApiKeyAuth:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+  schemas:
+    BridgeCurrentStateResponseDTO:
+      type: object
+      properties:
+        bridge_id:
+          type: string
+          description: Bridge Id.
+        description:
+          type: string
+          description: Name of the bridge.
+        latitude_wgs84:
+          type: number
+          format: double
+        state:
+          type: string
+          description: The status in which the bridge is currently in (GOING_UP, GOING_DOWN, UP, DOWN, UNKNOWN, NO_DATA). NO_DATA means that we currently have no data of the lock door's status. UNKNOWN means that we have status data but we do not have the right data to display the status of the lock door.
+        operational_state_since_in_utc:
+          type: string
+          description: The time in utc from when the operational status changed.
+          format: date-time
+        operational_state:
+          type: string
+          description: The operational status of the bridge (WORKING, MALFUNCTIONING, OUT_OF_ORDER, NO_DATA). NO_DATA means that we currently have no data of the lock door's status.
+        state_since_in_utc:
+          type: string
+          description: The time in utc from when the status changed.
+          format: date-time
+        longitude_wgs84:
+          type: number
+          format: double
+    LockDoorStateResponseDTO:
+      type: object
+      properties:
+        latitude_wgs84:
+          type: number
+          format: double
+        state:
+          type: string
+          description: The status in which the lock door is currently in (OPENING, CLOSING, OPEN, CLOSED, UNKNOWN, NO_DATA). NO_DATA means that we currently have no data of the lock door's status. UNKNOWN means that we have status data but we do not have the right data to display the status of the lock door.
+        operational_state_since_in_utc:
+          type: string
+          description: The time in utc from when the operational status changed.
+          format: date-time
+        operational_state:
+          type: string
+          description: The operational status of the lock door (WORKING, MALFUNCTIONING, OUT_OF_ORDER, NO_DATA). NO_DATA means that we currently have no data of the lock door's status.
+        state_since_in_utc:
+          type: string
+          description: The time in utc from when the status changed.
+          format: date-time
+        lock_door_id:
+          type: string
+          description: Lock door Id.
+        longitude_wgs84:
+          type: number
+          format: double
+    LockCurrentStateResponseDTO:
+      type: object
+      properties:
+        description:
+          type: string
+          description: Lock name.
+        latitude_wgs84:
+          type: number
+          format: double
+        lock_doors:
+          type: array
+          description: Lock doors.
+          items:
+            $ref: '#/components/schemas/LockDoorStateResponseDTO'
+        longitude_wgs84:
+          type: number
+          format: double
+        lock_id:
+          type: string
+          description: Lock Id.
+    PortOfAntwerpProblem:
+      type: object
+      properties:
+        stacktrace:
+          type: string
+        message:
+          type: string
+security:
+  - ApiKeyAuth: []
+    BearerAuth:
+      - read
+      - write
