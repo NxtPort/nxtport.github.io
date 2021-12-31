@@ -11,6 +11,7 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [eECD](https://nxtport.github.io/?api=eecd)
 * [Import Consignment](https://nxtport.github.io/?api=import_consignment_data)
 * [Liquid Bulk](https://nxtport.github.io/?api=liquidbulk)
+* [Meteo](https://nxtport.github.io/?api=meteo)
 * [Next Mode of Transport](https://nxtport.github.io/?api=nmot)
 * [Ocean Schedules](https://nxtport.github.io/?api=ocean_schedules) by INTTRA
 * [Portcall+](https://nxtport.github.io/?api=port_call_plus) by Port+
