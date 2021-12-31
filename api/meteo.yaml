@@ -1,0 +1,200 @@
+openapi: 3.0.1
+info:
+  title: Meteo API
+  version: v1
+servers:
+  - url: 'https://api-uat.nxtport.com/opendata/meteo/v1/'
+    description: UAT Environment
+  - url: 'https://api.nxtport.com/opendata/meteo/v1/'
+    description: PRD Environment
+paths:
+  /readings:
+    get:
+      description: >-
+        Get current situation of all stations. Rate limit is 100 calls per day
+        per company_code. This limit is shared with other calls.
+      operationId: findReadings
+      parameters:
+        - name: location
+          in: query
+          schema:
+            type: string
+        - name: from
+          in: query
+          schema:
+            type: string
+        - name: to
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: A valid response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReadingResponseDTO'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PortOfAntwerpProblem'
+        '429':
+          description: Too many requests
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    ApiKeyAuth:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+  schemas:
+    LocationResponseDTO:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Name of the meteo station.
+        longitude_wgs84:
+          type: number
+          description: Longitude of the meteo station
+          format: double
+        latitude_wgs84:
+          type: number
+          description: Latitude of the meteo station
+          format: double
+        description:
+          type: string
+          description: Description of the meteo station.
+    ReadingResponseDTO:
+      type: object
+      properties:
+        location:
+          $ref: '#/components/schemas/LocationResponseDTO'
+        poa_ingest_time_utc:
+          type: string
+          description: The time in utc when teh reading was done
+          format: date-time
+        ws_600:
+          type: number
+          description: >-
+            The average wind speed over the last 10 minutes. This value shall be
+            calculated on a running basis with a 1-minute refresh time. Unit is
+            in m/s and the precision is 0,1.
+          format: double
+        ws_ship_600:
+          type: number
+          description: >-
+            The maximum wind gust with a 10 second averaging time measured with
+            a 1 second refresh rate. The value is determined every minute for
+            the past 10 minutes. Unit is in m/s and the precision is 0,1.
+          format: double
+        ws_max_600:
+          type: number
+          description: >-
+            The maximum gust with a 3 second averaging time measured with a 1
+            second refresh rate. The value is determined every minute for the
+            past 10 minutes. This is the value that the WMO has established as
+            the standard wind gust value. Unit is in m/s and the precision is
+            0,1.
+          format: double
+        ws_min_600:
+          type: number
+          description: >-
+            The minimum wind gust with a 3 second averaging time measured with a
+            1 second refresh rate. The value is determined every minute for the
+            past 10 minutes. Unit is in m/s and the precision is 0,1.
+          format: double
+        ws_600_beaufort:
+          type: integer
+          description: >-
+            The average wind speed over the last 10 minutes. This value shall be
+            calculated on a running basis with a 1-minute refresh time. Unit is
+            in beaufort and the precision is 1.
+          format: int32
+        ws_ship_600_beaufort:
+          type: integer
+          description: >-
+            The maximum wind gust with a 10 second averaging time measured with
+            a 1 second refresh rate. The value is determined every minute for
+            the past 10 minutes. Unit is in beaufort and the precision is 1.
+          format: int32
+        ws_max_600_beaufort:
+          type: integer
+          description: >-
+            The maximum gust with a 3 second averaging time measured with a 1
+            second refresh rate. The value is determined every minute for the
+            past 10 minutes. This is the value that the WMO has established as
+            the standard wind gust value. Unit is in beaufort and the precision
+            is 1.
+          format: int32
+        ws_min_600_beaufort:
+          type: integer
+          description: >-
+            The minimum wind gust with a 3 second averaging time measured with a
+            1 second refresh rate. The value is determined every minute for the
+            past 10 minutes. Unit is in beaufort and the precision is 1.
+          format: int32
+        wr_600:
+          type: number
+          description: >-
+            The measured wind direction averaged over the last 10 seconds. Unit
+            is in ° and the precision is 0.
+          format: double
+        wr_10:
+          type: number
+          description: >-
+            The average wind direction for the past 10 minutes, refreshed per
+            minute. Unit is in ° and the precision is 0.
+          format: double
+        tt_600:
+          type: number
+          description: >-
+            Average temperature over the last 10 min with a 1 min refresh time.
+            Unit is in °C and the precision is 0,1.
+          format: double
+        tt_max_600:
+          type: number
+          description: >-
+            Maximum temperature over the last 10 min with a 1 min refresh time.
+            Unit is in °C and the precision is 0,1.
+          format: double
+        tt_min_600:
+          type: number
+          description: >-
+            Minimum temperature over the last 10 min with a 1 min refresh time..
+            Unit is in °C and the precision is 0,1.
+          format: double
+        tt_10:
+          type: number
+          description: >-
+            Average temperature of the last 10 seconds. Unit is in °C and the
+            precision is 0,1.
+          format: double
+    Problem:
+      type: object
+      properties:
+        title:
+          type: string
+        status:
+          type: integer
+          format: int32
+        detail:
+          type: string
+    PortOfAntwerpProblem:
+      type: object
+      properties:
+        message:
+          type: string
+        stacktrace:
+          type: string
+security:
+  - ApiKeyAuth: []
+    BearerAuth:
+      - read
+      - write
