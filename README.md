@@ -9,6 +9,7 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [Certified Pick Up](https://nxtport.github.io/?api=certified_pick_up)
 * [Container Tare Weight](https://nxtport.github.io/?api=ctw) by ContainerWeight
 * [eECD](https://nxtport.github.io/?api=eecd)
+* [i4sea](https://nxtport.github.io/?api=i4sea)
 * [Import Consignment](https://nxtport.github.io/?api=import_consignment_data)
 * [Liquid Bulk](https://nxtport.github.io/?api=liquidbulk)
 * [Meteo](https://nxtport.github.io/?api=meteo)

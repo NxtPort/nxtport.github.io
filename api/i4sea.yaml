@@ -1,0 +1,60 @@
+openapi: 3.0.1
+info:
+  version: 0.1.0
+  title: i4sea
+servers:
+  - url: 'https://api-uat.nxtport.com/i4sea/beta/'
+    description: UAT Environment
+  - url: 'https://api.nxtport.com/i4sea/beta/'
+    description: PRD Environment
+paths:
+  /v1/atmocean/getEnvironmentalData:
+    post:
+      operationId: AtmoceanController.getEnvironmentalData
+      description: Returns forecast or observed environmental data from a given virtual station.
+      tags:
+        - AtmoceanController
+      requestBody:
+        description: body
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtmoceanControllerGetEnvironmentalDataPayload'
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: Missing required parameter
+components:
+  schemas:
+    AtmoceanControllerGetEnvironmentalDataPayload:
+      type: object
+      properties:
+        station_id:
+          type: number
+        region:
+          type: string
+        data_type:
+          type: string
+        environmental_type:
+          type: string
+        ensemble:
+          type: boolean
+        create_at:
+          type: string
+      required:
+        - station_id
+        - region
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    ApiKeyAuth:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+security:
+  - ApiKeyAuth: []
+    BearerAuth: []
