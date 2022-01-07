@@ -42,8 +42,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PortOfAntwerpProblem'
-        '429':
-          description: Too many requests
+        '403':
+          description: Forbidden (Too many requests)
 components:
   securitySchemes:
     BearerAuth:
