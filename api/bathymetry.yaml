@@ -174,8 +174,8 @@ paths:
           description: Following the WMS standard, the response status code is always 200, even on an error. The media type gives more information.
         '400':
           description: Bad Request
-        '429':
-          description: Too many requests
+        '403':
+          description: Forbidden (Too many requests)
 components:
   securitySchemes:
     BearerAuth:
