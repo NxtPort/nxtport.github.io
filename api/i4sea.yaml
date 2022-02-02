@@ -1,34 +1,79 @@
 openapi: 3.0.1
 info:
-  version: 0.1.0
   title: i4sea
+  description: i4sea Proxy API For NxtPort International
+  version: 0.2.0
 servers:
-  - url: 'https://api-uat.nxtport.com/i4sea/beta/'
-    description: UAT Environment
-  - url: 'https://api.nxtport.com/i4sea/beta/'
-    description: PRD Environment
+- url: 'https://api-uat.nxtport.com/i4sea/beta/'
+  description: UAT Environment
+- url: 'https://api.nxtport.com/i4sea/beta/'
+  description: PRD Environment
+security:
+- bearer: []
+- apiKey: []
+tags:
+- name: AtmoceanController
 paths:
+  /v1/atmocean/getStations:
+    post:
+      tags:
+      - AtmoceanController
+      description: Return list of stations i4cast's available for download.
+      operationId: AtmoceanController.getStations
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AtmoceanControllerGetStationsPayload'
+        required: true
+      responses:
+        200:
+          description: Success
+          content: {}
+        400:
+          description: Missing required parameter
+          content: {}
+      security:
+      - bearer: []
+        apiKey: []
+      x-codegen-request-body-name: body
   /v1/atmocean/getEnvironmentalData:
     post:
-      operationId: AtmoceanController.getEnvironmentalData
-      description: Returns forecast or observed environmental data from a given virtual station.
       tags:
-        - AtmoceanController
+      - AtmoceanController
+      description: Returns forecast or observed environmental data from a given virtual
+        station.
+      operationId: AtmoceanController.getEnvironmentalData
       requestBody:
-        description: body
-        required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AtmoceanControllerGetEnvironmentalDataPayload'
+        required: true
       responses:
-        '200':
+        200:
           description: Success
-        '400':
+          content: {}
+        400:
           description: Missing required parameter
+          content: {}
+      security:
+      - bearer: []
+        apiKey: []
+      x-codegen-request-body-name: body
 components:
   schemas:
+    AtmoceanControllerGetStationsPayload:
+      required:
+      - region
+      type: object
+      properties:
+        region:
+          type: string
     AtmoceanControllerGetEnvironmentalDataPayload:
+      required:
+      - region
+      - station_id
       type: object
       properties:
         station_id:
@@ -43,18 +88,14 @@ components:
           type: boolean
         create_at:
           type: string
-      required:
-        - station_id
-        - region
-      additionalProperties: false
   securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-    ApiKeyAuth:
+    bearer:
+      type: apiKey
+      description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization:
+        Bearer {token}"'
+      name: Authorization
+      in: header
+    apiKey:
       type: apiKey
       name: Ocp-Apim-Subscription-Key
       in: header
-security:
-  - ApiKeyAuth: []
-    BearerAuth: []
