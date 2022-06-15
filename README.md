@@ -15,6 +15,7 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [Meteo](https://nxtport.github.io/?api=meteo)
 * [Next Mode of Transport](https://nxtport.github.io/?api=nmot)
 * [Ocean Schedules](https://nxtport.github.io/?api=ocean_schedules) by INTTRA
+* [POA EDI To XML Convertor API](https://nxtport.github.io/?api=poa_edi_to_xml_convertor)
 * [Portcall+](https://nxtport.github.io/?api=port_call_plus) by Port+
 * [Port Directory](https://nxtport.github.io/?api=port_directory) by Port+
 * [Port Stays](https://nxtport.github.io/?api=port_stays) by APICS
