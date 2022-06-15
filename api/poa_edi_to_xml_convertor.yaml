@@ -3,8 +3,6 @@ info:
   title: NxtPort Poa Edi2Xml Conversion
   version: v1
 servers:
-  - url: https://api-dev.nxtport.com/poa/edi2xml/v1
-  - url: https://api-stg.nxtport.com/poa/edi2xml/v1
   - url: https://api-uat.nxtport.com/poa/edi2xml/v1
   - url: https://api.nxtport.com/poa/edi2xml/v1
 paths:
