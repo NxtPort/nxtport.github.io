@@ -17,10 +17,6 @@ paths:
       description: PortVoyages API
       operationId: getPortVoyages
       parameters:
-        - name: company_code
-          in: query
-          schema:
-            type: string
         - name: date
           in: query
           description: 'Referentiedatum die bepaalt welke data moet worden opgehaald: op basis van deze date/time gaat systeem enkel gewijzigde reisdata ophalen vanaf het opgegeven moment. Je kan tot max 6 uur terug. Formaat is "yyyy-MM-ddThh:mm:ssZ".'
