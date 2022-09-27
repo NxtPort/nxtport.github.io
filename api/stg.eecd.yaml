@@ -1832,6 +1832,49 @@ paths:
             type: string
             description: ''
             format: uuid
+        - name: languageCode
+          in: query
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/octet-stream:
+              schema:
+                type: file
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/language/{languageCode}/document:
+    get:
+      tags:
+        - EEcds
+      summary: Generate an eecd document from a cleaning in a booklet.
+      description: "<br>\r\n                    Generates a downloadable Eecd document based on a cleaning still in a booklet.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n    <li>Loading Operator</li>\r\n    <li>Viewer</li>\r\n  </ul>\r\n"
+      parameters:
+        - name: equipmentId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            description: ''
+            format: uuid
+        - name: cleaningId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            description: ''
+            format: uuid
+        - name: languageCode
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            description: ''
+            nullable: true
       responses:
         '200':
           description: Success
@@ -1852,6 +1895,37 @@ paths:
           schema:
             type: string
             format: uuid
+        - name: languageCode
+          in: query
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/octet-stream:
+              schema:
+                type: file
+  /v1/eecds/archives/{id}/language/{languageCode}:
+    get:
+      tags:
+        - EEcds
+      summary: Dynamically generate and download an eECD given a language code
+      description: "<br>\r\n                    Serves the eECD as a downloadable pdf.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n"
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: languageCode
+          in: path
+          required: true
+          schema:
+            type: string
+            nullable: true
       responses:
         '200':
           description: Success
@@ -2089,6 +2163,50 @@ paths:
             type: string
             description: ''
             format: uuid
+        - name: languageCode
+          in: query
+          schema:
+            type: string
+            nullable: true
+      responses:
+        '200':
+          description: Success
+          content:
+            application/octet-stream:
+              schema:
+                type: file
+      deprecated: true
+  /v1/equipment/{equipmentId}/cleaningactions/{cleaningId}/language/{languageCode}/request/document:
+    get:
+      tags:
+        - EEcos
+      summary: Generate an eeco document from a cleaning request in a booklet.
+      description: "<br>\r\n                    Generates a downloadable Eeco document based on a cleaning request still in a booklet.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Community Admin</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Cleaner</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n    <li>Cleaning Operator</li>\r\n    <li>Despatcher</li>\r\n    <li>Equipment Manager</li>\r\n  </ul>\r\n"
+      parameters:
+        - name: equipmentId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            description: ''
+            format: uuid
+        - name: cleaningId
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            description: ''
+            format: uuid
+        - name: languageCode
+          in: path
+          description: ''
+          required: true
+          schema:
+            type: string
+            description: ''
+            nullable: true
       responses:
         '200':
           description: Success
@@ -4490,14 +4608,19 @@ paths:
     put:
       tags:
         - Licenses
+      summary: Update the settings on an organisation's active license.
+      description: "<br>\r\n                    Enables an admin to update his organisation's settings.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n"
       parameters:
         - name: organisationId
           in: path
+          description: The ID of the organisation whose settings need to be updated.
           required: true
           schema:
             type: string
+            description: The ID of the organisation whose settings need to be updated.
             format: uuid
       requestBody:
+        description: The body containing the new settings.
         content:
           application/xml:
             schema:
@@ -8049,6 +8172,18 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+    DocumentTypeEnum:
+      enum:
+        - UNKNOWN
+        - LOADDOCUMENT
+        - SDS
+        - SIGNATURE
+        - CLEANINGDOCUMENT
+        - TRANSPORTORDER
+        - EECD
+        - EECO
+        - DEPOTDECLARATION
+      type: string
     BookletData.Attachment:
       type: object
       properties:
@@ -8058,6 +8193,8 @@ components:
         originalFilename:
           type: string
           nullable: true
+        documentType:
+          $ref: '#/components/schemas/DocumentTypeEnum'
       additionalProperties: false
     BookletData.LoadAssignmentExtraTaskEnum:
       enum:
@@ -8606,6 +8743,8 @@ components:
     BookletData.CleaningActionCreateRequest:
       required:
         - cleanerId
+        - compartmentCleanings
+        - compartments
         - locationId
       type: object
       properties:
@@ -8620,7 +8759,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         cleaningId:
           type: string
           format: uuid
@@ -8640,7 +8778,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BookletData.CompartmentCleaning'
-          nullable: true
         references:
           $ref: '#/components/schemas/BookletData.Reference'
         safetyInfo:
@@ -8705,6 +8842,7 @@ components:
       additionalProperties: false
     BookletData.CleaningActionCreate:
       required:
+        - compartments
         - locationId
       type: object
       properties:
@@ -8719,7 +8857,6 @@ components:
           type: array
           items:
             type: string
-          nullable: true
         cleaningId:
           type: string
           format: uuid
@@ -10560,6 +10697,7 @@ components:
         - Eori
         - NxtPortEntityId
         - Uen
+        - Pincode
       type: string
     IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport:
       required:
