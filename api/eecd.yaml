@@ -4490,14 +4490,19 @@ paths:
     put:
       tags:
         - Licenses
+      summary: Update the settings on an organisation's active license.
+      description: "<br>\r\n                    Enables an admin to update his organisation's settings.\r\n                \r\n<br>\r\n  <b>Can be called by</b>\r\n  <ul>\r\n    <li>Cleaner</li>\r\n    <li>Loader</li>\r\n    <li>Equipment Operator</li>\r\n    <li>Seller</li>\r\n    <li>Community Admin</li>\r\n  </ul>\r\n\r\n<br>\r\n  <b>Required roles</b>\r\n  <ul>\r\n    <li>Admin</li>\r\n  </ul>\r\n"
       parameters:
         - name: organisationId
           in: path
+          description: The ID of the organisation whose settings need to be updated.
           required: true
           schema:
             type: string
+            description: The ID of the organisation whose settings need to be updated.
             format: uuid
       requestBody:
+        description: The body containing the new settings.
         content:
           application/xml:
             schema:
@@ -8049,6 +8054,18 @@ components:
           type: string
           nullable: true
       additionalProperties: false
+    DocumentTypeEnum:
+      enum:
+        - UNKNOWN
+        - LOADDOCUMENT
+        - SDS
+        - SIGNATURE
+        - CLEANINGDOCUMENT
+        - TRANSPORTORDER
+        - EECD
+        - EECO
+        - DEPOTDECLARATION
+      type: string
     BookletData.Attachment:
       type: object
       properties:
@@ -8058,6 +8075,8 @@ components:
         originalFilename:
           type: string
           nullable: true
+        documentType:
+          $ref: '#/components/schemas/DocumentTypeEnum'
       additionalProperties: false
     BookletData.LoadAssignmentExtraTaskEnum:
       enum:
@@ -10560,6 +10579,7 @@ components:
         - Eori
         - NxtPortEntityId
         - Uen
+        - Pincode
       type: string
     IntegratedLoadingLocation.Input.IntegratedLoadingLocationImport:
       required:
