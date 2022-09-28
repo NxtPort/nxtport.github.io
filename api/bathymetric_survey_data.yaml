@@ -1,0 +1,109 @@
+openapi: 3.0.1
+info:
+  title: Bathymtric Survey Data Api
+  version: v1
+servers:
+  - url: 'https://api-uat.nxtport.com/opendata/bathymetric-survey/v1/'
+    description: UAT Environment
+  - url: 'https://api.nxtport.com/opendata/bathymetry-survey/v1/'
+    description: PRD Environment
+paths:
+  /measurements:
+    get:
+      tags:
+        - Api
+      summary: Get temporary links to bathymetry survey measurement data files for a specific infrastructure code or change date.
+      parameters:
+        - name: infrastructureCode
+          in: query
+          description: The Infrastructure code (returned by /infrastructures)
+          schema:
+            type: string
+        - name: date
+          in: query
+          description: The reference date for changed files
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/MeasurementsResponseContract'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MeasurementsResponseContract'
+            text/json:
+              schema:
+                $ref: '#/components/schemas/MeasurementsResponseContract'
+  /infrastructures:
+    get:
+      tags:
+        - Api
+      summary: Get a list of infrastructure codes and their description.
+      responses:
+        '200':
+          description: Success
+          content:
+            text/plain:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InfrastructureResponseContract'
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InfrastructureResponseContract'
+            text/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InfrastructureResponseContract'
+components:
+  schemas:
+    MeasurementResponseContract:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        path:
+          type: string
+          format: uri
+          nullable: true
+      additionalProperties: false
+    MeasurementsResponseContract:
+      type: object
+      properties:
+        measurementDocumentPaths:
+          type: array
+          items:
+            $ref: '#/components/schemas/MeasurementResponseContract'
+          nullable: true
+      additionalProperties: false
+    InfrastructureResponseContract:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+      additionalProperties: false
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+    ApiKeyAuth:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+security:
+  - ApiKeyAuth: []
+    BearerAuth:
+      - read
+      - write

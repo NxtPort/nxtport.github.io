@@ -3,6 +3,7 @@
 The repository **nxtport.github.io** lets you visualize and interact with the NxtPort API's without having any of the implementation logic in place. Click any of the following links for documentation in OpenAPI format. Available API's are listed in alphabetical order.
 
 * [Bathymetry (Acceptance & Production)](https://nxtport.github.io/?api=bathymetry)
+* [Bathymetric Survey Data (Acceptance & Production)](https://nxtport.github.io/?api=bathymetric_survey_data)
 * [Bridges and Locks](https://nxtport.github.io/?api=bridges_and_locks)
 * [Bulkchain](https://nxtport.github.io/?api=bulkchain)
 * [Bulkchain Staging](https://nxtport.github.io/?api=stg.bulkchain)
