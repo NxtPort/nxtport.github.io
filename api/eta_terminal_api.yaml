@@ -1,0 +1,101 @@
+openapi: 3.0.1
+info:
+  title: ETA Terminal API
+  version: v1
+servers:
+  - url: 'https://api-uat.nxtport.com/opendata/eta-terminal/v1/'
+    description: UAT Environment
+  - url: 'https://api.nxtport.com/opendata/eta-terminal/v1/'
+    description: PRD Environment
+security:
+- bearer: []
+- apiKey: []
+paths:
+  /vessels-info:
+    get:
+      parameters:
+        - name: terminalOperatorCode
+          in: query
+          schema:
+            type: string
+        - name: terminalCode
+          in: query
+          schema:
+            type: string
+        - name: vesselName
+          in: query
+          schema:
+            type: string
+        - name: etaFrom
+          in: query
+          schema:
+            type: string
+            format: date-time
+        - name: imo
+          in: query
+          schema:
+            type: string
+        - name: portLoCode
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GetVesselsInfoResponse'
+components:
+  schemas:
+    GetVesselsInfoResponse:
+      type: object
+      properties:
+        portLoCode:
+          type: string
+          nullable: true
+        terminalOperatorCode:
+          type: string
+          nullable: true
+        terminalCode:
+          type: string
+          nullable: true
+        vesselName:
+          type: string
+          nullable: true
+        imo:
+          type: string
+          nullable: true
+        voyageOut:
+          type: string
+          nullable: true
+        eta:
+          type: string
+          format: date-time
+          nullable: true
+        ata:
+          type: string
+          format: date-time
+          nullable: true
+        etd:
+          type: string
+          format: date-time
+          nullable: true
+        cargoOpening:
+          type: string
+          format: date-time
+          nullable: true
+      additionalProperties: false
+  securitySchemes:
+    bearer:
+      type: apiKey
+      description: 'JWT Authorization header using the Bearer scheme. Example: "Authorization:
+        Bearer {token}"'
+      name: Authorization
+      in: header
+    apiKey:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
