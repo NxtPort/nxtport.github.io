@@ -84,16 +84,16 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/csv:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
   /v1/cleanings/locations/{id}:
     get:
       tags:
@@ -115,16 +115,16 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/csv:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
     put:
       tags:
         - CleaningLocations
@@ -163,16 +163,16 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/csv:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
     delete:
       tags:
         - CleaningLocations
@@ -226,22 +226,22 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CleaningLocation'
+                  $ref: '#/components/schemas/CleaningLocation.CleaningLocationSummary'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CleaningLocation'
+                  $ref: '#/components/schemas/CleaningLocation.CleaningLocationSummary'
             text/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CleaningLocation'
+                  $ref: '#/components/schemas/CleaningLocation.CleaningLocationSummary'
             text/csv:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CleaningLocation'
+                  $ref: '#/components/schemas/CleaningLocation.CleaningLocationSummary'
   /v1/cleanings/locations/{locationId}/users:
     post:
       tags:
@@ -281,16 +281,16 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/csv:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
     delete:
       tags:
         - CleaningLocations
@@ -329,16 +329,16 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/csv:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
   /v1/cleanings/locations/{locationId}/users/bulk:
     post:
       tags:
@@ -398,16 +398,16 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/csv:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
     delete:
       tags:
         - CleaningLocations
@@ -466,16 +466,16 @@ paths:
           content:
             text/plain:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             application/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/json:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
             text/csv:
               schema:
-                $ref: '#/components/schemas/CleaningLocation'
+                $ref: '#/components/schemas/CleaningLocation.CleaningLocationResponse'
   /v1/cleanings/locations/users:
     get:
       tags:
@@ -499,22 +499,22 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CleaningLocation'
+                  $ref: '#/components/schemas/CleaningLocation.CleaningLocationSummary'
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CleaningLocation'
+                  $ref: '#/components/schemas/CleaningLocation.CleaningLocationSummary'
             text/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CleaningLocation'
+                  $ref: '#/components/schemas/CleaningLocation.CleaningLocationSummary'
             text/csv:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CleaningLocation'
+                  $ref: '#/components/schemas/CleaningLocation.CleaningLocationSummary'
   /v1/equipment/{equipmentId}/cleaningactions/request:
     post:
       tags:
@@ -8637,50 +8637,33 @@ components:
           type: string
           nullable: true
       additionalProperties: false
-    CleaningLocation.CleaningLocationUpdate:
+    CleaningLocation.AddressLineResponse:
       type: object
       properties:
-        name:
+        Street and number:
           type: string
           nullable: true
-        description:
+        City:
           type: string
           nullable: true
-        addressLines:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        phone:
+        Country:
           type: string
           nullable: true
-        fax:
-          type: string
-          nullable: true
-        website:
-          type: string
-          nullable: true
-        supervisor:
+        Postal code:
           type: string
           nullable: true
       additionalProperties: false
-    BookletData.CompartmentCleaning:
+    CleaningLocation.CleaningLocationUserResponse:
       type: object
       properties:
-        key:
+        id:
+          type: string
+          format: uuid
+        fullName:
           type: string
           nullable: true
-        cleaning:
-          $ref: '#/components/schemas/BookletData.CleaningInfo'
-        previousLoad:
-          $ref: '#/components/schemas/BookletData.Product'
-        valid:
-          type: boolean
-        isPolymerComplete:
-          type: boolean
-          nullable: true
       additionalProperties: false
-    CleaningLocation:
+    CleaningLocation.CleaningLocationResponse:
       type: object
       properties:
         id:
@@ -8723,14 +8706,11 @@ components:
           type: string
           nullable: true
         addressLines:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
+          $ref: '#/components/schemas/CleaningLocation.AddressLineResponse'
         people:
           type: array
           items:
-            $ref: '#/components/schemas/CleaningLocationData.CleaningLocationUser'
+            $ref: '#/components/schemas/CleaningLocation.CleaningLocationUserResponse'
           nullable: true
         supervisor:
           type: string
@@ -8739,6 +8719,86 @@ components:
           type: string
           nullable: true
           deprecated: true
+      additionalProperties: false
+    CleaningLocation.CleaningLocationUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        addressLines:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        fax:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        supervisor:
+          type: string
+          nullable: true
+      additionalProperties: false
+    CleaningLocation.CleaningLocationSummary:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        addressLines:
+          $ref: '#/components/schemas/CleaningLocation.AddressLineResponse'
+        phone:
+          type: string
+          nullable: true
+        fax:
+          type: string
+          nullable: true
+        website:
+          type: string
+          nullable: true
+        supervisor:
+          type: string
+          nullable: true
+      additionalProperties: false
+    BookletData.CompartmentCleaning:
+      type: object
+      properties:
+        key:
+          type: string
+          nullable: true
+        cleaning:
+          $ref: '#/components/schemas/BookletData.CleaningInfo'
+        previousLoad:
+          $ref: '#/components/schemas/BookletData.Product'
+        valid:
+          type: boolean
+        isPolymerComplete:
+          type: boolean
+          nullable: true
+      additionalProperties: false
+    CleaningLocationData.CleaningLocationUser:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        fullName:
+          type: string
+          nullable: true
       additionalProperties: false
     BookletData.CleaningActionCreateRequest:
       required:
