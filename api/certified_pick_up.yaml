@@ -11,25 +11,55 @@ security:
   - Authorization: []
   - Subscription: []
 paths:
-  /nmot:
-    post:
+  /notifications:
+    get:
       tags:
-        - NextModeOfTransport
-      summary: NMoT Next Mode Of Transport
+        - notifications
+      summary: Get notifications by parameters
+      parameters:
+        - in: query
+          name: NotificationEvent
+          schema:
+            $ref: '#/components/schemas/NotificationEvent'
+        - in: query
+          name: EquipmentNumber
+          schema:
+            type: string
+        - in: query
+          name: PublicReferenceId
+          schema:
+            type: string
+        - in: query
+          name: DaysInBetween
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+             schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/NotificationDetail'
+        '401':
+          description: Unauthorized, role or scope forbids you from taking this action
+        '405':
+          description: Invalid input
+        '500':
+          description: Error accessing API
+  /pickup-rights/barge-rail:
+    put:
+      tags:
+        - pickup-rights
+      summary: Submit a barge or rail pickup right.
       requestBody:
-        description: >-
-          NxtPort.Equipment.Import.CRP.Contracts.Lib.Models.NextModeOfTransportRequest
+        description: M:NxtPort.Equipment.Import.CRP.CertifiedRelease.API.Controllers.V1.PickupRightsController.SubmitBargeRailPickupRight(NxtPort.CRP.WebContracts.Lib.Models.SubmitBargeRailPickupRight)
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NextModeOfTransportRequest'
-          text/json:
-            schema:
-              $ref: '#/components/schemas/NextModeOfTransportRequest'
-          application/*+json:
-            schema:
-              $ref: '#/components/schemas/NextModeOfTransportRequest'
-        required: false
+              $ref: '#/components/schemas/SubmitBargeRailPickupRight'
       responses:
         '202':
           description: Accepted
@@ -39,22 +69,10 @@ paths:
                 $ref: '#/components/schemas/BaseApiResponse'
         '400':
           description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
         '401':
           description: Unauthorized, role or scope forbids you from taking this action
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
-        '405':
-          description: Invalid input
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ProblemDetails'
+        '403':
+          description: Unauthorized, role or scope forbids you from taking this action
         '500':
           description: Error accessing API
   /{port-locode}/containers/{equipment-number}/import/pickup-rights:
@@ -105,6 +123,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
+        '500':
+          description: Error accessing API
+  /pickup-rights/terminal/alfapassnumber/publickey:
+    post:
+      tags:
+        - pickup-rights
+      summary: As a terminal deliver a public key for alfapass numbers
+      requestBody:
+        description: NxtPort.Equipment.Import.CRP.EPR.Contracts.Models.Responses.PublicKeyRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PublicKeyRequest'
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerminalPublicKeyResponse'
+        '400':
+          description: Invalid input
+        '401':
+          description: Unauthorized, role or scope forbids you from taking this action
+        '403':
+          description: Unauthorized, role or scope forbids you from taking this action
         '500':
           description: Error accessing API
   /{port-locode}/containers/{equipment-number}/import/terminal-release:
@@ -446,6 +490,54 @@ paths:
                 $ref: '#/components/schemas/ProblemDetails'
         '500':
           description: Error accessing API
+  /release-rights/means-of-transport:
+    put:
+      tags:
+        - release-rights
+      summary: Update means of transport
+      requestBody:
+        description: NxtPort.CRP.WebContracts.Lib.Models.UpdateMeansOfTransportRequest
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateMeansOfTransportRequest'
+      responses:
+        '202':
+          description: Accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BaseApiResponse'
+        '401':
+          description: Unauthorized, role or scope forbids you from taking this action
+        '405':
+          description: Invalid input
+        '500':
+          description: Error accessing API
+  /release-rights:
+    get:
+      tags:
+        - release-rights
+      summary: Get detailed information of a release right by release id
+      parameters:
+        - in: query
+          name: releaseId
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TerminalReleaseRightDetailResponse'
+        '401':
+          description: Unauthorized, role or scope forbids you from taking this action
+        '405':
+          description: Invalid input
+        '500':
+          description: Error accessing API
   /entities:
     get:
       tags:
@@ -657,6 +749,38 @@ paths:
           description: Error accessing API
 components:
   schemas:
+    NotificationEvent:
+      type: string
+      enum:
+        - Unknown
+        - Release
+        - Update
+        - Delete
+        - Block
+        - Unblock
+        - Revoke
+        - TerminalRelease
+        - TerminalBlocked
+        - TerminalScan
+        - Transferred
+        - DeclinedByNextParty
+        - AcceptedByNextParty
+        - RevokedByPreviousParty
+        - NotValidated
+        - ThrownException
+        - GetPagedContainers
+        - PickedUpByParty
+        - GetAllReleaseLights
+        - GetCombinedGreenLight
+        - ExpiredReleaseRights
+        - InactiveReleaseRights
+        - GateOut
+        - DigitalKeyCreated
+        - DigitalKeyRevoked
+        - GetReleaseDetail
+        - ReleaseLightChanged
+        - ReleaseLightRegistered
+        - AlfapassPickUpValidation
     EquipmentSlot:
       type: object
       properties:
@@ -1065,6 +1189,158 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ReleaseRightPickupIdentifier'
+    NotificationDetail:
+      type: object
+      properties:
+        nxtEntityId:
+          type: string
+        equipmentNumber:
+          type: string
+        publicReferenceId:
+          type: string
+        externalReferenceId:
+          type: string
+        storedOn:
+          format: date-time
+          type: string
+        message:
+          type: string
+        type:
+          type: string
+        event:
+          type: string
+    PublicKeyRequest:
+      type: object
+      properties:
+        publicKey:
+          type: string
+    TerminalPublicKeyResponse:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: string
+        terminalNxtEntityId:
+          type: string
+        publicKey:
+          type: string
+    SubmitBargeRailPickupRight:
+      type: object
+      properties:
+        terminalCode:
+          type: string
+        releaseIdentifier:
+          $ref: '#/components/schemas/ReleaseRightIdentifier'
+        dataBrokerNxtEntityId:
+          type: string
+        actionType:
+          $ref: '#/components/schemas/PickupRightActionType'
+    UpdateMeansOfTransportRequest:
+      type: object
+      properties:
+        identifier:
+          $ref: '#/components/schemas/ReleaseRightIdentifier'
+        meansOfTransport:
+          $ref: '#/components/schemas/MeansOfTransport'
+    MeansOfTransport:
+      enum:
+        - Truck
+        - Barge
+        - Rail
+        - Unknown
+      type: string
+    LightColor:
+      enum:
+        - Green
+        - Red
+        - Orange
+        - Grey
+        - Yellow
+      type: string
+    GreenLightShortInfo:
+      type: object
+      properties:
+        greenLightName:
+          type: string
+        greenLightValue:
+          type: string
+        color:
+          $ref: '#/components/schemas/LightColor'
+        label:
+          type: string
+        dateLastUpdated:
+          format: date-time
+          type: string
+    IdentificationEntity:
+      type: object
+      properties:
+        name:
+          type: string
+        nxtEntityId:
+          type: string
+        duns:
+          type: string
+        eori:
+          type: string
+        vat:
+          type: string
+        scac:
+          type: string
+        apcs:
+          type: string
+        externalId:
+          type: string
+        isAlternativeSystem:
+          type: boolean
+        cpuRoles:
+          type: array
+          items:
+            type: string
+    TerminalReleaseRightDetailResponse:
+      type: object
+      properties:
+        releaseId:
+          format: uuid
+          type: string
+        equipmentNumber:
+          type: string
+        releaseIdentification:
+          type: string
+        billOfLadingNumbers:
+          type: string
+        releaseOrderReference:
+          type: string
+        emptyReturnReference:
+          type: string
+        terminalName:
+          type: string
+        terminalCode:
+          type: string
+        portLoCode:
+          type: string
+        lights:
+          type: array
+          items:
+            $ref: '#/components/schemas/GreenLightShortInfo'
+        releaseDateTimeUtc:
+          format: date-time
+          type: string
+        expirationDateTimeUtc:
+          format: date-time
+          type: string
+        shippingAgentName:
+          type: string
+        encryptedAlfapassNumber:
+          type: string
+        transportOperator:
+          $ref: '#/components/schemas/IdentificationEntity'
+        meansOfTransport:
+          $ref: '#/components/schemas/MeansOfTransport'
+        publicReferenceId:
+          type: string
+        externalReferenceId:
+          type: string
   securitySchemes:
     Authorization:
       type: apiKey
