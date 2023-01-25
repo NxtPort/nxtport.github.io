@@ -25,7 +25,7 @@ security:
   - Authorization: []
     Subscription: []
 servers:
-  - url: https://api-stg.nxtport.com/push-barges/v1
+  - url: https://api-uat.nxtport.com/push-barges/v1
   - url: https://api.nxtport.com/push-barges/v1
 components:
   securitySchemes:
