@@ -87,6 +87,10 @@ components:
           type: string
           format: date-time
           nullable: true
+        cargoOpeningReefers:
+          type: string
+          format: date-time
+          nullable: true          
       additionalProperties: false
   securitySchemes:
     bearer:
