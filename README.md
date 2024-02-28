@@ -12,7 +12,6 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [ETA Terminal API](https://nxtport.github.io/?api=eta_terminal_api)
 * [i4sea](https://nxtport.github.io/?api=i4sea)
 * [Import Consignment](https://nxtport.github.io/?api=import_consignment_data)
-* [Liquid Bulk](https://nxtport.github.io/?api=liquidbulk)
 * [Meteo](https://nxtport.github.io/?api=meteo)
 * [Next Mode of Transport](https://nxtport.github.io/?api=nmot)
 * [Ocean Schedules](https://nxtport.github.io/?api=ocean_schedules) by INTTRA
@@ -22,9 +21,5 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [Port Stays](https://nxtport.github.io/?api=port_stays) by APICS
 * [Port Voyages](https://nxtport.github.io/?api=port_voyages) by APICS
 * [Push Barges](https://nxtport.github.io/?api=push_barges)
-* [Tresco Location](https://nxtport.github.io/?api=tresco_location) by Tresco
 * [UNLocode](https://nxtport.github.io/?api=unlocode)
 * [Vessel Stay](https://nxtport.github.io/?api=vessel_stay)
-* [VGM](https://nxtport.github.io/?api=vgm)
-
-More information about NxtPort at [nxtport.eu](https://www.nxtport.eu/en/apis) or the OpenAPI specification at [openapis.org](https://www.openapis.org/).
