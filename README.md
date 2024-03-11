@@ -20,5 +20,4 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [Port Stays](https://nxtport.github.io/?api=port_stays) by APICS
 * [Port Voyages](https://nxtport.github.io/?api=port_voyages) by APICS
 * [Push Barges](https://nxtport.github.io/?api=push_barges)
-* [UNLocode](https://nxtport.github.io/?api=unlocode)
 * [Vessel Stay](https://nxtport.github.io/?api=vessel_stay)
