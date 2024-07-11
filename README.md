@@ -8,7 +8,6 @@ The repository **nxtport.github.io** lets you visualize and interact with the Nx
 * [Bulkchain](https://nxtport.github.io/?api=bulkchain)
 * [Bulkchain Staging](https://nxtport.github.io/?api=stg.bulkchain)
 * [Certified Pick Up](https://nxtport.github.io/?api=certified_pick_up)
-* [eECD](https://nxtport.github.io/?api=eecd)
 * [ETA Terminal API](https://nxtport.github.io/?api=eta_terminal_api)
 * [i4sea](https://nxtport.github.io/?api=i4sea)
 * [Import Consignment](https://nxtport.github.io/?api=import_consignment_data)
