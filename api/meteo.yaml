@@ -140,13 +140,13 @@ components:
             1 second refresh rate. The value is determined every minute for the
             past 10 minutes. Unit is in beaufort and the precision is 1.
           format: int32
-        wr_600:
+        wr_10:
           type: number
           description: >-
             The measured wind direction averaged over the last 10 seconds. Unit
             is in ° and the precision is 0.
           format: double
-        wr_10:
+        wr_600:
           type: number
           description: >-
             The average wind direction for the past 10 minutes, refreshed per
