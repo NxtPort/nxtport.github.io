@@ -2,6 +2,6 @@ openapi: 3.0.1
 info:
   title: Meteo API
   version: v1
-  description: >
+  description: |
     ## ⚠️ WARNING: this documentation is deprecated.
-    You can find the updated API references and guides on the **[NxtPort documentation site](https://documentation.nxtport.com/opendata/meteo-api-documentation-endpoints-data-models-and-rate-limits)**
+    You can find the updated API references and guides on the [NxtPort documentation site](https://documentation.nxtport.com/opendata/meteo-api-documentation-endpoints-data-models-and-rate-limits)
